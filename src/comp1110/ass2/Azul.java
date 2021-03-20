@@ -1,5 +1,7 @@
 package comp1110.ass2;
 
+import java.util.Locale;
+
 public class Azul {
     /**
      * Given a shared state string, determine if it is well-formed.
@@ -54,8 +56,144 @@ public class Azul {
      * TASK 2
      */
     public static boolean isSharedStateWellFormed(String sharedState) {
-        // FIXME Task 2
-        return false;
+        // find the index of F,B,D in the string
+        int F = 0;
+        int B = 0;
+        int C = 0;
+        int D = 0;
+        for(int i = 0; i < sharedState.length();i++){
+            if(sharedState.toCharArray()[i] == 'F'& i < 5){
+                F = i;
+            }
+            else if(sharedState.toCharArray()[i] == 'B' & i<sharedState.length()-20){
+                B = i;
+            }
+            else if(sharedState.toCharArray()[i] == 'C'){
+                C = i;
+            }
+            else if(sharedState.toCharArray()[i] == 'D'){
+                D = i;
+            }
+        }
+
+        int numberOfWellFormed = 0;
+
+
+        //test if factories if well-formed
+        String factories = sharedState.substring(F,C);
+        int zero = 0;
+        int one = 0;
+        int two = 0;
+        int three = 0;
+        int four = 0;
+        for(int n = 0 ; n < factories.length();n++){
+            if(factories.toCharArray()[n] == '0'){
+                zero = n;
+            }
+            else if(factories.toCharArray()[n] == '1'){
+                one = n;
+            }
+            else if(factories.toCharArray()[n] == '2'){
+                two = n;
+            }
+            else if(factories.toCharArray()[n] == '3'){
+                three = n;
+            }
+            else if(factories.toCharArray()[n] == '4'){
+                four = n;
+            }
+        }
+
+        String zeroFactories = factories.substring(zero,one);
+        String oneFactories = factories.substring(one,two);
+        String twoFactories = factories.substring(two,three);
+        String threeFactories  = factories.substring(three,four);
+        String fourFactories = factories.substring(four,factories.length());
+
+        int numOfInvalidFactories = 0;
+
+        for(int z = 1; z+1 < zeroFactories.length();z++){
+            if((byte)zeroFactories.toCharArray()[z] > (byte)zeroFactories.toCharArray()[z+1]){
+                numOfInvalidFactories +=1;
+            }
+        }
+        for(int o = 1; o+1 < oneFactories.length();o++){
+            if((byte)oneFactories.toCharArray()[o] > (byte)oneFactories.toCharArray()[o+1]){
+                numOfInvalidFactories +=1;
+            }
+        }
+        for(int t = 1; t+1 < twoFactories.length();t++){
+            if((byte)twoFactories.toCharArray()[t] > (byte)twoFactories.toCharArray()[t+1]){
+                numOfInvalidFactories +=1;
+            }
+        }
+        for(int h = 1; h+1 < threeFactories.length();h++){
+            if((byte)threeFactories.toCharArray()[h] > (byte)threeFactories.toCharArray()[h+1]){
+                numOfInvalidFactories +=1;
+            }
+        }
+        for(int f = 1; f+1 < fourFactories.length();f++){
+            if((byte)fourFactories.toCharArray()[f] > (byte)fourFactories.toCharArray()[f+1]){
+                numOfInvalidFactories +=1;
+            }
+        }
+
+
+        if(numOfInvalidFactories == 0 & zeroFactories.length() == 5 & oneFactories.length() == 5 & twoFactories.length() ==5
+        & threeFactories.length() ==5 & fourFactories.length() ==5 & factories.length() == 26){
+            numberOfWellFormed += 1;
+        }
+        else if(factories.length() == 1){
+            numberOfWellFormed += 1;
+        }
+
+
+
+        //test if bag is well-formed
+        String bag =sharedState.substring(B,B+11);
+        try {
+            int numOfaInBag = Integer.valueOf(bag.substring(1,3));
+            int numOfbInBag = Integer.valueOf(bag.substring(3,5));
+            int numOfcInBag = Integer.valueOf(bag.substring(5,7));
+            int numOfdInBag = Integer.valueOf(bag.substring(7,9));
+            int numOfeInBag = Integer.valueOf(bag.substring(9,11));
+            if(numOfaInBag <= 20 & numOfbInBag <= 20 & numOfcInBag <= 20 & numOfdInBag <= 20 & numOfeInBag <= 20 ){
+                if(sharedState.substring(B,D).length() == bag.length()){
+                    numberOfWellFormed += 1; //plus one if bag is well-formed
+                }
+            }
+        } catch (Exception e) {
+            return false;
+        }
+
+
+
+        //test if discard is well-formed
+        String discard = sharedState.substring(D,D+11);
+        try {
+            int numOfaInDiscard = Integer.valueOf(discard.substring(1,3));
+            int numOfbInDiscard = Integer.valueOf(discard.substring(3,5));
+            int numOfcInDiscard = Integer.valueOf(discard.substring(5,7));
+            int numOfdInDiscard = Integer.valueOf(discard.substring(7,9));
+            int numOfeInDiscard = Integer.valueOf(discard.substring(9,11));
+            if(numOfaInDiscard <= 20 & numOfbInDiscard <= 20 & numOfcInDiscard <= 20 & numOfdInDiscard <= 20 & numOfeInDiscard <=20){
+                if(sharedState.substring(D,sharedState.length()).length() == discard.length()){
+                    numberOfWellFormed +=1; //plus one if discard is well-formed
+                }
+            }
+        } catch (Exception e) {
+            return false;
+        }
+
+
+
+
+        if(numberOfWellFormed == 3){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     /**
