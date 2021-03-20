@@ -197,6 +197,15 @@ public class Azul {
     }
 
     /**
+     * Tool 1: isPlayerChar
+     * Given a char, determine if it is representing a player('A' to 'D')
+     * @param c the input char
+     * @return if it is representing a player('A' to 'D')
+     */
+    public static boolean isPlayerChar(char c) {
+        return c == 'A' || c == 'B' || c == 'C' || c == 'D';
+    }
+    /**
      * Given a playerState, determine if it is well-formed.
      * Note: you don't have to consider validity for this task.
      * A playerState is composed of individual playerStrings.
@@ -247,7 +256,128 @@ public class Azul {
      */
     public static boolean isPlayerStateWellFormed(String playerState) {
         // FIXME Task 3
-        return false;
+        if (playerState.isEmpty())
+            return false; // return false, if it is an empty String.
+
+        if (!isPlayerChar(playerState.charAt(0))) {
+            return false; // return false, if the first letter isn't represent a player
+        }
+
+        int[] begins = new int[4]; // Up to 4 players
+        int cnt = 0;
+        for (int i = 0; i < playerState.length(); i++) {
+            if (isPlayerChar(playerState.charAt(i))) {
+                begins[cnt] = i;
+                cnt++;
+            }
+        }
+        String[] players = new String[cnt];
+        for (int i = 0; i < cnt; i++) {
+            players[i] = playerState.substring(begins[i], i == cnt - 1 ? playerState.length() : begins[i + 1]);
+        }
+
+        boolean isWellFormed = true;
+        for (String player : players) {
+            if (!isPlayerWellFormed(player)) {
+                isWellFormed = false;
+            }
+        }
+        return isWellFormed;
+    }
+
+    /**
+     * Tool 2: isPlayerWellFormed
+     * determine if this player's code is well-formed.
+     * @param playerState, the input player's code
+     * @return if this player's code is well-formed.
+     */
+    public static boolean isPlayerWellFormed(String playerState) {
+        int pointer = 0;
+        // 1. The player substring is one character 'A' to 'D' - representing the player.
+        String player = playerState.substring(pointer, pointer + 1);
+        if (!(player.equals("A") || player.equals("B") || player.equals("C") || player.equals("D")))
+            return false;
+
+        pointer++; // move the pointer to the beginning of next substring.
+
+        // 2. The score substring is one or more digits between '0' and '9' - representing the score.
+        int scoreCnt = 0;
+        while (('0' <= playerState.charAt(pointer)) && (playerState.charAt(pointer) <= '9')) {
+            pointer++;
+            scoreCnt++;
+        }
+        if (scoreCnt < 1) return false;
+
+        // 3. The Mosaic substring begins with a 'M', which is followed by up-to-25 3-character strings.
+        // First begins with 'M'
+        if (!(playerState.charAt(pointer) == 'M'))
+            return false;
+
+        pointer++;
+        // check tuples
+        /* Rules:
+            1st character is 'a' to 'e' - representing the tile colour.
+            2nd character is '0' to '4' - representing the row.
+            3rd character is '0' to '4' - representing the column.
+         */
+        while (pointer + 3 <= playerState.length()) {
+            String thisTile = playerState.substring(pointer, pointer + 3);
+            boolean isFirstCharValid = 'a' <= thisTile.charAt(0) && thisTile.charAt(0) <= 'e';
+            boolean isSecondCharValid = '0' <= thisTile.charAt(1) && thisTile.charAt(1) <= '4';
+            boolean isThirdCharValid = '0' <= thisTile.charAt(2) && thisTile.charAt(2) <= '4';
+            if (isFirstCharValid && isSecondCharValid && isThirdCharValid) {
+                pointer = pointer + 3; // move on to the next tuple.
+            } else {
+                break;
+            }
+        }
+
+        // 4. The Storage substring begins with an 'S' and is followed by *up to* 5 3-character strings.
+        if (!(playerState.charAt(pointer) == 'S')) {
+            return false;
+        }
+
+        pointer++;
+
+        // check tuples
+        /* Rules:
+            1st character is '0' to '4' - representing the row - each row number must only appear once.
+            2nd character is 'a' to 'e' - representing the tile colour.
+            3rd character is '0' to '5' - representing the number of tiles stored in that row.
+         */
+        while (pointer + 3 <= playerState.length()) {
+            String thisTile = playerState.substring(pointer, pointer + 3);
+            boolean isFirstCharValid = '0' <= thisTile.charAt(0) && thisTile.charAt(0) <= '4';
+            boolean isSecondCharValid = 'a' <= thisTile.charAt(1) && thisTile.charAt(1) <= 'e';
+            boolean isThirdCharValid = '0' <= thisTile.charAt(2) && thisTile.charAt(2) <= '5';
+            if (isFirstCharValid && isSecondCharValid && isThirdCharValid) {
+                pointer = pointer + 3; // move on to the next tuple.
+            } else {
+                break;
+            }
+        }
+
+        // 5. The Floor substring begins with an 'F' and is followed by *up to*
+        //    7 characters in alphabetical order.
+        if (!(playerState.charAt(pointer) == 'F'))
+            return false;
+
+        pointer++;
+
+        // Rules: Each character is 'a' to 'f' - where 'f' represents the first player token.
+        int tokenCnt = 0;
+        int tileCnt = 0;
+        for (int i = pointer; i < playerState.length(); i++) {
+            if ('a' <= playerState.charAt(i) && playerState.charAt(i) <= 'f') {
+                tileCnt++;
+            } else {
+                return false;
+            }
+            if (playerState.charAt(i) == 'f') {
+                tokenCnt++;
+            }
+        }
+        return tileCnt <= 7 && tokenCnt <= 1;
     }
 
     /**
@@ -439,4 +569,12 @@ public class Azul {
         return null;
         // FIXME Task 15 Implement a "smart" generateAction()
     }
+
+    /* For testing task 3
+    public static void main(String[] args) {
+        String test = "A07Me01a11d20b30b41S0a11b22c13c44d1FeeB08Md03b13e23c32b41S0b11c12a33d24e4Fab";
+        System.out.println(isPlayerStateWellFormed(test));
+    }
+
+     */
 }
