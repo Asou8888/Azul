@@ -266,13 +266,14 @@ public class Azul {
         int c = a.indexOf("D");
         String d = a.substring(b,b+11);
         String e = a.substring(c);
-        if (d.equals("B0000000000") && e.equals("D0000000000")){
-            return 'Z';
+        if (d.equals("B0000000000")) {
+            if (e.equals("D0000000000")) {
+                return 'Z';
+            } else {
+                d = "B" + e.substring(1);
+            }
         }
-        if (d.equals("B0000000000") && !e.equals("D0000000000")){
-            d = "B"+ e.substring(1);
-        }
-        if (!d.equals("B0000000000")){
+        else{
             int a1 = Integer.parseInt(d.substring(1,3));
             int b1 = Integer.parseInt(d.substring(3,5));
             int c1 = Integer.parseInt(d.substring(5,7));
