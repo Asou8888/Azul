@@ -532,11 +532,4 @@ public class Azul {
         // FIXME Task 15 Implement a "smart" generateAction()
     }
 
-    /* For testing task 3
-    public static void main(String[] args) {
-        String test = "A07Me01a11d20b30b41S0a11b22c13c44d1FeeB08Md03b13e23c32b41S0b11c12a33d24e4Fab";
-        System.out.println(isPlayerStateWellFormed(test));
-    }
-
-     */
 }
