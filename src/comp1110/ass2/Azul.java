@@ -112,33 +112,6 @@ public class Azul {
 
         int numOfInvalidFactories = 0;
 
-        for(int z = 1; z+1 < zeroFactories.length();z++){
-            if((byte)zeroFactories.toCharArray()[z] > (byte)zeroFactories.toCharArray()[z+1]){
-                numOfInvalidFactories +=1;
-            }
-        }
-        for(int o = 1; o+1 < oneFactories.length();o++){
-            if((byte)oneFactories.toCharArray()[o] > (byte)oneFactories.toCharArray()[o+1]){
-                numOfInvalidFactories +=1;
-            }
-        }
-        for(int t = 1; t+1 < twoFactories.length();t++){
-            if((byte)twoFactories.toCharArray()[t] > (byte)twoFactories.toCharArray()[t+1]){
-                numOfInvalidFactories +=1;
-            }
-        }
-        for(int h = 1; h+1 < threeFactories.length();h++){
-            if((byte)threeFactories.toCharArray()[h] > (byte)threeFactories.toCharArray()[h+1]){
-                numOfInvalidFactories +=1;
-            }
-        }
-        for(int f = 1; f+1 < fourFactories.length();f++){
-            if((byte)fourFactories.toCharArray()[f] > (byte)fourFactories.toCharArray()[f+1]){
-                numOfInvalidFactories +=1;
-            }
-        }
-
-
         if(numOfInvalidFactories == 0 & zeroFactories.length() == 5 & oneFactories.length() == 5 & twoFactories.length() ==5
         & threeFactories.length() ==5 & fourFactories.length() ==5 & factories.length() == 26){
             numberOfWellFormed += 1;
@@ -152,15 +125,9 @@ public class Azul {
         //test if bag is well-formed
         String bag =sharedState.substring(B,B+11);
         try {
-            int numOfaInBag = Integer.valueOf(bag.substring(1,3));
-            int numOfbInBag = Integer.valueOf(bag.substring(3,5));
-            int numOfcInBag = Integer.valueOf(bag.substring(5,7));
-            int numOfdInBag = Integer.valueOf(bag.substring(7,9));
-            int numOfeInBag = Integer.valueOf(bag.substring(9,11));
-            if(numOfaInBag <= 20 & numOfbInBag <= 20 & numOfcInBag <= 20 & numOfdInBag <= 20 & numOfeInBag <= 20 ){
-                if(sharedState.substring(B,D).length() == bag.length()){
-                    numberOfWellFormed += 1; //plus one if bag is well-formed
-                }
+            int numOfBag = Integer.valueOf(bag.substring(1,11));
+            if(sharedState.substring(B,D).length() == bag.length()){
+                numberOfWellFormed += 1; //plus one if bag is well-formed
             }
         } catch (Exception e) {
             return false;
@@ -171,15 +138,9 @@ public class Azul {
         //test if discard is well-formed
         String discard = sharedState.substring(D,D+11);
         try {
-            int numOfaInDiscard = Integer.valueOf(discard.substring(1,3));
-            int numOfbInDiscard = Integer.valueOf(discard.substring(3,5));
-            int numOfcInDiscard = Integer.valueOf(discard.substring(5,7));
-            int numOfdInDiscard = Integer.valueOf(discard.substring(7,9));
-            int numOfeInDiscard = Integer.valueOf(discard.substring(9,11));
-            if(numOfaInDiscard <= 20 & numOfbInDiscard <= 20 & numOfcInDiscard <= 20 & numOfdInDiscard <= 20 & numOfeInDiscard <=20){
-                if(sharedState.substring(D,sharedState.length()).length() == discard.length()){
-                    numberOfWellFormed +=1; //plus one if discard is well-formed
-                }
+            int numOfaInDiscard = Integer.valueOf(discard.substring(1,11));
+            if(sharedState.substring(D,sharedState.length()).length() == discard.length()){
+                numberOfWellFormed +=1; //plus one if discard is well-formed
             }
         } catch (Exception e) {
             return false;
