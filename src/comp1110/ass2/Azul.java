@@ -338,6 +338,7 @@ public class Azul {
                 tokenCnt++;
             }
         }
+
         return tileCnt <= 7 && tokenCnt <= 1;
     }
 
