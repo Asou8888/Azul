@@ -223,6 +223,7 @@ public class Azul {
         if (!isPlayerChar(playerState.charAt(0))) {
             return false; // return false, if the first letter isn't represent a player
         }
+        // May rewrite by using String.split() method.
 
         int[] begins = new int[4]; // Up to 4 players
         int cnt = 0;
