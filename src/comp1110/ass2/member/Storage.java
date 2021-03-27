@@ -1,5 +1,11 @@
 package comp1110.ass2.member;
 
+/**
+ * @author Yixin Ge
+ * @version 1.0
+ * @since 2021.3.27
+ */
+
 public class Storage {
     /**Storage has 5 rows and it is a triangular array of tiles */
     private Tile[] tiles = new Tile[15];
