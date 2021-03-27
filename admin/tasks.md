@@ -5,19 +5,22 @@ Use the entries below as an example.
 
 ## Week 4
 
-Everyone: create application skeleton - meeting 14:00 20 Mar
+Everyone: create application skeleton - meeting 20 March, 14:00PM GMT+8
 
 ## Week 5
 
-Zhang San: Task 3 isPlayerStateWellFormed - 23 Mar
+Everyone: discuss more detail on skeleton and class design -- meeting 26 March, 17:00PM GMT+8
 
-Jane Bloggs: Task 5 drawTileFromBag - 23 Mar
+Xiao Xu: Task 2 IsSharedStateWellFormed - 23 March
 
-Erika Mustermann: Task 6 refillFactories - 25 Mar (depends on Task 5)
+Ruizheng Shen: Task 3 isPlayerStateWellFormed - 23 Mar
+
+Yixin Ge: Task 5 drawTileFromBag - 23 Mar
+
 
 ## Week 6
 
-...
+Everyone: weekly meeting - 3 April 14:00PM GMT+8
 
 ## Mid-Semester Break
 
