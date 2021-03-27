@@ -244,6 +244,7 @@ public class Azul {
                 isWellFormed = false;
             }
         }
+
         return isWellFormed;
     }
 
