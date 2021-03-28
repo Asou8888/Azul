@@ -1,6 +1,10 @@
 package comp1110.ass2.member;
 
-
+/**
+ * @author XIAO XU
+ * @version 1.0
+ * @since 2021.3.27
+ */
 
 public class Bag {
     private Tile[] tiles = Tile[100];

@@ -10,8 +10,8 @@ declaration: >-
 contributions:
   - uid: 
     contribution: 
-  - uid:
-    contribution:
+  - uid: u7205634
+    contribution: 33
   - uid: u6616522
     contribution: 33
 
@@ -20,7 +20,7 @@ contributions:
 signatures:
   - name:
     uid:
-  - name:
-    uid:
+  - name: Xiao Xu
+    uid: u7205634
   - name: Yixin Ge
     uid: u6616522
