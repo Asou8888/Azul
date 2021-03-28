@@ -6,6 +6,7 @@ package comp1110.ass2.member;
  * @version 1.0
  * @since 2021.3.27
  */
+
 public class Mosaic {
 
     private Tile[] tiles = new Tile[25];
