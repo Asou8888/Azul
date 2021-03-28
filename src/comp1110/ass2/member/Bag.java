@@ -7,7 +7,7 @@ package comp1110.ass2.member;
  */
 
 public class Bag {
-    private Tile[] tiles = Tile[100];
+    private Tile[] tiles = new Tile[100];
 
     public String getCode() {
         return encode();
