@@ -216,7 +216,6 @@ public class Azul {
      * TASK 3
      */
     public static boolean isPlayerStateWellFormed(String playerState) {
-        // Task 3 trial
         // Task 3 Fixed
         if (playerState.isEmpty())
             return false; // return false, if it is an empty String.
