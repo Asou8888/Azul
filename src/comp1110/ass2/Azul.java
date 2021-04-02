@@ -217,6 +217,7 @@ public class Azul {
      */
     public static boolean isPlayerStateWellFormed(String playerState) {
         // Task 3 Fixed
+
         if (playerState.isEmpty())
             return false; // return false, if it is an empty String.
 
