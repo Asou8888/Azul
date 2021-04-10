@@ -1,8 +1,16 @@
 package comp1110.ass2;
 
-import java.util.Locale;
+import gittest.A;
+import gittest.B;
+import gittest.C;
+
+import java.util.*;
 
 public class Azul {
+    // Add some static variables.
+    static final int BAG_STATE_LENGTH = 11;
+    static final int FACTORY_NUM = 5; // 2 - 5, 3 - 7, 4 - 9
+    static final int TILES_NUM_IN_FACTORY = 4;
     /**
      * Given a shared state string, determine if it is well-formed.
      * Note: you don't need to consider validity for this task.
@@ -396,7 +404,93 @@ public class Azul {
      */
     public static String[] refillFactories(String[] gameState) {
         // FIXME Task 6
-        return null;
+        if (gameState.length == 0) return null;
+
+        // TODO: judge if the share State well formed.
+
+        String sharedState = gameState[0].substring(1);
+        // record the current character, to deal with the problem of same code of character 'B' and bag 'B'.
+        StringBuilder curCharacter = new StringBuilder(gameState[0].substring(0, 1));
+
+        // read factories' states(find the start of the factory state and the end of the factory state)
+        int FIndex = sharedState.indexOf('F');
+        int CIndex = sharedState.indexOf('C');
+        String factories = sharedState.substring(FIndex, CIndex);
+
+        // check whether all factories are empty
+        if (factories.length() != 1) {
+            // if not all factories are empty, return given state.
+            return gameState;
+        }
+
+        // if all the factories are empty, refill the factories with tiles.
+        int BIndex = sharedState.indexOf('B'); //  get the bag index.
+        int DIndex = sharedState.indexOf('D'); //  get the discard index.
+        String bag = sharedState.substring(BIndex, DIndex);
+        String discard = sharedState.substring(DIndex);
+        boolean isBagRefilled = false; // record whether the bag has been refilled by discard.
+        StringBuilder newFactories = new StringBuilder("F"); // build a new factories state.
+        // These are the numbers of different tiles in the bag.
+        int aNum = Integer.parseInt(bag.substring(1, 3));
+        int bNum = Integer.parseInt(bag.substring(3, 5));
+        int cNum = Integer.parseInt(bag.substring(5, 7));
+        int dNum = Integer.parseInt(bag.substring(7, 9));
+        int eNum = Integer.parseInt(bag.substring(9, 11));
+        int[] numArray = new int[]{aNum, bNum, cNum, dNum, eNum};
+        int totalCnt = aNum + bNum + cNum + dNum + eNum; // record the number of tiles, in order to fill up the bag from discord.
+        char[] tileArray = new char[]{'a', 'b', 'c', 'd', 'e'};
+        for (int i = 0; i < FACTORY_NUM; i++) {
+            newFactories.append(i); //  add the number of the factory in the new built state
+            char[] tiles = new char[4]; // in order to sort the tiles after picking from bag
+            for (int j = 0; j < TILES_NUM_IN_FACTORY; j++) {
+                if (totalCnt == 0) {
+                    // refill the bag
+                    bag = discard.replace('D', 'B');
+                    // reassign the bag's state to variables.
+                    aNum = Integer.parseInt(bag.substring(1, 3));
+                    bNum = Integer.parseInt(bag.substring(3, 5));
+                    cNum = Integer.parseInt(bag.substring(5, 7));
+                    dNum = Integer.parseInt(bag.substring(7, 9));
+                    eNum = Integer.parseInt(bag.substring(9, 11));
+                    numArray[0] = aNum;
+                    numArray[1] = bNum;
+                    numArray[2] = cNum;
+                    numArray[3] = dNum;
+                    numArray[4] = eNum;
+                    totalCnt = aNum + bNum + cNum + dNum + eNum;
+                    discard = "D0000000000"; // update the discard's state.
+                    isBagRefilled = true;
+                }
+                Random randNumGenerator = new Random();
+                int tileType = randNumGenerator.nextInt(5); // randomly choose a tile
+                while (numArray[tileType] <= 0)
+                    tileType = randNumGenerator.nextInt(5); // repick
+                numArray[tileType]--;
+                totalCnt--;
+                tiles[j] = tileArray[tileType];
+            }
+            Arrays.sort(tiles);
+            newFactories.append(tiles); // add the sorted tile code to current factory state.
+        }
+
+        // Update the bag state
+        StringBuilder newBag = new StringBuilder("B"); // build a new bag state
+        for (int j : numArray) {
+            if (j < 10) {
+                newBag.append("0").append(j);
+            } else {
+                newBag.append(j);
+            }
+        }
+
+        // build the new shared state. Replacing the old factories state and bag state with new ones.
+        StringBuilder newSharedState = new StringBuilder(sharedState);
+        newSharedState.replace(newSharedState.indexOf("F"), newSharedState.indexOf("C"), newFactories.toString());
+        newSharedState.replace(newSharedState.indexOf("B"), newSharedState.indexOf("D"), newBag.toString());
+        if (isBagRefilled)
+            newSharedState.replace(newSharedState.indexOf("D"), newSharedState.length(), discard);
+        gameState[0] = curCharacter.append(newSharedState).toString(); // adding the current character in the front of the shared state.
+        return gameState;
     }
 
     /**
@@ -539,5 +633,24 @@ public class Azul {
         return null;
         // FIXME Task 15 Implement a "smart" generateAction()
     }
+
+/*
+    public static void main(String[] args) {
+        String[] testTask6 = new String[]{
+                "AFCB1915161614D0000000000",
+                "A0MS0d11c22b33e44e1FefB0MS0a11b22d33c2F"
+        };
+        System.out.println("Test: ");
+        for (String s: testTask6) {
+            System.out.println(s);
+        }
+        System.out.println("After refilling: ");
+        testTask6 = refillFactories(testTask6);
+        for (String s: testTask6) {
+            System.out.println(s);
+        }
+    }
+
+ */
 
 }
