@@ -529,6 +529,46 @@ public class Azul {
      * @return the state for the next round.
      * TASK 8
      */
+    public static String emptyFloor(String privateState) {
+        int F = 0;
+        int M = 0;
+        for(int i = 0; i < privateState.toCharArray().length; i++){
+            if(privateState.toCharArray()[i] == 'F'){
+                F = i;
+            }
+            if(privateState.toCharArray()[i] == 'M'){
+                M = i;
+            }
+        }
+        int minusScore = 0;
+        String floor = privateState.substring(F,privateState.toCharArray().length);
+        if(floor.toCharArray().length == 1){
+            minusScore +=1;
+        }
+        else if(floor.toCharArray().length == 2){
+            minusScore += 2;
+        }
+        else if(floor.toCharArray().length == 3){
+            minusScore +=4;
+        }
+        else if(floor.toCharArray().length == 4){
+            minusScore +=6;
+        }
+        else if(floor.toCharArray().length == 5){
+            minusScore += 8;
+        }
+        else if(floor.toCharArray().length == 6){
+            minusScore += 11;
+        }
+        else if(floor.toCharArray().length >= 7){
+            minusScore += 14;
+        }
+
+        int score = Integer.parseInt(privateState.substring(1,M)) - minusScore;
+        String newprivateState = String.valueOf(privateState.toCharArray()[0]) + String.valueOf(score) + privateState.substring(M,F+1);
+        return newprivateState;
+    }
+
     public static String[] nextRound(String[] gameState) {
         // FIXME TASK 8
         String sharedState = gameState[0];
@@ -572,9 +612,9 @@ public class Azul {
         }
 
         String APlayer = privateState.substring(Ap,Bp);
-        String BPlayer = privateState.substring(Bp,Cp);
-        String CPlayer = privateState.substring(Cp,Dp);
-        String DPlayer = privateState.substring(Dp,privateState.length());
+        String BPlayer = privateState.substring(Bp,privateState.toCharArray().length);
+
+
 
         if(factories.length() == 0 && center.length() == 0) {
             return gameState;
@@ -587,9 +627,13 @@ public class Azul {
         }
         else {
 
+            privateState = emptyFloor(APlayer) + emptyFloor(BPlayer);
+            gameState[1] = privateState;
+            return gameState;
+
+
         }
 
-        return null;
     }
 
     /**
