@@ -434,6 +434,7 @@ public class Azul {
                 return gameState;
         }
 
+
         // if all the factories are empty, refill the factories with tiles.
         String bag = sharedState.substring(BIndex, DIndex);
         String discard = sharedState.substring(DIndex);
