@@ -415,6 +415,8 @@ public class Azul {
         // read factories' states(find the start of the factory state and the end of the factory state)
         int FIndex = sharedState.indexOf('F');
         int CIndex = sharedState.indexOf('C');
+        int BIndex = sharedState.indexOf('B'); //  get the bag index.
+        int DIndex = sharedState.indexOf('D'); //  get the discard index.
         String factories = sharedState.substring(FIndex, CIndex);
 
         // check whether all factories are empty
@@ -423,9 +425,16 @@ public class Azul {
             return gameState;
         }
 
+
+        // check whether the center is empty
+        String center = sharedState.substring(CIndex, BIndex);
+        if (center.length() != 1) {
+            if (!(center.length() == 2 && center.charAt(center.length() - 1) == 'f'))
+                // if the center is not empty, return the given state.
+                return gameState;
+        }
+
         // if all the factories are empty, refill the factories with tiles.
-        int BIndex = sharedState.indexOf('B'); //  get the bag index.
-        int DIndex = sharedState.indexOf('D'); //  get the discard index.
         String bag = sharedState.substring(BIndex, DIndex);
         String discard = sharedState.substring(DIndex);
         boolean isBagRefilled = false; // record whether the bag has been refilled by discard.
