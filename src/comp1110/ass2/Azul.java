@@ -133,7 +133,13 @@ public class Azul {
             numberOfWellFormed += 1;
         }
 
-
+        //test if center is well-formed
+        String center = sharedState.substring(C,B);
+        for(int n = 1; n < center.length()-1;n++){
+            if(Integer.valueOf(center.toCharArray()[n]) > Integer.valueOf(center.toCharArray()[n+1])){
+                return false;
+            }
+        }
 
         //test if bag is well-formed
         String bag =sharedState.substring(B,B+11);
@@ -533,9 +539,111 @@ public class Azul {
      * @return the state for the next round.
      * TASK 8
      */
+    public static String emptyFloor(String privateState) {
+        int F = 0;
+        int M = 0;
+        for(int i = 0; i < privateState.toCharArray().length; i++){
+            if(privateState.toCharArray()[i] == 'F'){
+                F = i;
+            }
+            if(privateState.toCharArray()[i] == 'M'){
+                M = i;
+            }
+        }
+        int minusScore = 0;
+        String floor = privateState.substring(F,privateState.toCharArray().length);
+        if(floor.toCharArray().length == 1){
+            minusScore +=1;
+        }
+        else if(floor.toCharArray().length == 2){
+            minusScore += 2;
+        }
+        else if(floor.toCharArray().length == 3){
+            minusScore +=4;
+        }
+        else if(floor.toCharArray().length == 4){
+            minusScore +=6;
+        }
+        else if(floor.toCharArray().length == 5){
+            minusScore += 8;
+        }
+        else if(floor.toCharArray().length == 6){
+            minusScore += 11;
+        }
+        else if(floor.toCharArray().length >= 7){
+            minusScore += 14;
+        }
+
+        int score = Integer.parseInt(privateState.substring(1,M)) - minusScore;
+        String newprivateState = String.valueOf(privateState.toCharArray()[0]) + String.valueOf(score) + privateState.substring(M,F+1);
+        return newprivateState;
+    }
+
     public static String[] nextRound(String[] gameState) {
         // FIXME TASK 8
-        return null;
+        String sharedState = gameState[0];
+        String privateState = gameState[1];
+        int Fa = 0;
+        int C = 0;
+        int B = 0;
+
+        for(int i = 0; i < sharedState.length();i++){
+            if(sharedState.toCharArray()[i] == 'F'){
+                Fa = i;
+            }
+            else if(sharedState.toCharArray()[i] == 'C'){
+                C = i;
+            }
+            else if(sharedState.toCharArray()[i] == 'B'){
+                B = i;
+            }
+        }
+
+        String factories = sharedState.substring(Fa,C);
+        String center = sharedState.substring(C,B);
+
+        int Ap = 0;
+        int Bp = 0;
+        int Cp = 0;
+        int Dp = 0;
+        for(int i = 0; i < privateState.length();i++){
+            if(privateState.toCharArray()[i] == 'A'){
+                Ap = i;
+            }
+            else if(privateState.toCharArray()[i] == 'B'){
+                Bp = i;
+            }
+            else if(privateState.toCharArray()[i] == 'C'){
+                Cp = i;
+            }
+            else if(privateState.toCharArray()[i] == 'D'){
+                Dp = i;
+            }
+        }
+
+        String APlayer = privateState.substring(Ap,Bp);
+        String BPlayer = privateState.substring(Bp,privateState.toCharArray().length);
+
+
+
+        if(factories.length() == 0 && center.length() == 0) {
+            return gameState;
+        }
+        else if(factories == "Ff" && center.length() == 0){
+            return gameState;
+        }
+        else if (factories.length() == 0 && center == "Cf"){
+            return gameState;
+        }
+        else {
+
+            privateState = emptyFloor(APlayer) + emptyFloor(BPlayer);
+            gameState[1] = privateState;
+            return gameState;
+
+
+        }
+
     }
 
     /**
