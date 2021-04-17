@@ -431,7 +431,6 @@ public class Azul {
             return gameState;
         }
 
-
         // check whether the center is empty
         String center = sharedState.substring(CIndex, BIndex);
         if (center.length() != 1) {
