@@ -382,17 +382,17 @@ public class Azul {
         int c = a.indexOf("D");
         String d = a.substring(b, b + 11);
         String e = a.substring(c);
-        if (d.equals("B0000000000") && e.equals("D0000000000")) {
+        if (d.equals("B0000000000") && e.equals("D0000000000")){
             return 'Z';
         }
-        if (d.equals("B0000000000") && !e.equals("D0000000000")) {
-            d = "B" + e.substring(1);
+        if (d.equals("B0000000000") && !e.equals("D0000000000")){
+            d = "B"+ e.substring(1);
         }
-        if (!d.equals("B0000000000")) {
-            int a1 = Integer.parseInt(d.substring(1, 3));
-            int b1 = Integer.parseInt(d.substring(3, 5));
-            int c1 = Integer.parseInt(d.substring(5, 7));
-            int d1 = Integer.parseInt(d.substring(7, 9));
+        if (!d.equals("B0000000000")){
+            int a1 = Integer.parseInt(d.substring(1,3));
+            int b1 = Integer.parseInt(d.substring(3,5));
+            int c1 = Integer.parseInt(d.substring(5,7));
+            int d1 = Integer.parseInt(d.substring(7,9));
             int e1 = Integer.parseInt(d.substring(9));
             String x = String.valueOf('a').repeat(a1) + String.valueOf('b').repeat(b1) + String.valueOf('c').repeat(c1)
                     + String.valueOf('d').repeat(d1) + String.valueOf('e').repeat(e1);
@@ -436,9 +436,8 @@ public class Azul {
         // check whether the center is empty
         String center = sharedState.substring(CIndex, BIndex);
         if (center.length() != 1) {
-            // first determine whether the center is empty.
             if (!(center.length() == 2 && center.charAt(center.length() - 1) == 'f'))
-                // If the center has only one tile 'first player', then the factories should be refilled.
+                // if the center is not empty, return the given state.
                 return gameState;
         }
 
@@ -449,11 +448,11 @@ public class Azul {
         boolean isBagRefilled = false; // record whether the bag has been refilled by discard.
         StringBuilder newFactories = new StringBuilder("F"); // build a new factories state.
         // These are the numbers of different tiles in the bag.
-        int aNum = Integer.parseInt(bag.substring(1, 3)); // number of 'a' tiles
-        int bNum = Integer.parseInt(bag.substring(3, 5)); // number of 'b' tiles
-        int cNum = Integer.parseInt(bag.substring(5, 7)); // number of 'c' tiles
-        int dNum = Integer.parseInt(bag.substring(7, 9)); // number of 'd' tiles
-        int eNum = Integer.parseInt(bag.substring(9, 11)); // number of 'e' tiles
+        int aNum = Integer.parseInt(bag.substring(1, 3));
+        int bNum = Integer.parseInt(bag.substring(3, 5));
+        int cNum = Integer.parseInt(bag.substring(5, 7));
+        int dNum = Integer.parseInt(bag.substring(7, 9));
+        int eNum = Integer.parseInt(bag.substring(9, 11));
         int[] numArray = new int[]{aNum, bNum, cNum, dNum, eNum};
         int totalCnt = aNum + bNum + cNum + dNum + eNum; // record the number of tiles, in order to fill up the bag from discord.
         char[] tileArray = new char[]{'a', 'b', 'c', 'd', 'e'};
@@ -522,7 +521,133 @@ public class Azul {
      * TASK 7
      */
     public static int getBonusPoints(String[] gameState, char player) {
-        return -1;
+        // FIXME Task 7
+        String a = gameState[1];
+        int bonus = 0;
+        if (player != 'A'){
+            int b = a.indexOf("B");
+            a = a.substring(b);
+        }
+        int c = a.indexOf("M");
+        int d = a.indexOf("S");
+        String e = a.substring(c+1,d);
+        int row1 = 0;
+        int col1 = 0;
+        while (row1 < 5){
+            String g = String.valueOf(row1) + String.valueOf(col1);
+            if (e.contains(g)){
+                if (col1 == 4){
+                    bonus = bonus +2;
+                    col1 = 0;
+                    row1 ++;
+                }
+                else {
+                col1 ++;}
+            }
+            else{
+                col1 = 0;
+                row1 ++;
+            }
+        }
+        int row2 = 0;
+        int col2 = 0;
+        while (col2 < 5){
+            String g = String.valueOf(row2) + String.valueOf(col2);
+            if (e.contains(g)){
+                if (row2 == 4){
+                    bonus = bonus +7;
+                    row2 = 0;
+                    col2 ++;
+                }
+                else{
+                    row2 ++;
+                }
+            }
+            else{
+                row2 = 0;
+                col2 ++;
+            }
+        }
+        int times = 0;
+        int index = 0;
+        String aS = e;
+        String bS = e;
+        String cS = e;
+        String dS = e;
+        String eS = e;
+        int an = 0;
+        int bn = 0;
+        int cn = 0;
+        int dn = 0;
+        int en = 0;
+        while (index <5) {
+            while (an < 5) {
+                if (aS.contains("a")) {
+                    times++;
+                    int aT = aS.indexOf("a");
+                    aS = aS.substring(aT + 1);
+                    if (times == 4) {
+                        bonus = bonus + 10;
+                        times = 0;
+                        index++;
+                    }
+                }
+                an+=1;
+            }
+            while (bn < 5) {
+                if (bS.contains("b")) {
+                    times++;
+                    int bT = bS.indexOf("b");
+                    bS = bS.substring(bT + 1);
+                    if (times == 4) {
+                        bonus = bonus + 10;
+                        times = 0;
+                        index++;
+                    }
+                }
+                bn+=1;
+            }
+            while (cn < 5) {
+                if (cS.contains("c")) {
+                    times++;
+                    int cT = cS.indexOf("c");
+                    cS = cS.substring(cT + 1);
+                    if (times == 4) {
+                        bonus = bonus + 10;
+                        times = 0;
+                        index++;
+                    }
+                }
+                cn+=1;
+            }
+            while (dn < 5) {
+                if (dS.contains("d")) {
+                    times++;
+                    int dT = dS.indexOf("d");
+                    dS = dS.substring(dT + 1);
+                    if (times == 4) {
+                        bonus = bonus + 10;
+                        times = 0;
+                        index++;
+                    }
+                }
+                dn+=1;
+            }
+            while (en < 5) {
+                if (eS.contains("e")) {
+                    times++;
+                    int eT = eS.indexOf("e");
+                    eS = eS.substring(eT + 1);
+                    if (times == 4) {
+                        bonus = bonus + 10;
+                        times = 0;
+                        index++;
+                    }
+                }
+                en+=1;
+            }
+        }
+        return bonus;
     }
 
     /**
