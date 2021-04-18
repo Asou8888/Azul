@@ -6,8 +6,18 @@ package comp1110.ass2.member;
  * @since 2021.3.27
  */
 
+
+/**
+ * Modified by Ruizheng Shen. 2021.4.19
+ * Add a constructor.
+ */
 public class Bag {
     private Tile[] tiles = new Tile[100];
+
+    // added by Ruizheng Shen
+    public Bag(Tile[] tiles) {
+        this.tiles = tiles;
+    }
 
     public String getCode() {
         return encode();

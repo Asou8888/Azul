@@ -6,8 +6,17 @@ package comp1110.ass2.member;
  * @since 2021.3.27
  */
 
+/**
+ * Modified by Ruizheng Shen, 2021.4.19
+ * Add a constructor.
+ */
+
 public class Discard {
-    private Tile[] tile = new Tile[100];
+    private Tile[] tiles;
+
+    public Discard(Tile[] tiles) {
+        this.tiles = new Tile[100];
+    }
 
     public String getCode() {
         return encode();
