@@ -10,7 +10,9 @@ public class Factory {
     /**
      * Factory is made of 4 tiles.
      */
-    private Tile[] tiles = new Tile[4];
+    private Tile[] tiles;
+
+
 
     /**
      * Constructor for the Factory. Given array of tiles, returns the
@@ -20,6 +22,7 @@ public class Factory {
      */
     public Factory(Tile[] tiles){
         //TODO
+        this.tiles = tiles;
     }
 
     /**

@@ -8,8 +8,8 @@ package comp1110.ass2.member;
 
 public class Storage {
     /**Storage has 5 rows and it is a triangular array of tiles */
-    private Tile[] tiles = new Tile[15];
-
+    private Tile[] tiles;
+    private static final int STORAGE_WIDTH = 15;
     /**
      * Constructor for the Storage. Given an array of tiles, returns the
      * current state of where each char represented tile is location in the storage.
@@ -18,6 +18,7 @@ public class Storage {
      */
     public Storage(Tile[] tiles){
         //TODO
+        this.tiles = tiles;
     }
 
     /**

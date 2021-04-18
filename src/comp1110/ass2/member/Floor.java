@@ -9,10 +9,13 @@ package comp1110.ass2.member;
  * @since 2021.3.27
  */
 public class Floor {
-    private Tile[] tiles = new Tile[7];
+    private Tile[] tiles;
+    private static final int FLOOR_WIDTH = 7;
     public static final int[] lostPoint = {-1, -1, -2, -2, -2, -3, -3};
 
-    public Floor() {}
+    public Floor() {
+        this.tiles = new Tile[FLOOR_WIDTH];
+    }
 
     /**
      * return the code of the current state of floor.

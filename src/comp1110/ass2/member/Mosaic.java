@@ -9,9 +9,11 @@ package comp1110.ass2.member;
 
 public class Mosaic {
 
-    private Tile[] tiles = new Tile[25];
-
-    public Mosaic() {}
+    private Tile[] tiles;
+    private static final int MOSAIC_WIDTH = 25;
+    public Mosaic() {
+        this.tiles = new Tile[MOSAIC_WIDTH];
+    }
 
     /**
      * Return the code of the current state in mosaic.

@@ -12,7 +12,7 @@ package comp1110.ass2.member;
  * Add a constructor.
  */
 public class Bag {
-    private Tile[] tiles = new Tile[100];
+    private Tile[] tiles ;
 
 
     // added by Ruizheng Shen
