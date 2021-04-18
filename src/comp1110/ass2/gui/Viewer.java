@@ -26,6 +26,11 @@ public class Viewer extends Application {
     private TextField playerTextField;
     private TextField boardTextField;
 
+    // added by Ruizheng Shen
+    private static final int FACTORIES_NUM = 5;
+    private final Group sharedField = new Group();
+    private final Group displays = new Group();
+
 
     /**
      * Draw a placement in the window, removing any previously drawn placements
