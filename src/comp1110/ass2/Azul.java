@@ -669,41 +669,67 @@ public class Azul {
     public static String emptyFloor(String privateState) {
         int F = 0;
         int M = 0;
-        for(int i = 0; i < privateState.toCharArray().length; i++){
-            if(privateState.toCharArray()[i] == 'F'){
+        for (int i = 0; i < privateState.toCharArray().length; i++) {
+            if (privateState.toCharArray()[i] == 'F') {
                 F = i;
             }
-            if(privateState.toCharArray()[i] == 'M'){
+            if (privateState.toCharArray()[i] == 'M') {
                 M = i;
             }
         }
         int minusScore = 0;
-        String floor = privateState.substring(F,privateState.toCharArray().length);
-        if(floor.toCharArray().length == 1){
-            minusScore +=1;
-        }
-        else if(floor.toCharArray().length == 2){
+        String floor = privateState.substring(F, privateState.toCharArray().length);
+        if (floor.toCharArray().length == 2) {
+            minusScore += 1;
+        } else if (floor.toCharArray().length == 3) {
             minusScore += 2;
-        }
-        else if(floor.toCharArray().length == 3){
-            minusScore +=4;
-        }
-        else if(floor.toCharArray().length == 4){
-            minusScore +=6;
-        }
-        else if(floor.toCharArray().length == 5){
+        } else if (floor.toCharArray().length == 4) {
+            minusScore += 4;
+        } else if (floor.toCharArray().length == 5) {
+            minusScore += 6;
+        } else if (floor.toCharArray().length == 6) {
             minusScore += 8;
-        }
-        else if(floor.toCharArray().length == 6){
+        } else if (floor.toCharArray().length == 7) {
             minusScore += 11;
-        }
-        else if(floor.toCharArray().length >= 7){
+        } else if (floor.toCharArray().length >= 8) {
             minusScore += 14;
         }
 
-        int score = Integer.parseInt(privateState.substring(1,M)) - minusScore;
-        String newprivateState = String.valueOf(privateState.toCharArray()[0]) + String.valueOf(score) + privateState.substring(M,F+1);
-        return newprivateState;
+        int score = Integer.parseInt(privateState.substring(1, M)) - minusScore;
+        if (score < 0) {
+            return String.valueOf(privateState.toCharArray()[0]) + "0" + privateState.substring(M, F + 1);
+        } else {
+            return String.valueOf(privateState.toCharArray()[0]) + String.valueOf(score) + privateState.substring(M, F + 1);
+        }
+    }
+
+    public static Boolean isFull(String privateState){
+        int M = 0;
+        int F = 0;
+        for(int i = 0;i < privateState.toCharArray().length;i++){
+            if(privateState.toCharArray()[i] == 'M'){
+                M = i;
+            }
+            if(privateState.toCharArray()[i] == 'F'){
+                F = i;
+            }
+        }
+        privateState = privateState.trim();
+        String number = "";
+        if(privateState != null && !"".equals(privateState)) {
+            for (int i = 0; i < privateState.length(); i++) {
+                if (privateState.charAt(i) >= 48 && privateState.charAt(i) <= 57) {
+                    number += privateState.charAt(i);
+                }
+            }
+        }
+        if(number.contains("0001020304")  || number.contains("1011121314") || number.contains("2021222324") || number.contains("3031323334") || number.contains("4041424344")||number.contains("5051525354")){
+            return true;
+        }
+        else {
+            return false;
+        }
+
     }
 
     public static String[] nextRound(String[] gameState) {
@@ -713,6 +739,7 @@ public class Azul {
         int Fa = 0;
         int C = 0;
         int B = 0;
+        int D = 0;
 
         for(int i = 0; i < sharedState.length();i++){
             if(sharedState.toCharArray()[i] == 'F'){
@@ -724,6 +751,9 @@ public class Azul {
             else if(sharedState.toCharArray()[i] == 'B'){
                 B = i;
             }
+            else if(sharedState.toCharArray()[i] == 'D'){
+                D = i;
+            }
         }
 
         String factories = sharedState.substring(Fa,C);
@@ -731,8 +761,6 @@ public class Azul {
 
         int Ap = 0;
         int Bp = 0;
-        int Cp = 0;
-        int Dp = 0;
         for(int i = 0; i < privateState.length();i++){
             if(privateState.toCharArray()[i] == 'A'){
                 Ap = i;
@@ -740,36 +768,122 @@ public class Azul {
             else if(privateState.toCharArray()[i] == 'B'){
                 Bp = i;
             }
-            else if(privateState.toCharArray()[i] == 'C'){
-                Cp = i;
-            }
-            else if(privateState.toCharArray()[i] == 'D'){
-                Dp = i;
-            }
         }
 
         String APlayer = privateState.substring(Ap,Bp);
         String BPlayer = privateState.substring(Bp,privateState.toCharArray().length);
-
-
-
-        if(factories.length() == 0 && center.length() == 0) {
-            return gameState;
+        int numafloor = 0;
+        int numbfloor = 0;
+        for(int i = 0; i < APlayer.toCharArray().length; i++){
+            if(APlayer.toCharArray()[i] == 'F'){
+                numafloor = i;
+            }
         }
-        else if(factories == "Ff" && center.length() == 0){
-            return gameState;
+        for(int i = 0;i<BPlayer.toCharArray().length;i++){
+            if(BPlayer.toCharArray()[i] == 'F'){
+                numbfloor = i;
+            }
         }
-        else if (factories.length() == 0 && center == "Cf"){
-            return gameState;
+        String AFloor = APlayer.substring(numafloor,APlayer.toCharArray().length);
+        String BFloor = BPlayer.substring(numbfloor,BPlayer.toCharArray().length);
+
+        //Discard
+        String discard = sharedState.substring(D,sharedState.toCharArray().length);
+        int atile = Integer.parseInt(discard.substring(1,3));
+        int btile = Integer.parseInt(discard.substring(3,5));
+        int ctile = Integer.parseInt(discard.substring(5,7));
+        int dtile = Integer.parseInt(discard.substring(7,9));
+        int etile = Integer.parseInt(discard.substring(9,11));
+
+        for(int i = 1;i <AFloor.toCharArray().length;i++){
+            if(AFloor.toCharArray()[i] == 'a'){
+                atile += 1;
+            }
+            if(AFloor.toCharArray()[i] == 'b'){
+                btile += 1;
+            }
+            if(AFloor.toCharArray()[i] == 'c'){
+                ctile += 1;
+            }
+            if(AFloor.toCharArray()[i] == 'd'){
+                dtile += 1;
+            }
+            if(AFloor.toCharArray()[i] == 'e'){
+                etile += 1;
+            }
+
+        }
+        for(int i = 1;i <BFloor.toCharArray().length;i++){
+            if(BFloor.toCharArray()[i] == 'a'){
+                atile += 1;
+            }
+            if(BFloor.toCharArray()[i] == 'b'){
+                btile += 1;
+            }
+            if(BFloor.toCharArray()[i] == 'c'){
+                ctile += 1;
+            }
+            if(BFloor.toCharArray()[i] == 'd'){
+                dtile += 1;
+            }
+            if(BFloor.toCharArray()[i] == 'e'){
+                etile += 1;
+            }
+
+        }
+        String atiles = String.valueOf(atile);
+        String btiles = String.valueOf(btile);
+        String ctiles = String.valueOf(ctile);
+        String dtiles = String.valueOf(dtile);
+        String etiles = String.valueOf(etile);
+
+        if(atile < 10){
+            atiles = String.valueOf("0" + atile);
+        }
+        if(btile < 10){
+            btiles = String.valueOf("0" + btile);
+        }
+        if(ctile < 10){
+            ctiles = String.valueOf("0" + ctile);
+        }
+        if(dtile < 10){
+            dtiles = String.valueOf("0" + dtile);
+        }
+        if(etile < 10){
+            etiles = String.valueOf("0" + etile);
+        }
+        discard = "D" + atiles + btiles + ctiles + dtiles + etiles;
+
+        String[] newGameState = new String[2];
+
+        if(!isFull(APlayer) && !isFull(BPlayer)) {
+            privateState = emptyFloor(APlayer) + emptyFloor(BPlayer);
+            if(factories.length() ==1 && center.length() == 1){
+                if (APlayer.contains("f")) {
+                    sharedState = "A" + sharedState.substring(1, sharedState.toCharArray().length);
+                } else {
+                    sharedState = "B" + sharedState.substring(1, sharedState.toCharArray().length);
+                }
+                newGameState[0] = sharedState;
+                newGameState[1] = privateState;
+                return newGameState;
+            }
+            else {
+
+                newGameState[0] = sharedState;
+                newGameState[1] = privateState;
+                return newGameState;
+            }
+
         }
         else {
 
             privateState = emptyFloor(APlayer) + emptyFloor(BPlayer);
-            gameState[1] = privateState;
-            return gameState;
-
-
+            newGameState[0] = sharedState.substring(0,C+1) + "f" + sharedState.substring(C+1,sharedState.toCharArray().length-11) + discard;
+            newGameState[1] = privateState;
+            return newGameState;
         }
+
 
     }
 
