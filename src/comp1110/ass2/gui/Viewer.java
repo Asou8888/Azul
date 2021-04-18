@@ -124,14 +124,13 @@ public class Viewer extends Application {
 
         makeControls();
 
-        // test code by Ruizheng Shen
+        // test code by Ruizheng Shen(for testing displayState())
         String[] testStr = new String[] {
             "adada",
             "adadadadad"
         };
         displayState(testStr);
         root.getChildren().add(displays);
-
 
         primaryStage.setScene(scene);
         primaryStage.show();
