@@ -521,134 +521,7 @@ public class Azul {
      * TASK 7
      */
     public static int getBonusPoints(String[] gameState, char player) {
-        // FIXME Task 7
-        String a = gameState[1];
-        int bonus = 0;
-        String playerString =String.valueOf(player);
-        if (!playerString.equals("A")){
-            int b = a.indexOf("B");
-            a = a.substring(b);
-        }
-        int c = a.indexOf("M");
-        int d = a.indexOf("S");
-        String e = a.substring(c+1,d);
-        int row1 = 0;
-        int col1 = 0;
-        while (row1 < 5){
-            String g = String.valueOf(row1) + String.valueOf(col1);
-            if (e.contains(g)){
-                if (col1 == 4){
-                    bonus = bonus +2;
-                    col1 = 0;
-                    row1 ++;
-                }
-                else {
-                col1 ++;}
-            }
-            else{
-                col1 = 0;
-                row1 ++;
-            }
-        }
-        int row2 = 0;
-        int col2 = 0;
-        while (col2 < 5){
-            String g = String.valueOf(row2) + String.valueOf(col2);
-            if (e.contains(g)){
-                if (row2 == 4){
-                    bonus = bonus +7;
-                    row2 = 0;
-                    col2 ++;
-                }
-                else{
-                    row2 ++;
-                }
-            }
-            else{
-                row2 = 0;
-                col2 ++;
-            }
-        }
-        int times = 0;
-        int index = 0;
-        String aS = e;
-        String bS = e;
-        String cS = e;
-        String dS = e;
-        String eS = e;
-        int an = 0;
-        int bn = 0;
-        int cn = 0;
-        int dn = 0;
-        int en = 0;
-        while (index <5) {
-            while (an < 5) {
-                if (aS.contains("a")) {
-                    times++;
-                    int aT = aS.indexOf("a");
-                    aS = aS.substring(aT + 1);
-                    if (times == 5) {
-                        bonus = bonus + 10;
-                    }
-                }
-                an+=1;
-            }
-            times = 0;
-            index++;
-            while (bn < 5) {
-                if (bS.contains("b")) {
-                    times++;
-                    int bT = bS.indexOf("b");
-                    bS = bS.substring(bT + 1);
-                    if (times == 5) {
-                        bonus = bonus + 10;
-                    }
-                }
-                bn+=1;
-            }
-            times = 0;
-            index++;
-            while (cn < 5) {
-
-                if (cS.contains("c")) {
-                    times++;
-                    int cT = cS.indexOf("c");
-                    cS = cS.substring(cT + 1);
-                    if (times == 5) {
-                        bonus = bonus + 10;
-                    }
-                }
-                cn+=1;
-            }
-            times = 0;
-            index++;
-            while (dn < 5) {
-                if (dS.contains("d")) {
-                    times++;
-                    int dT = dS.indexOf("d");
-                    dS = dS.substring(dT + 1);
-                    if (times == 5) {
-                        bonus = bonus + 10;
-                    }
-                }
-                dn+=1;
-            }
-            times = 0;
-            index++;
-            while (en < 5) {
-                if (eS.contains("e")) {
-                    times++;
-                    int eT = eS.indexOf("e");
-                    eS = eS.substring(eT + 1);
-                    if (times == 5) {
-                        bonus = bonus + 10;
-                    }
-                }
-                en+=1;
-                index++;
-            }
-        }
-        return bonus;
+        return -1;
     }
 
     /**
@@ -665,7 +538,161 @@ public class Azul {
      * @param gameState the game state
      * @return the state for the next round.
      * TASK 8
-     */
+     */public static String[] nextRound(String[] gameState) {
+        String sharedState = gameState[0];
+        String privateState = gameState[1];
+        int Fa = 0;
+        int C = 0;
+        int B = 0;
+        int D = 0;
+
+        for (int i = 0; i < sharedState.length(); i++) {
+            if (sharedState.toCharArray()[i] == 'F') {
+                Fa = i;
+            } else if (sharedState.toCharArray()[i] == 'C') {
+                C = i;
+            } else if (sharedState.toCharArray()[i] == 'B') {
+                B = i;
+            } else if (sharedState.toCharArray()[i] == 'D') {
+                D = i;
+            }
+        }//find the index of Fa(factories in sharedState) C(center) B(bag) D(discard)
+
+        String factories = sharedState.substring(Fa, C);
+        String center = sharedState.substring(C, B);
+
+        int Ap = 0;
+        int Bp = 0;
+        for (int i = 0; i < privateState.length(); i++) {
+            if (privateState.toCharArray()[i] == 'A') {
+                Ap = i;
+            } else if (privateState.toCharArray()[i] == 'B') {
+                Bp = i;
+            }
+        }//break the privateState into A player and B player
+
+        String APlayer = privateState.substring(Ap, Bp);
+        String BPlayer = privateState.substring(Bp, privateState.toCharArray().length);
+        int numafloor = 0;
+        int numbfloor = 0;
+        for (int i = 0; i < APlayer.toCharArray().length; i++) {
+            if (APlayer.toCharArray()[i] == 'F') {
+                numafloor = i;
+            }
+        }
+        for (int i = 0; i < BPlayer.toCharArray().length; i++) {
+            if (BPlayer.toCharArray()[i] == 'F') {
+                numbfloor = i;
+            }
+        }//find the index of floor in A player and B player respectively
+        String AFloor = APlayer.substring(numafloor, APlayer.toCharArray().length);
+        String BFloor = BPlayer.substring(numbfloor, BPlayer.toCharArray().length);
+
+
+        //reset the Discard with the tiles remove from floor
+        String discard = sharedState.substring(D, sharedState.toCharArray().length);
+        int atile = Integer.parseInt(discard.substring(1, 3));
+        int btile = Integer.parseInt(discard.substring(3, 5));
+        int ctile = Integer.parseInt(discard.substring(5, 7));
+        int dtile = Integer.parseInt(discard.substring(7, 9));
+        int etile = Integer.parseInt(discard.substring(9, 11));
+
+        for (int i = 1; i < AFloor.toCharArray().length; i++) {
+            if (AFloor.toCharArray()[i] == 'a') {
+                atile += 1;
+            }
+            if (AFloor.toCharArray()[i] == 'b') {
+                btile += 1;
+            }
+            if (AFloor.toCharArray()[i] == 'c') {
+                ctile += 1;
+            }
+            if (AFloor.toCharArray()[i] == 'd') {
+                dtile += 1;
+            }
+            if (AFloor.toCharArray()[i] == 'e') {
+                etile += 1;
+            }
+
+        }
+        for (int i = 1; i < BFloor.toCharArray().length; i++) {
+            if (BFloor.toCharArray()[i] == 'a') {
+                atile += 1;
+            }
+            if (BFloor.toCharArray()[i] == 'b') {
+                btile += 1;
+            }
+            if (BFloor.toCharArray()[i] == 'c') {
+                ctile += 1;
+            }
+            if (BFloor.toCharArray()[i] == 'd') {
+                dtile += 1;
+            }
+            if (BFloor.toCharArray()[i] == 'e') {
+                etile += 1;
+            }
+
+        }
+        String atiles = String.valueOf(atile);
+        String btiles = String.valueOf(btile);
+        String ctiles = String.valueOf(ctile);
+        String dtiles = String.valueOf(dtile);
+        String etiles = String.valueOf(etile);
+
+        if (atile < 10) {
+            atiles = String.valueOf("0" + atile);
+        }
+        if (btile < 10) {
+            btiles = String.valueOf("0" + btile);
+        }
+        if (ctile < 10) {
+            ctiles = String.valueOf("0" + ctile);
+        }
+        if (dtile < 10) {
+            dtiles = String.valueOf("0" + dtile);
+        }
+        if (etile < 10) {
+            etiles = String.valueOf("0" + etile);
+        }
+        discard = "D" + atiles + btiles + ctiles + dtiles + etiles;
+
+
+        String[] newGameState = new String[2];
+
+        if (!isFull(APlayer) && !isFull(BPlayer)) {
+            privateState = emptyFloor(APlayer) + emptyFloor(BPlayer);
+            if (factories.length() == 1 && center.length() == 1) {
+                if(storageIsAvia(APlayer) || storageIsAvia(BPlayer)) {
+                    newGameState[0] = sharedState;
+                    newGameState[1] = privateState;
+                    return newGameState;
+                }
+                else {
+                    if (APlayer.contains("f")) {
+                        sharedState = "A" + sharedState.substring(1, sharedState.toCharArray().length);
+                    } else {
+                        sharedState = "B" + sharedState.substring(1, sharedState.toCharArray().length);
+                    }
+                    newGameState[0] = sharedState;
+                    newGameState[1] = privateState;
+                    return refillFactories(newGameState);
+                }
+
+            } else {
+                newGameState[0] = sharedState;
+                newGameState[1] = privateState;
+                return newGameState;
+            }
+
+        } else {
+            privateState = emptyFloorwithBonus(gameState,APlayer) + emptyFloorwithBonus(gameState,BPlayer);
+            newGameState[0] = sharedState.substring(0, C + 1) + "f" + sharedState.substring(C + 1, sharedState.toCharArray().length - 11) + discard;
+            newGameState[1] = privateState;
+            return newGameState;
+        }
+
+
+    }
     public static String emptyFloor(String privateState) {
         int F = 0;
         int M = 0;
@@ -703,6 +730,44 @@ public class Azul {
         }
     }
 
+    public static String emptyFloorwithBonus(String[] gamestate,String privateState) {
+        int F = 0;
+        int M = 0;
+        for (int i = 0; i < privateState.toCharArray().length; i++) {
+            if (privateState.toCharArray()[i] == 'F') {
+                F = i;
+            }
+            if (privateState.toCharArray()[i] == 'M') {
+                M = i;
+            }
+        }
+        int minusScore = 0;
+        String floor = privateState.substring(F, privateState.toCharArray().length);
+        if (floor.toCharArray().length == 2) {
+            minusScore += 1;
+        } else if (floor.toCharArray().length == 3) {
+            minusScore += 2;
+        } else if (floor.toCharArray().length == 4) {
+            minusScore += 4;
+        } else if (floor.toCharArray().length == 5) {
+            minusScore += 6;
+        } else if (floor.toCharArray().length == 6) {
+            minusScore += 8;
+        } else if (floor.toCharArray().length == 7) {
+            minusScore += 11;
+        } else if (floor.toCharArray().length >= 8) {
+            minusScore += 14;
+        }
+
+        int score = Integer.parseInt(privateState.substring(1, M)) - minusScore;
+        if (score < 0) {
+            return String.valueOf(privateState.toCharArray()[0]) + getBonusPoints(gamestate,privateState.toCharArray()[0]) + privateState.substring(M, F + 1);
+        } else {
+            return String.valueOf(privateState.toCharArray()[0]) + (score+getBonusPoints(gamestate,privateState.toCharArray()[0]))+ privateState.substring(M, F + 1);
+        }
+    }
+
+
     public static Boolean isFull(String privateState){
         int M = 0;
         int F = 0;
@@ -732,195 +797,68 @@ public class Azul {
 
     }
 
-    public static String[] nextRound(String[] gameState) {
-        // FIXME TASK 8
-        String sharedState = gameState[0];
-        String privateState = gameState[1];
-        int Fa = 0;
-        int C = 0;
-        int B = 0;
-        int D = 0;
-
-        for(int i = 0; i < sharedState.length();i++){
-            if(sharedState.toCharArray()[i] == 'F'){
-                Fa = i;
+    public static boolean storageIsAvia(String privateState) {
+        int S = 0;
+        int F = 0;
+        for (int i = 0; i < privateState.toCharArray().length; i++) {
+            if (privateState.toCharArray()[i] == 'S') {
+                S = i;
             }
-            else if(sharedState.toCharArray()[i] == 'C'){
-                C = i;
-            }
-            else if(sharedState.toCharArray()[i] == 'B'){
-                B = i;
-            }
-            else if(sharedState.toCharArray()[i] == 'D'){
-                D = i;
+            if (privateState.toCharArray()[i] == 'F') {
+                F = i;
             }
         }
-
-        String factories = sharedState.substring(Fa,C);
-        String center = sharedState.substring(C,B);
-
-        int Ap = 0;
-        int Bp = 0;
-        for(int i = 0; i < privateState.length();i++){
-            if(privateState.toCharArray()[i] == 'A'){
-                Ap = i;
-            }
-            else if(privateState.toCharArray()[i] == 'B'){
-                Bp = i;
-            }
+        String storage = privateState.substring(S, F);
+        List<String> number = new ArrayList<String>();
+        for (int i = 0; i < storage.length()-2;) {
+            number.add(storage.substring(i + 1, i + 2) + storage.substring(i + 3, i + 4));
+            i = i + 3;
         }
-
-        String APlayer = privateState.substring(Ap,Bp);
-        String BPlayer = privateState.substring(Bp,privateState.toCharArray().length);
-        int numafloor = 0;
-        int numbfloor = 0;
-        for(int i = 0; i < APlayer.toCharArray().length; i++){
-            if(APlayer.toCharArray()[i] == 'F'){
-                numafloor = i;
-            }
+        if (number.contains("01") || number.contains("12") || number.contains("23") || number.contains("34") || number.contains("45")) {
+            return true;
+        } else {
+            return false;
         }
-        for(int i = 0;i<BPlayer.toCharArray().length;i++){
-            if(BPlayer.toCharArray()[i] == 'F'){
-                numbfloor = i;
-            }
-        }
-        String AFloor = APlayer.substring(numafloor,APlayer.toCharArray().length);
-        String BFloor = BPlayer.substring(numbfloor,BPlayer.toCharArray().length);
-
-        //Discard
-        String discard = sharedState.substring(D,sharedState.toCharArray().length);
-        int atile = Integer.parseInt(discard.substring(1,3));
-        int btile = Integer.parseInt(discard.substring(3,5));
-        int ctile = Integer.parseInt(discard.substring(5,7));
-        int dtile = Integer.parseInt(discard.substring(7,9));
-        int etile = Integer.parseInt(discard.substring(9,11));
-
-        for(int i = 1;i <AFloor.toCharArray().length;i++){
-            if(AFloor.toCharArray()[i] == 'a'){
-                atile += 1;
-            }
-            if(AFloor.toCharArray()[i] == 'b'){
-                btile += 1;
-            }
-            if(AFloor.toCharArray()[i] == 'c'){
-                ctile += 1;
-            }
-            if(AFloor.toCharArray()[i] == 'd'){
-                dtile += 1;
-            }
-            if(AFloor.toCharArray()[i] == 'e'){
-                etile += 1;
-            }
-
-        }
-        for(int i = 1;i <BFloor.toCharArray().length;i++){
-            if(BFloor.toCharArray()[i] == 'a'){
-                atile += 1;
-            }
-            if(BFloor.toCharArray()[i] == 'b'){
-                btile += 1;
-            }
-            if(BFloor.toCharArray()[i] == 'c'){
-                ctile += 1;
-            }
-            if(BFloor.toCharArray()[i] == 'd'){
-                dtile += 1;
-            }
-            if(BFloor.toCharArray()[i] == 'e'){
-                etile += 1;
-            }
-
-        }
-        String atiles = String.valueOf(atile);
-        String btiles = String.valueOf(btile);
-        String ctiles = String.valueOf(ctile);
-        String dtiles = String.valueOf(dtile);
-        String etiles = String.valueOf(etile);
-
-        if(atile < 10){
-            atiles = String.valueOf("0" + atile);
-        }
-        if(btile < 10){
-            btiles = String.valueOf("0" + btile);
-        }
-        if(ctile < 10){
-            ctiles = String.valueOf("0" + ctile);
-        }
-        if(dtile < 10){
-            dtiles = String.valueOf("0" + dtile);
-        }
-        if(etile < 10){
-            etiles = String.valueOf("0" + etile);
-        }
-        discard = "D" + atiles + btiles + ctiles + dtiles + etiles;
-
-        String[] newGameState = new String[2];
-
-        if(!isFull(APlayer) && !isFull(BPlayer)) {
-            privateState = emptyFloor(APlayer) + emptyFloor(BPlayer);
-            if(factories.length() ==1 && center.length() == 1){
-                if (APlayer.contains("f")) {
-                    sharedState = "A" + sharedState.substring(1, sharedState.toCharArray().length);
-                } else {
-                    sharedState = "B" + sharedState.substring(1, sharedState.toCharArray().length);
-                }
-                newGameState[0] = sharedState;
-                newGameState[1] = privateState;
-                return newGameState;
-            }
-            else {
-
-                newGameState[0] = sharedState;
-                newGameState[1] = privateState;
-                return newGameState;
-            }
-
-        }
-        else {
-
-            privateState = emptyFloor(APlayer) + emptyFloor(BPlayer);
-            newGameState[0] = sharedState.substring(0,C+1) + "f" + sharedState.substring(C+1,sharedState.toCharArray().length-11) + discard;
-            newGameState[1] = privateState;
-            return newGameState;
-        }
-
-
     }
 
+
+
+
+
     /**
-     * Given an entire game State, determine whether the state is valid.
-     * A game state is valid if it satisfies the following conditions.
-     * <p>
-     * [General]
-     * 1. The game state is well-formed.
-     * 2. There are no more than 20 of each colour of tile across all player
-     * areas, factories, bag and discard
-     * 3. Exactly one first player token 'f' must be present across all player
-     * boards and the centre.
-     * <p>
-     * [Mosaic]
-     * 1. No two tiles occupy the same location on a single player's mosaic.
-     * 2. Each row contains only 1 of each colour of tile.
-     * 3. Each column contains only 1 of each colour of tile.
-     * [Storage]
-     * 1. The maximum number of tiles stored in a row must not exceed (row_number + 1).
-     * 2. The colour of tile stored in a row must not be the same as a colour
-     * already found in the corresponding row of the mosaic.
-     * <p>
-     * [Floor]
-     * 1. There are no more than 7 tiles on a single player's floor.
-     * [Centre]
-     * 1. The number of tiles in the centre is no greater than 3 * the number of empty factories.
-     * [Factories]
-     * 1. At most one factory has less than 4, but greater than 0 tiles.
-     * Any factories with factory number greater than this factory must contain 0 tiles.
-     *
-     * @param gameState array of strings representing the game state.
-     *                  state[0] = sharedState
-     *                  state[1] = playerStates
-     * @return true if the state is valid, false if it is invalid.
-     * TASK 9
-     */
+         * Given an entire game State, determine whether the state is valid.
+         * A game state is valid if it satisfies the following conditions.
+         * <p>
+         * [General]
+         * 1. The game state is well-formed.
+         * 2. There are no more than 20 of each colour of tile across all player
+         * areas, factories, bag and discard
+         * 3. Exactly one first player token 'f' must be present across all player
+         * boards and the centre.
+         * <p>
+         * [Mosaic]
+         * 1. No two tiles occupy the same location on a single player's mosaic.
+         * 2. Each row contains only 1 of each colour of tile.
+         * 3. Each column contains only 1 of each colour of tile.
+         * [Storage]
+         * 1. The maximum number of tiles stored in a row must not exceed (row_number + 1).
+         * 2. The colour of tile stored in a row must not be the same as a colour
+         * already found in the corresponding row of the mosaic.
+         * <p>
+         * [Floor]
+         * 1. There are no more than 7 tiles on a single player's floor.
+         * [Centre]
+         * 1. The number of tiles in the centre is no greater than 3 * the number of empty factories.
+         * [Factories]
+         * 1. At most one factory has less than 4, but greater than 0 tiles.
+         * Any factories with factory number greater than this factory must contain 0 tiles.
+         *
+         * @param gameState array of strings representing the game state.
+         *                  state[0] = sharedState
+         *                  state[1] = playerStates
+         * @return true if the state is valid, false if it is invalid.
+         * TASK 9
+         */
     public static boolean isStateValid(String[] gameState) {
         // FIXME Task 9
         return false;
