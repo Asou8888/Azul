@@ -1,0 +1,32 @@
+# IMPORTANT: It is very important that you correctly complete this originality
+# statement.
+#
+# This is your statement of your submitted work being your own.
+# Incorrectly filling out this statement could lead to charges
+# of academic misconduct.
+# 
+# For information on how to fill this out correctly, see
+# https://cs.anu.edu.au/courses/comp1110/help/faq/09-originality/
+#
+
+declaration: >-
+  I submit the work below for assessment as my best work. I declare that this
+  is entirely my own work, with the following documented exceptions:
+
+# I wish to submit the following methods as entirely my own (remove this if
+# you want to just submit classes):
+method:
+   - public static int getBonusPoints(String[] gameState, char player)
+   - it can find the sum of bonus point from current gameState.
+   - As given gameState,  it can determine whether it has full row of tiles(bonus 2),
+   full column of tiles (bouns 7)or full amount(5) of same color tiles (bouns 10) in Mosaic;
+   - finally return sum of bouns as an int.
+   - for determine whether it has full row of tiles, the string must contain same row but 5 different columns.
+     (eg. "00","01","02","03","04")
+   - for determine whether it has full column of tiles, the the string must contain same column but 5 different rows.
+     (eg. "00",“10”，“20”，“30”，“40”）
+   - for determine whether it has full amount(5) of same color tiles，the string must contain 5 same color tiles.
+     (eg. "a","a","a","a","a")
+# sign *your* name and uid here
+name:Yixin Ge
+uid:u6616522

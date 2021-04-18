@@ -31,6 +31,8 @@ public class Viewer extends Application {
     private final Group sharedField = new Group();
     private final Group displays = new Group();
 
+    private final Group playerField = new Group();
+    private final Group displays1 = new Group();
 
     /**
      * Draw a placement in the window, removing any previously drawn placements
@@ -260,6 +262,38 @@ public class Viewer extends Application {
         }
         sharedField.getChildren().add(vb);
         displays.getChildren().add(sharedField);
+
+        // code written by Yixin Ge:
+        // -player state
+        Label playerLabelA = new Label("player A state: ");
+        ArrayList<HBox> playerLabelsA = new ArrayList<>();
+        TextField scoreA = new TextField(String.valueOf(Ascore));
+        Label scoreALabel = new Label("Score A: ");
+        TextField mosaicA = new TextField(Amosaic);
+        Label mosALabel = new Label("Mosaic A: ");
+        TextField storageA = new TextField(Astorage);
+        Label stoALabel = new Label("Storage A: ");
+        TextField floorA = new TextField(Afloor);
+        Label floorALabel = new Label("Floor A: ");
+
+        playerLabelsA.add(new HBox(scoreALabel, scoreA));
+        playerLabelsA.add(new HBox(mosALabel, mosaicA));
+        playerLabelsA.add(new HBox(stoALabel, storageA));
+        playerLabelsA.add(new HBox(floorALabel, floorA));
+
+        VBox vb2 = new VBox();
+        vb2.setSpacing(10);
+        vb2.setLayoutX(60);
+        vb2.setLayoutY(10);
+        vb2.getChildren().add(playerLabelA);
+        for (HBox hb : playerLabelsA) {
+            vb2.getChildren().add(hb);
+        }
+        playerField.getChildren().add(vb2);
+        displays1.getChildren().add(playerField);
+
+
+
     }
 
     /**
