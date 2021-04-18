@@ -22,6 +22,13 @@ Yixin Ge: Task 5 drawTileFromBag - 23 Mar
 
 Everyone: weekly meeting - 3 April 14:00PM GMT+8
 
+Xiao Xu: Task 8 nextRound & Task 4 separate the state code - 18 April
+
+Ruizheng Shen: Task 6 refillFactories & task 4 fill in board text in the viewer - 18 April
+
+Yixin Ge: Task 7 getBonusPoints & task 4 fill in player text in the viewer - 18 April
+
+
 ## Mid-Semester Break
 
 ## Week 7
