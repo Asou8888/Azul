@@ -36,10 +36,6 @@ public class Viewer extends Application {
     private final Group displays  = new Group();
     private final Group sharedField = new Group();
     private final Group playerField = new Group();
-    private TextField[] factories;
-    private TextField center;
-    private TextField bag;
-    private TextField discard;
 
 
     /**
@@ -53,21 +49,21 @@ public class Viewer extends Application {
 
         /*  Code written by Ruizheng Shen:
          *     1. Desperate the area for shared field and player field.
-         *     2.
+         *     2. the simple shared field.
          */
         Label sharedLabel = new Label("shared state: ");
         ArrayList<HBox> sharedLabels = new ArrayList<>();
-        this.factories = new TextField[FACTORIES_NUM];
+        TextField[] factories = new TextField[FACTORIES_NUM];
         Label[] facLabels = new Label[FACTORIES_NUM];
         for (int i = 0; i < FACTORIES_NUM; i++) {
             factories[i] = new TextField("factory [" + i + "] code"); // TODO: put the i-th factory code here.
             facLabels[i] = new Label("factory [" + i + "]: ");
         }
-        this.center = new TextField("center code"); // TODO: put the center code here.
+        TextField center = new TextField("center code"); // TODO: put the center code here.
         Label centerLabel = new Label("Center: ");
-        this.bag = new TextField("bag code"); // TODO: put the bag code here.
+        TextField bag = new TextField("bag code"); // TODO: put the bag code here.
         Label bagLabel = new Label("Bag: ");
-        this.discard = new TextField("discard code"); // TODO: put the discard code here.
+        TextField discard = new TextField("discard code"); // TODO: put the discard code here.
         Label discardLabel = new Label("Discard: ");
 
         // adding horizon box for factories
@@ -81,10 +77,15 @@ public class Viewer extends Application {
         sharedLabels.add(new HBox(discardLabel, discard));
 
         VBox vb = new VBox();
+        vb.setSpacing(5);
+        vb.setLayoutX(50);
+        vb.setLayoutY(10);
+        vb.getChildren().add(sharedLabel);
         for (HBox hr : sharedLabels) {
             vb.getChildren().add(hr);
         }
-        displays.getChildren().add(vb);
+        sharedField.getChildren().add(vb);
+        displays.getChildren().add(sharedField);
     }
 
     /**
