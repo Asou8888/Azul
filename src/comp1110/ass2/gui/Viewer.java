@@ -228,17 +228,17 @@ public class Viewer extends Application {
         TextField[] factories = new TextField[FACTORIES_NUM];
         Label[] facLabels = new Label[FACTORIES_NUM];
         for (int i = 0; i < FACTORIES_NUM; i++) {
-            // factories[i] = new TextField("factory [" + i + "] code"); // TODO: put the i-th factory code here.
+            // factories[i] = new TextField("factory [" + i + "] code");
             factories[i] = new TextField(breakFactories[i]); // put the i-th factory code here.
             facLabels[i] = new Label("factory [" + i + "]: ");
         }
-        // TextField center = new TextField("center code"); // TODO: put the center code here.
+        // TextField center = new TextField("center code");
         TextField center = new TextField(Center); // put the center code here.
         Label centerLabel = new Label("Center: ");
-        // TextField bag = new TextField("bag code"); // TODO: put the bag code here.
+        // TextField bag = new TextField("bag code");
         TextField bag = new TextField(Bag); // put the bag code here.
         Label bagLabel = new Label("Bag: ");
-        // TextField discard = new TextField("discard code"); // TODO: put the discard code here.
+        // TextField discard = new TextField("discard code");
         TextField discard = new TextField(Discard); // put the discard code here.
         Label discardLabel = new Label("Discard: ");
 
@@ -335,10 +335,19 @@ public class Viewer extends Application {
         boardTextField.setPrefWidth(100);
         Button button = new Button("Refresh");
         button.setOnAction(new EventHandler<ActionEvent>() {
+            /*
             @Override
             public void handle(ActionEvent e) {
                 displayState(new String[]{playerTextField.getText(),
                         boardTextField.getText()});
+            }
+             */
+            @Override
+            public void handle(ActionEvent e) {
+                displayState(new String[]{
+                        boardTextField.getText(),
+                        playerTextField.getText()
+                });
             }
         });
         HBox hb = new HBox();
@@ -358,6 +367,7 @@ public class Viewer extends Application {
         root.getChildren().add(controls);
 
         makeControls();
+        /*
 
         // test code by Ruizheng Shen(for testing displayState())
         String[] testStr = new String[] {
@@ -365,8 +375,11 @@ public class Viewer extends Application {
             "A7Md03c13b23e32S4e1FefB3Ma00b12d20S3c2F"
         };
         displayState(testStr);
-        root.getChildren().add(displays);
+
         // test code end.
+
+         */
+        root.getChildren().add(displays);
 
         primaryStage.setScene(scene);
         primaryStage.show();
