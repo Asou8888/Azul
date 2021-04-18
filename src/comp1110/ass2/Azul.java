@@ -522,7 +522,130 @@ public class Azul {
      * TASK 7
      */
     public static int getBonusPoints(String[] gameState, char player) {
-        return -1;
+        String a = gameState[1];
+        int bonus = 0;
+        String playerString = String.valueOf(player);
+        if (!playerString.equals("A")) {
+            int b = a.indexOf("B");
+            a = a.substring(b);
+        }
+        int c = a.indexOf("M");
+        int d = a.indexOf("S");
+        String e = a.substring(c + 1, d);
+        int row1 = 0;
+        int col1 = 0;
+        while (row1 < 5) {
+            String g = String.valueOf(row1) + String.valueOf(col1);
+            if (e.contains(g)) {
+                if (col1 == 4) {
+                    bonus = bonus + 2;
+                    col1 = 0;
+                    row1++;
+                } else {
+                    col1++;
+                }
+            } else {
+                col1 = 0;
+                row1++;
+            }
+        }
+        int row2 = 0;
+        int col2 = 0;
+        while (col2 < 5) {
+            String g = String.valueOf(row2) + String.valueOf(col2);
+            if (e.contains(g)) {
+                if (row2 == 4) {
+                    bonus = bonus + 7;
+                    row2 = 0;
+                    col2++;
+                } else {
+                    row2++;
+                }
+            } else {
+                row2 = 0;
+                col2++;
+            }
+        }
+        int times = 0;
+        int index = 0;
+        String aS = e;
+        String bS = e;
+        String cS = e;
+        String dS = e;
+        String eS = e;
+        int an = 0;
+        int bn = 0;
+        int cn = 0;
+        int dn = 0;
+        int en = 0;
+        while (index < 5) {
+            while (an < 5) {
+                if (aS.contains("a")) {
+                    times++;
+                    int aT = aS.indexOf("a");
+                    aS = aS.substring(aT + 1);
+                    if (times == 5) {
+                        bonus = bonus + 10;
+                    }
+                }
+                an += 1;
+            }
+            times = 0;
+            index++;
+            while (bn < 5) {
+                if (bS.contains("b")) {
+                    times++;
+                    int bT = bS.indexOf("b");
+                    bS = bS.substring(bT + 1);
+                    if (times == 5) {
+                        bonus = bonus + 10;
+                    }
+                }
+                bn += 1;
+            }
+            times = 0;
+            index++;
+            while (cn < 5) {
+                if (cS.contains("c")) {
+                    times++;
+                    int cT = cS.indexOf("c");
+                    cS = cS.substring(cT + 1);
+                    if (times == 5) {
+                        bonus = bonus + 10;
+                    }
+                }
+                cn += 1;
+            }
+            times = 0;
+            index++;
+            while (dn < 5) {
+                if (dS.contains("d")) {
+                    times++;
+                    int dT = dS.indexOf("d");
+                    dS = dS.substring(dT + 1);
+                    if (times == 5) {
+                        bonus = bonus + 10;
+                    }
+                }
+                dn += 1;
+            }
+            times = 0;
+            index++;
+            while (en < 5) {
+                if (eS.contains("e")) {
+                    times++;
+                    int eT = eS.indexOf("e");
+                    eS = eS.substring(eT + 1);
+                    if (times == 5) {
+                        bonus = bonus + 10;
+                    }
+                }
+                en += 1;
+                index++;
+            }
+
+        }
+        return bonus;
     }
 
     /**
