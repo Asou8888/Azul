@@ -114,10 +114,10 @@ public class Viewer extends Application {
                 }
             }
         }
-
+        String[] breakFactories = new String[indexList.length];
         try {
-            String[] breakFactories = new String[indexList.length];
 
+            // String[] breakFactories = new String[indexList.length];
             for (int i = 0; i < indexList.length - 1; i++) {
                 breakFactories[i] = Factories.substring(indexList[i], indexList[i + 1]);
             }
@@ -226,14 +226,18 @@ public class Viewer extends Application {
         TextField[] factories = new TextField[FACTORIES_NUM];
         Label[] facLabels = new Label[FACTORIES_NUM];
         for (int i = 0; i < FACTORIES_NUM; i++) {
-            factories[i] = new TextField("factory [" + i + "] code"); // TODO: put the i-th factory code here.
+            // factories[i] = new TextField("factory [" + i + "] code"); // TODO: put the i-th factory code here.
+            factories[i] = new TextField(breakFactories[i]); // put the i-th factory code here.
             facLabels[i] = new Label("factory [" + i + "]: ");
         }
-        TextField center = new TextField("center code"); // TODO: put the center code here.
+        // TextField center = new TextField("center code"); // TODO: put the center code here.
+        TextField center = new TextField(Center); // put the center code here.
         Label centerLabel = new Label("Center: ");
-        TextField bag = new TextField("bag code"); // TODO: put the bag code here.
+        // TextField bag = new TextField("bag code"); // TODO: put the bag code here.
+        TextField bag = new TextField(Bag); // put the bag code here.
         Label bagLabel = new Label("Bag: ");
-        TextField discard = new TextField("discard code"); // TODO: put the discard code here.
+        // TextField discard = new TextField("discard code"); // TODO: put the discard code here.
+        TextField discard = new TextField(Discard); // put the discard code here.
         Label discardLabel = new Label("Discard: ");
 
         // adding horizon box for factories
