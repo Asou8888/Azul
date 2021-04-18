@@ -378,19 +378,19 @@ public class Azul {
         String a = gameState[0];
         int b = a.indexOf("B");
         int c = a.indexOf("D");
-        String d = a.substring(b,b+11);
+        String d = a.substring(b, b + 11);
         String e = a.substring(c);
-        if (d.equals("B0000000000") && e.equals("D0000000000")){
+        if (d.equals("B0000000000") && e.equals("D0000000000")) {
             return 'Z';
         }
-        if (d.equals("B0000000000") && !e.equals("D0000000000")){
-            d = "B"+ e.substring(1);
+        if (d.equals("B0000000000") && !e.equals("D0000000000")) {
+            d = "B" + e.substring(1);
         }
-        if (!d.equals("B0000000000")){
-            int a1 = Integer.parseInt(d.substring(1,3));
-            int b1 = Integer.parseInt(d.substring(3,5));
-            int c1 = Integer.parseInt(d.substring(5,7));
-            int d1 = Integer.parseInt(d.substring(7,9));
+        if (!d.equals("B0000000000")) {
+            int a1 = Integer.parseInt(d.substring(1, 3));
+            int b1 = Integer.parseInt(d.substring(3, 5));
+            int c1 = Integer.parseInt(d.substring(5, 7));
+            int d1 = Integer.parseInt(d.substring(7, 9));
             int e1 = Integer.parseInt(d.substring(9));
             String x = String.valueOf('a').repeat(a1) + String.valueOf('b').repeat(b1) + String.valueOf('c').repeat(c1)
                     + String.valueOf('d').repeat(d1) + String.valueOf('e').repeat(e1);
@@ -434,8 +434,9 @@ public class Azul {
         // check whether the center is empty
         String center = sharedState.substring(CIndex, BIndex);
         if (center.length() != 1) {
+            // first determine whether the center is empty.
             if (!(center.length() == 2 && center.charAt(center.length() - 1) == 'f'))
-                // if the center is not empty, return the given state.
+                // If the center has only one tile 'first player', then the factories should be refilled.
                 return gameState;
         }
 
@@ -446,11 +447,11 @@ public class Azul {
         boolean isBagRefilled = false; // record whether the bag has been refilled by discard.
         StringBuilder newFactories = new StringBuilder("F"); // build a new factories state.
         // These are the numbers of different tiles in the bag.
-        int aNum = Integer.parseInt(bag.substring(1, 3));
-        int bNum = Integer.parseInt(bag.substring(3, 5));
-        int cNum = Integer.parseInt(bag.substring(5, 7));
-        int dNum = Integer.parseInt(bag.substring(7, 9));
-        int eNum = Integer.parseInt(bag.substring(9, 11));
+        int aNum = Integer.parseInt(bag.substring(1, 3)); // number of 'a' tiles
+        int bNum = Integer.parseInt(bag.substring(3, 5)); // number of 'b' tiles
+        int cNum = Integer.parseInt(bag.substring(5, 7)); // number of 'c' tiles
+        int dNum = Integer.parseInt(bag.substring(7, 9)); // number of 'd' tiles
+        int eNum = Integer.parseInt(bag.substring(9, 11)); // number of 'e' tiles
         int[] numArray = new int[]{aNum, bNum, cNum, dNum, eNum};
         int totalCnt = aNum + bNum + cNum + dNum + eNum; // record the number of tiles, in order to fill up the bag from discord.
         char[] tileArray = new char[]{'a', 'b', 'c', 'd', 'e'};
