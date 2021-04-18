@@ -131,6 +131,7 @@ public class Viewer extends Application {
         };
         displayState(testStr);
         root.getChildren().add(displays);
+        // test code end.
 
         primaryStage.setScene(scene);
         primaryStage.show();
