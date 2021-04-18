@@ -1,0 +1,52 @@
+# IMPORTANT: It is very important that you correctly complete this originality
+# statement.
+#
+# This is your statement of your submitted work being your own.
+# Incorrectly filling out this statement could lead to charges
+# of academic misconduct.
+# 
+# For information on how to fill this out correctly, see
+# https://cs.anu.edu.au/courses/comp1110/help/faq/09-originality/
+#
+
+declaration: >-
+  I submit the work below for assessment as my best work. I declare that this
+  is entirely my own work, with the following documented exceptions:
+
+# Use this to list names of people who you collaborated with, and a
+# comment about what you collaborated on.
+#
+
+# Use this to list any code that you used that you did not write,
+# aside from code provided by the lecturer.  Provide a comment
+# explaining your use and the URL to that code and the licence for
+# that code
+#
+
+
+
+
+# I wish to submit the following methods as entirely my own (remove this if
+# you want to just submit classes):
+method:
+   - public static boolean isPlayerWellFormed(String playerState)
+   - This method is written for isPlayerStateWellFormed(String playerState) in task 3, determining exactly one player's state validity.
+     As there would be more than one player's information in the original playerState and if I implemented the single player judging
+     in this method, there would be too much codes and functions in a single module and thus gaining the complexity.
+     So after consideration, I decided to separate the single player judging module out, and came out this 'isPlayerWellFormed' method.
+
+   - I used a simulated pointer(as there is no pointer in Java), to trace the traversal of the input String, so that
+     I can know which part of the state is up to. After finishing the check in the previous part(for example, the score part),
+     The pointer can locate the end of this part and then, with 'pointer++', I can start the check of next part(the Mosaic part) immediately.
+     In this way, I found that the codes looked much cleaner.
+
+   - Another detail is that I tried to write the constrait of 'if-else' in the style of read-friendly. For example, when
+     I need to write a constrait like '2 <= a <= 5', I would like to write it like '2 <= a && a <= 5' instead of '2 <= a && 5 >= a', as it is the
+     most natural order for human.
+
+   - For those reasons, I feel that this method is the my favourite one in those I wrote in this assignment so far.
+
+
+# sign *your* name and uid here
+name: Ruizheng Shen
+uid: u6814863
