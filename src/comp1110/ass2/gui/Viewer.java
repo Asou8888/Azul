@@ -29,6 +29,9 @@ public class Viewer extends Application {
      *              TASK 4
      */
     void displayState(String[] state) {
+        String sharedState = state[0];
+        String playerState = state[1];
+
         // FIXME Task 4: implement the simple state viewer
     }
 
