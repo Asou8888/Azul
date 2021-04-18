@@ -1,0 +1,44 @@
+# IMPORTANT: It is very important that you correctly complete this originality
+# statement.
+#
+# This is your statement of your submitted work being your own.
+# Incorrectly filling out this statement could lead to charges
+# of academic misconduct.
+# 
+# For information on how to fill this out correctly, see
+# https://cs.anu.edu.au/courses/comp1110/help/faq/09-originality/
+#
+
+declaration: >-
+  I submit the work below for assessment as my best work. I declare that this
+  is entirely my own work, with the following documented exceptions:
+
+# Use this to list names of people who you collaborated with, and a
+# comment about what you collaborated on.
+#
+
+# Use this to list any code that you used that you did not write,
+# aside from code provided by the lecturer.  Provide a comment
+# explaining your use and the URL to that code and the licence for
+# that code
+#
+
+
+
+# I wish to submit the following methods as entirely my own (remove this if
+# you want to just submit classes):
+method:
+   - public static Boolean isFull(String privateState)
+   - This method is used for determine whether the game is over or not. If there is
+   at least one row is full, the current round will over. It is also worked as part of NextRound(task8)
+   to determine if the game is over.
+
+   The parameter of this method is privateState (playerState of one player. example "A7Md03c13b23e32S4e1Fef").
+   1. find the code of mosaic of the privateState, store as String mosaic (example Md03c13b23e32)
+   2. exact all the number of mosaic ,which is the coordinate of the tiles. (example 03132332)
+   3. check if there is 5 continuous coordinates (example 0102030405), which represent a row. (example 03132332 does not contain continous coordinate)
+   4. return true if there is and false if there is not. (example false)
+
+# sign *your* name and uid here
+name: Xiao Xu
+uid: u7205634
