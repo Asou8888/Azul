@@ -524,7 +524,8 @@ public class Azul {
         // FIXME Task 7
         String a = gameState[1];
         int bonus = 0;
-        if (player != 'A'){
+        String playerString =String.valueOf(player);
+        if (!playerString.equals("A")){
             int b = a.indexOf("B");
             a = a.substring(b);
         }
@@ -586,65 +587,65 @@ public class Azul {
                     times++;
                     int aT = aS.indexOf("a");
                     aS = aS.substring(aT + 1);
-                    if (times == 4) {
+                    if (times == 5) {
                         bonus = bonus + 10;
-                        times = 0;
-                        index++;
                     }
                 }
                 an+=1;
             }
+            times = 0;
+            index++;
             while (bn < 5) {
                 if (bS.contains("b")) {
                     times++;
                     int bT = bS.indexOf("b");
                     bS = bS.substring(bT + 1);
-                    if (times == 4) {
+                    if (times == 5) {
                         bonus = bonus + 10;
-                        times = 0;
-                        index++;
                     }
                 }
                 bn+=1;
             }
+            times = 0;
+            index++;
             while (cn < 5) {
+
                 if (cS.contains("c")) {
                     times++;
                     int cT = cS.indexOf("c");
                     cS = cS.substring(cT + 1);
-                    if (times == 4) {
+                    if (times == 5) {
                         bonus = bonus + 10;
-                        times = 0;
-                        index++;
                     }
                 }
                 cn+=1;
             }
+            times = 0;
+            index++;
             while (dn < 5) {
                 if (dS.contains("d")) {
                     times++;
                     int dT = dS.indexOf("d");
                     dS = dS.substring(dT + 1);
-                    if (times == 4) {
+                    if (times == 5) {
                         bonus = bonus + 10;
-                        times = 0;
-                        index++;
                     }
                 }
                 dn+=1;
             }
+            times = 0;
+            index++;
             while (en < 5) {
                 if (eS.contains("e")) {
                     times++;
                     int eT = eS.indexOf("e");
                     eS = eS.substring(eT + 1);
-                    if (times == 4) {
+                    if (times == 5) {
                         bonus = bonus + 10;
-                        times = 0;
-                        index++;
                     }
                 }
                 en+=1;
+                index++;
             }
         }
         return bonus;
