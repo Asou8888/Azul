@@ -31,6 +31,8 @@ public class Viewer extends Application {
     private final Group sharedField = new Group();
     private final Group displays = new Group();
 
+    private final Group playerField = new Group();
+    private final Group playerField1 = new Group();
 
     /**
      * Draw a placement in the window, removing any previously drawn placements
@@ -260,6 +262,65 @@ public class Viewer extends Application {
         }
         sharedField.getChildren().add(vb);
         displays.getChildren().add(sharedField);
+
+        // code written by Yixin Ge:
+        // -player state
+        Label playerLabelA = new Label("player A state: ");
+        ArrayList<HBox> playerLabelsA = new ArrayList<>();
+        TextField scoreA = new TextField(String.valueOf(Ascore));
+        Label scoreALabel = new Label("Score A: ");
+        TextField mosaicA = new TextField(Amosaic);
+        Label mosALabel = new Label("Mosaic A: ");
+        TextField storageA = new TextField(Astorage);
+        Label stoALabel = new Label("Storage A: ");
+        TextField floorA = new TextField(Afloor);
+        Label floorALabel = new Label("Floor A: ");
+
+
+        playerLabelsA.add(new HBox(scoreALabel, scoreA));
+        playerLabelsA.add(new HBox(mosALabel, mosaicA));
+        playerLabelsA.add(new HBox(stoALabel, storageA));
+        playerLabelsA.add(new HBox(floorALabel, floorA));
+
+        VBox vb2 = new VBox();
+        vb2.setSpacing(10);
+        vb2.setLayoutX(300);
+        vb2.setLayoutY(10);
+        vb2.getChildren().add(playerLabelA);
+        for (HBox h : playerLabelsA) {
+            vb2.getChildren().add(h);
+        }
+        playerField.getChildren().add(vb2);
+        displays.getChildren().add(playerField);
+
+        Label playerLabelB = new Label("player B state: ");
+        ArrayList<HBox> playerLabelsB = new ArrayList<>();
+        TextField scoreB = new TextField(String.valueOf(Bscore));
+        Label scoreBLabel = new Label("Score B: ");
+        TextField mosaicB = new TextField(Bmosaic);
+        Label mosBLabel = new Label("Mosaic B: ");
+        TextField storageB = new TextField(Bstorage);
+        Label stoBLabel = new Label("Storage B: ");
+        TextField floorB = new TextField(Bfloor);
+        Label floorBLabel = new Label("Floor B: ");
+
+
+        playerLabelsB.add(new HBox(scoreBLabel, scoreB));
+        playerLabelsB.add(new HBox(mosBLabel, mosaicB));
+        playerLabelsB.add(new HBox(stoBLabel, storageB));
+        playerLabelsB.add(new HBox(floorBLabel, floorB));
+
+        VBox vb3 = new VBox();
+        vb3.setSpacing(10);
+        vb3.setLayoutX(650);
+        vb3.setLayoutY(10);
+        vb3.getChildren().add(playerLabelB);
+        for (HBox h : playerLabelsB) {
+            vb3.getChildren().add(h);
+        }
+        playerField1.getChildren().add(vb3);
+        displays.getChildren().add(playerField1);
+
     }
 
     /**
