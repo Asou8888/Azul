@@ -53,44 +53,46 @@ public class Floor {
      */
     private String encode() {
         // TODO: implements the encode method.
-        StringBuilder code = new StringBuilder();
-        code.append('F');
-        for (Tile t : tiles) {
-            code.append(t);
+            StringBuilder code = new StringBuilder("F"); //The string starts at "F".
+            int i = 0; //set index of tiles
+            while (tiles[i] != null ){ //find every valid tiles in Floor
+                    code.append(tiles[i].getCode()); // add them all, it could be 'a' - 'f'.
+                    i++;
+                }
+            return code.toString(); //return the String start with "F" .
         }
-        return code.toString();
-    }
 
-    /**
-     * Calculate the current score in the floor.(This will be calculate at the end of each round.)
-     *
-     * @return the current score in the floor
-     */
+        /**
+         * Calculate the current score in the floor.(This will be calculate at the end of each round.)
+         *
+         * @return the current score in the floor
+         */
     public int score() {
         // TODO: implements the score method.
-        int index = 0;
-        for (Tile x : tiles){
-            index += 1;
+        int index = 0;  // set an index
+        for (Tile x : tiles) {
+            if (x != null) {    // find out amount of tiles in Floor
+                index += 1;
+            }   //each valid tile count 1
         }
-        int scr = 0;
-        for(int i = 0;i < index; i++){
-            scr =+ lostPoint[i];
+        int scr = 0; //score starts at 0 point.
+        if (index > 0) {
+            for (int i = 0; i < index; i++) {
+                // if one more tiles, add one more point corresponding to lostPoint[].
+                scr += lostPoint[i];
+            }
+
         }
         return scr;
     }
 
-    public static void main(String[] args) {
-        Tile[] tiles;
-        tiles = new Tile[]{
-                new Tile(TileType.Red),
-                new Tile(TileType.Green),
-                new Tile(TileType.Blue),
-                new Tile(TileType.Blue),
-                new Tile(TileType.Blue),
-                null,
-                null,
-    };
-
-
+    public boolean isFloorFull() {
+        for (int i = 0; i < FLOOR_WIDTH; i++){ // the maximum length of floor is 7
+            if (tiles[i] == null){ // in the range, if there is a null
+                return false; // then the floor is not full
+            }
+        }
+        return true;
     }
+
 }
