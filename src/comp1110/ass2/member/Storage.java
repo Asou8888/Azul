@@ -49,6 +49,11 @@ public class Storage {
     }
 
     /**
+     * Constructor with no parameters.
+     */
+    public Storage() {}
+
+    /**
      * Return the code of the current state in Storage.
      * @return the String code of Storage.
      */

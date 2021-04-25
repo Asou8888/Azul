@@ -10,12 +10,32 @@ package comp1110.ass2.member;
 public class Mosaic {
 
     private Tile[] tiles;
+    private TileType[] pattern;
     private static final int MOSAIC_WIDTH = 25;
     private Player player; //add by Xiao Xu
+    private boolean isVariant; // added by Ruizheng Shen
 
+    /**
+     * Constructor with no parameter, for variant mosaic.
+     */
     public Mosaic() {
         this.tiles = new Tile[MOSAIC_WIDTH];
     }
+
+    public Mosaic(boolean isVariant) {
+        this.isVariant = isVariant;
+        if (!isVariant) {
+            // the beginner mosaic, with patterns
+            pattern = new TileType[] {
+                    TileType.Blue, TileType.Green, TileType.Orange, TileType.Purple, TileType.Red,
+                    TileType.Red, TileType.Blue, TileType.Green, TileType.Orange, TileType.Purple,
+                    TileType.Purple, TileType.Red, TileType.Blue, TileType.Green, TileType.Orange,
+                    TileType.Orange, TileType.Purple, TileType.Red, TileType.Blue, TileType.Green,
+                    TileType.Green, TileType.Orange, TileType.Purple, TileType.Red, TileType.Blue
+            };
+        }
+    }
+
 
     public Mosaic(Tile[] tiles) {
         this.tiles = tiles; //add by Xiao Xu
@@ -142,6 +162,11 @@ public class Mosaic {
         return -1;
     }
 
+    /**
+     * This method is used to determine whether there is a row full or not, if there is at least
+     * one row is full, the current round will over
+     * @return true if there is a row is full
+     */
     public boolean isRowFull() {
         /**
          * Written by Xiao Xu 4/25/2021
