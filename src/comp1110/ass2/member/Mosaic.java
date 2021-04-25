@@ -99,7 +99,7 @@ public class Mosaic {
         return -1;
     }
 
-    /** written by Xiao Xu
+    /** written by Xiao Xu 4/25/2021
      * find all the color of tiles in specific row
      * @param row
      * @return list of TileType
@@ -112,10 +112,11 @@ public class Mosaic {
             }
         }
         TileType[] colorList = new TileType[num];
-        for(int n = 0; n <5;n++){
+        for(int n = 0; n < num;){
             for (int i = row * 5 - 5; i < row * 5; i++) {
                 try{
                     colorList[n] = tiles[i].getTileType();
+                    n = n + 1;
                 }catch (Exception e){
                 }
             }
@@ -163,14 +164,14 @@ public class Mosaic {
         Tile[] tiles = new Tile[]{
                 new Tile(TileType.Red), null, null, null, null,
                 null, null, new Tile(TileType.Green), null, new Tile(TileType.Blue),
-                new Tile(TileType.Blue),null, null, null, null,null,
+                new Tile(TileType.Blue),null, null, null, null,
                 null,new Tile(TileType.Blue),null,null,new Tile(TileType.Purple),
                 new Tile(TileType.Purple), null,new Tile(TileType.Orange),new Tile(TileType.Orange),null
         };
         Mosaic m = new Mosaic(tiles);
         System.out.println(m.isRowFull());
         System.out.println(m.getCode());
-        System.out.println(m.colorList(1));
+        System.out.println(m.colorList(5)[2]);
 
     }
 }
