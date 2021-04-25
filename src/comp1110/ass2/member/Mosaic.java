@@ -11,8 +11,14 @@ public class Mosaic {
 
     private Tile[] tiles;
     private static final int MOSAIC_WIDTH = 25;
+    private Player player; //add by Xiao Xu
+
     public Mosaic() {
         this.tiles = new Tile[MOSAIC_WIDTH];
+    }
+
+    public Mosaic(Tile[] tiles) {
+        this.tiles = tiles; //add by Xiao Xu
     }
 
     /**
@@ -47,7 +53,42 @@ public class Mosaic {
      * @return the code
      */
     private String encode() {
-        return "";
+        /**
+         * Written by Xiao Xu 4/25/2021
+         */
+        String mosaic = "M";
+        for(int i = 0; i < 25;) {
+            try {
+                if (tiles[i].getTileType() == TileType.Blue) {
+                    mosaic += "a";
+                    mosaic += i / 5;
+                    mosaic += i % 5;
+                }
+            if (tiles[i].getTileType() == TileType.Green) {
+                mosaic += "b";
+                mosaic += i / 5;
+                mosaic += i % 5;
+            }
+            if (tiles[i].getTileType() == TileType.Orange) {
+                mosaic += "c";
+                mosaic += i / 5;
+                mosaic += i % 5;
+            }
+            if (tiles[i].getTileType() == TileType.Purple) {
+                mosaic += "d";
+                mosaic += i / 5;
+                mosaic += i % 5;
+            }
+            if (tiles[i].getTileType() == TileType.Red) {
+                    mosaic += "e";
+                    mosaic += i / 5;
+                    mosaic += i % 5;
+            }
+           } catch (Exception e){
+        }
+            i = i + 1;
+        }
+        return mosaic;
     }
 
     /**
@@ -73,6 +114,37 @@ public class Mosaic {
     }
 
     public boolean isRowFull() {
-        return false;
+        /**
+         * Written by Xiao Xu 4/25/2021
+         */
+        String mosaic = getCode();
+        String number = "";
+        if(mosaic != null && !"".equals(mosaic)) {
+            for (int i = 0; i < mosaic.length(); i++) {
+                if (mosaic.charAt(i) >= 48 && mosaic.charAt(i) <= 57) {
+                    number += mosaic.charAt(i);
+                }
+            }
+        }
+        if(number.contains("0001020304")  || number.contains("1011121314") || number.contains("2021222324") || number.contains("3031323334") || number.contains("4041424344")||number.contains("5051525354")){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public static void main(String[] args) {
+        Tile[] tiles = new Tile[]{
+                new Tile(TileType.Red), null, null, null, null,
+                null, null, new Tile(TileType.Green), null, new Tile(TileType.Blue),
+                new Tile(TileType.Blue),null, null, null, null,null,
+                null,new Tile(TileType.Blue),null,null,new Tile(TileType.Purple),
+                new Tile(TileType.Purple), null,new Tile(TileType.Orange),new Tile(TileType.Orange),null
+        };
+        Mosaic m = new Mosaic(tiles);
+        System.out.println(m.isRowFull());
+        System.out.println(m.getCode());
+
     }
 }
