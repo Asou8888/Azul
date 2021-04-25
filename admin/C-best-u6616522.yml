@@ -19,7 +19,7 @@ method:
    - public static int getBonusPoints(String[] gameState, char player)
    - it can find the sum of bonus point from current gameState.
    - As given gameState,  it can determine whether it has full row of tiles(bonus 2),
-   full column of tiles (bouns 7)or full amount(5) of same color tiles (bouns 10) in Mosaic;
+     full column of tiles (bouns 7)or full amount(5) of same color tiles (bouns 10) in Mosaic;
    - finally return sum of bouns as an int.
    - for determine whether it has full row of tiles, the string must contain same row but 5 different columns.
      (eg. "00","01","02","03","04")

@@ -95,6 +95,15 @@ public class Mosaic {
      * Calculate the current score in the mosaic.(This will be calculated at the end of each round)
      * @return the current score in the mosaic
      */
+    public int score() {
+        return -1;
+    }
+
+    /** written by Xiao Xu
+     * find all the color of tiles in specific row
+     * @param row
+     * @return list of TileType
+     */
     public TileType[] colorList(int row) {
         int num = 0;
         for (int i = row * 5 - 5; i < row * 5; i++) {
@@ -105,7 +114,7 @@ public class Mosaic {
         TileType[] colorList = new TileType[num];
         for(int n = 0; n <5;n++){
             for (int i = row * 5 - 5; i < row * 5; i++) {
-                 try{
+                try{
                     colorList[n] = tiles[i].getTileType();
                 }catch (Exception e){
                 }
@@ -114,9 +123,6 @@ public class Mosaic {
         return colorList;
     }
 
-    public int score() {
-        return -1;
-    }
 
     /**
      * Calculate the final score in the mosaic.(This will be calculated at the end of the game)

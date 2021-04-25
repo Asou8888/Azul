@@ -64,7 +64,7 @@ public class Storage {
      * @return a String of code
      */
     private String encode() {
-        //TODO: test
+        // TODO: test
         StringBuilder code = new StringBuilder("S");
         for (int i = 0; i < STORAGE_ROW_NUM; i++) {
             // count the number of tiles in this row
@@ -111,30 +111,53 @@ public class Storage {
     /**
      * Determines if the color of tiles got from factory is same
      * as the tiles in a row in Storage.
+     * @param tile, row
      * @return whether the color of tiles from factory and currently
      * in a row in Storage are same.
      */
-    public boolean isRowColorSame(){
+    public boolean isRowColorSame(Tile tile, int row){
         //TODO
+        // If this row is empty and this tile is not a first player tile, then any color could be place here.
+        if (isRowEmpty(row) && tile.getTileType() != TileType.FirstPlayer) return true;
+        for (int i = 0; i < STORAGE_ROW_LENGTH[row]; i++) {
+            // check the tiles' color in this row.
+        }
         return false;
+    }
+
+    /**
+     * Check whether this row is empty.
+     * @param row
+     * @return whether this row is empty.
+     */
+    public boolean isRowEmpty(int row) {
+        // TODO: test
+        for (int i = 0; i < STORAGE_ROW_LENGTH[row]; i++) {
+            if (this.tiles[row][i] != null) return false;
+        }
+        return true;
     }
 
     /**
      * Determines the color of tiles from factory is not same as any
      * one of colors in the same row in Mosaic.
+     * @param row
      * @return whether the color is not same as any colors having in the same row in Mosaic.
      */
-    public boolean isColorDifInMosaicRow(){
-        //TODO
-        return false;}
+    public boolean isColorDifInMosaicRow(int row) {
+        // TODO: should be written in mosaic
+        return false;
+    }
 
     /**
      * Determines if the rightmost space for tile in a row is empty.
+     * @param row
      * @return whether the rightmost space for tile in a row is empty or not.
      */
-    public  boolean isRightEmpty(){
-        //TODO
-        return false;
+    public boolean isRightEmpty(int row){
+        // TODO: test
+        // the rightmost position in a row, should be 'STORAGE_ROW_LENGTH[row] - 1'.
+        return this.tiles[row][STORAGE_ROW_LENGTH[row] - 1] == null;
     }
 
     public static void main(String[] args) {
