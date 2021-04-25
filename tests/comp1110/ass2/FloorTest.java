@@ -38,6 +38,21 @@ public class FloorTest {
         assertFalse(floorFul.isFloorFull());
         }
 
+    @Test
+    public  void testFloorFull1() {
+        Tile[] tiles = new Tile[]{
+                new Tile(TileType.Red),
+                new Tile(TileType.Green),
+                new Tile(TileType.Blue),
+                new Tile(TileType.Blue),
+                new Tile(TileType.Blue),
+                new Tile(TileType.Blue),
+                new Tile(TileType.Blue)};
+        Floor floorFul1 = new Floor(tiles);
+        assertEquals("Febaaaaa",floorFul1.getCode());
+        assertEquals(-14,floorFul1.score());
+        assertTrue(floorFul1.isFloorFull());
+    }
     }
 
 

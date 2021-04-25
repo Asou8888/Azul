@@ -54,13 +54,20 @@ public class Floor {
     private String encode() {
         // TODO: implements the encode method.
             StringBuilder code = new StringBuilder("F"); //The string starts at "F".
-            int i = 0; //set index of tiles
-            while (tiles[i] != null ){ //find every valid tiles in Floor
-                    code.append(tiles[i].getCode()); // add them all, it could be 'a' - 'f'.
-                    i++;
+            for (int i = 0; i < FLOOR_WIDTH; i++) {
+                String floor = "";
+                int nu = 0; //later use to find whether it is null or not
+                if (this.tiles[i] != null) {
+                    nu++; // if there is a tile in position i, add by 1.
+                    floor = this.tiles[i].getCode(); // get the char of tile at position i
                 }
-            return code.toString(); //return the String start with "F" .
-        }
+                if (nu != 0) { // if the position i is not a null
+                    code.append(floor); // add the char in string code
+                }
+            }
+        return code.toString(); //return the String start with "F".
+    }
+
 
         /**
          * Calculate the current score in the floor.(This will be calculate at the end of each round.)
@@ -93,6 +100,7 @@ public class Floor {
             }
         }
         return true;
+
     }
 
 }
