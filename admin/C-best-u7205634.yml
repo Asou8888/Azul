@@ -30,14 +30,14 @@ declaration: >-
 method:
    - public static Boolean isFull(String privateState)
    - This method is used for determine whether the game is over or not. If there is
-   at least one row is full, the current round will over. It is also worked as part of NextRound(task8)
-   to determine if the game is over.
+     at least one row is full, the current round will over. It is also worked as part of NextRound(task8)
+     to determine if the game is over.
 
-   The parameter of this method is privateState (playerState of one player. example "A7Md03c13b23e32S4e1Fef").
-   1. find the code of mosaic of the privateState, store as String mosaic (example Md03c13b23e32)
-   2. exact all the number of mosaic ,which is the coordinate of the tiles. (example 03132332)
-   3. check if there is 5 continuous coordinates (example 0102030405), which represent a row. (example 03132332 does not contain continous coordinate)
-   4. return true if there is and false if there is not. (example false)
+   - The parameter of this method is privateState (playerState of one player. example "A7Md03c13b23e32S4e1Fef").
+     1. find the code of mosaic of the privateState, store as String mosaic (example Md03c13b23e32)
+     2. exact all the number of mosaic ,which is the coordinate of the tiles. (example 03132332)
+     3. check if there is 5 continuous coordinates (example 0102030405), which represent a row. (example 03132332 does not contain continous coordinate)
+     4. return true if there is and false if there is not. (example false)
 
 # sign *your* name and uid here
 name: Xiao Xu
