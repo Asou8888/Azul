@@ -16,7 +16,10 @@ public class Floor {
     public Floor() {
         this.tiles = new Tile[FLOOR_WIDTH];
     }
-
+    // for testing(Author: Ruizheng Shen)
+    public Floor(Tile[] tiles) {
+        this.tiles = tiles;
+    }
     /**
      * return the code of the current state of floor.
      * @return the String code of the current floor.
