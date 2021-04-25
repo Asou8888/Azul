@@ -95,6 +95,25 @@ public class Mosaic {
      * Calculate the current score in the mosaic.(This will be calculated at the end of each round)
      * @return the current score in the mosaic
      */
+    public TileType[] colorList(int row) {
+        int num = 0;
+        for (int i = row * 5 - 5; i < row * 5; i++) {
+            if (tiles[i] != null) {
+                num += 1;
+            }
+        }
+        TileType[] colorList = new TileType[num];
+        for(int n = 0; n <5;n++){
+            for (int i = row * 5 - 5; i < row * 5; i++) {
+                 try{
+                    colorList[n] = tiles[i].getTileType();
+                }catch (Exception e){
+                }
+            }
+        }
+        return colorList;
+    }
+
     public int score() {
         return -1;
     }
@@ -145,6 +164,7 @@ public class Mosaic {
         Mosaic m = new Mosaic(tiles);
         System.out.println(m.isRowFull());
         System.out.println(m.getCode());
+        System.out.println(m.colorList(1));
 
     }
 }
