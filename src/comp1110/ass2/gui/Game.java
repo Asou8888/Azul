@@ -18,6 +18,9 @@ public class Game extends Application {
         Group root = new Group();
         Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
 
+        // player board
+
+
         stage.setScene(scene);
         stage.show();
     }

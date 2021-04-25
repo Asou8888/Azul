@@ -1,5 +1,7 @@
 package comp1110.ass2.member;
 
+import java.awt.*;
+
 /**
  * @author Yixin Ge
  * @version 1.0
@@ -16,7 +18,7 @@ public class Storage {
      *
      * @param tiles the given array of Tile
      */
-    public Storage(Tile[] tiles){
+    public Storage(Tile[] tiles) {
         //TODO
         this.tiles = tiles;
     }
@@ -45,6 +47,10 @@ public class Storage {
      */
     private String encode() {
         //TODO
+        StringBuilder code = new StringBuilder();
+        for (Tile t: tiles) {
+
+        }
         return "";
     }
 
@@ -52,9 +58,29 @@ public class Storage {
      * Determines if the tiles are filled fully in one row.
      * @return whether a row is filled by tiles fully.
      */
-    public boolean isRowFull(){
+    public boolean isRowFull(int row) {
         //TODO
-        return false;}
+        /** Tiles:
+         *      *
+         *      **
+         *      ***
+         *      ****
+         *      *****
+         */
+        // The first line
+        switch (row) {
+            case 0:
+                return tiles[0] != null;
+            case 1:
+                return tiles[1] != null && tiles[2] != null;
+            case 2:
+                return tiles[3] != null && tiles[4] != null && tiles[5] != null;
+            case 3:
+                return tiles[6] != null && tiles[7] != null && tiles[8] != null && tiles[9] != null;
+            default:
+                return tiles[10] != null && tiles[11] != null && tiles[12] != null && tiles[13] != null && tiles[14] != null;
+        }
+    }
 
     /**
      * Determines if the color of tiles got from factory is same
@@ -82,6 +108,34 @@ public class Storage {
     public  boolean isRightEmpty(){
         //TODO
         return false;
+    }
+
+    public static void main(String[] args) {
+        Tile[] tiles = new Tile[]{
+                new Tile(TileType.Red),
+                null,
+                new Tile(TileType.Green),
+                new Tile(TileType.Blue),
+                new Tile(TileType.Blue),
+                new Tile(TileType.Blue),
+                null,
+                null,
+                new Tile(TileType.Purple),
+                new Tile(TileType.Purple),
+                new Tile(TileType.Orange),
+                new Tile(TileType.Orange),
+                new Tile(TileType.Orange),
+                new Tile(TileType.Orange),
+                new Tile(TileType.Orange),
+        };
+        Storage s = new Storage(tiles);
+
+        // testing isRowFull(int row)
+        System.out.println(s.isRowFull(0));
+        System.out.println(s.isRowFull(1));
+        System.out.println(s.isRowFull(2));
+        System.out.println(s.isRowFull(3));
+        System.out.println(s.isRowFull(4));
     }
 
 }
