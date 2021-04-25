@@ -13,6 +13,13 @@ public class Storage {
     public static final int[] STORAGE_ROW_LENGTH = new int[]{1, 2, 3, 4, 5};
     /**Storage has 5 rows and it is a triangular array of tiles */
     private Tile[][] tiles = new Tile[][]{
+            /* Storage:
+             *          *
+             *          **
+             *          ***
+             *          ****
+             *          *****
+             */
             new Tile[STORAGE_ROW_LENGTH[0]],
             new Tile[STORAGE_ROW_LENGTH[1]],
             new Tile[STORAGE_ROW_LENGTH[2]],
@@ -64,7 +71,6 @@ public class Storage {
      * @return a String of code
      */
     private String encode() {
-        // TODO: test
         StringBuilder code = new StringBuilder("S");
         for (int i = 0; i < STORAGE_ROW_NUM; i++) {
             // count the number of tiles in this row
@@ -92,15 +98,6 @@ public class Storage {
      * @return whether a row is filled by tiles fully.
      */
     public boolean isRowFull(int row) {
-        //TODO: test
-        /* tiles structure:
-         *      *
-         *      **
-         *      ***
-         *      ****
-         *      *****
-         */
-
         if (row < 0 || row >= STORAGE_ROW_NUM) return false; // might be raise as an error.
         for (int i = 0; i < STORAGE_ROW_LENGTH[row]; i++) {
             if (this.tiles[row][i] == null) return false;
@@ -116,11 +113,17 @@ public class Storage {
      * in a row in Storage are same.
      */
     public boolean isRowColorSame(Tile tile, int row){
-        //TODO
         // If this row is empty and this tile is not a first player tile, then any color could be place here.
         if (isRowEmpty(row) && tile.getTileType() != TileType.FirstPlayer) return true;
         for (int i = 0; i < STORAGE_ROW_LENGTH[row]; i++) {
             // check the tiles' color in this row.
+            if (this.tiles[row][i] != null) {
+                if (this.tiles[row][i].getTileType() == tile.getTileType()) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
         }
         return false;
     }
@@ -131,7 +134,6 @@ public class Storage {
      * @return whether this row is empty.
      */
     public boolean isRowEmpty(int row) {
-        // TODO: test
         for (int i = 0; i < STORAGE_ROW_LENGTH[row]; i++) {
             if (this.tiles[row][i] != null) return false;
         }
@@ -140,13 +142,19 @@ public class Storage {
 
     /**
      * Determines the color of tiles from factory is not same as any
-     * one of colors in the same row in Mosaic.
-     * @param row
+     * one of colors in the same row in Mosaic.(use to check the validity of player move)
+     * @param tilesFromFactory, colorList
      * @return whether the color is not same as any colors having in the same row in Mosaic.
      */
-    public boolean isColorDifInMosaicRow(int row) {
-        // TODO: should be written in mosaic
-        return false;
+    public boolean isColorDifInMosaicRow(Tile[] tilesFromFactory, TileType[] colorList) {
+        // TODO: test
+        // row: the index of the row
+        // colorList: the colors contained in this row in mosaic
+        TileType tileColor = tilesFromFactory[0].getTileType();
+        for (TileType color: colorList) {
+            if (tileColor == color) return false;
+        }
+        return true;
     }
 
     /**
@@ -159,36 +167,4 @@ public class Storage {
         // the rightmost position in a row, should be 'STORAGE_ROW_LENGTH[row] - 1'.
         return this.tiles[row][STORAGE_ROW_LENGTH[row] - 1] == null;
     }
-
-    public static void main(String[] args) {
-        Tile[] tiles = new Tile[]{
-                new Tile(TileType.Red),
-                null,
-                new Tile(TileType.Green),
-                new Tile(TileType.Blue),
-                new Tile(TileType.Blue),
-                new Tile(TileType.Blue),
-                null,
-                null,
-                new Tile(TileType.Purple),
-                new Tile(TileType.Purple),
-                new Tile(TileType.Orange),
-                new Tile(TileType.Orange),
-                new Tile(TileType.Orange),
-                new Tile(TileType.Orange),
-                new Tile(TileType.Orange),
-        };
-        Storage s = new Storage(tiles);
-
-        // testing isRowFull(int row)
-        System.out.println(s.isRowFull(0));
-        System.out.println(s.isRowFull(1));
-        System.out.println(s.isRowFull(2));
-        System.out.println(s.isRowFull(3));
-        System.out.println(s.isRowFull(4));
-
-        // testing encode()
-        System.out.println(s.encode());
-    }
-
 }
