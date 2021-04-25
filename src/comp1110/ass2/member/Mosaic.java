@@ -59,32 +59,34 @@ public class Mosaic {
         String mosaic = "M";
         for(int i = 0; i < 25;) {
             try {
+                //plus the tile and the coordinate in mosaic, dont do anything if tile is null
                 if (tiles[i].getTileType() == TileType.Blue) {
                     mosaic += "a";
-                    mosaic += i / 5;
-                    mosaic += i % 5;
+                    mosaic += i / 5;  //find the row coordinate of tile
+                    mosaic += i % 5;  //find the column coordinate of tile
                 }
-            if (tiles[i].getTileType() == TileType.Green) {
+                //repeat the if statement until cover all the color of tiles
+                if (tiles[i].getTileType() == TileType.Green) {
                 mosaic += "b";
                 mosaic += i / 5;
                 mosaic += i % 5;
-            }
-            if (tiles[i].getTileType() == TileType.Orange) {
+                }
+                if (tiles[i].getTileType() == TileType.Orange) {
                 mosaic += "c";
                 mosaic += i / 5;
                 mosaic += i % 5;
-            }
-            if (tiles[i].getTileType() == TileType.Purple) {
+                }
+                if (tiles[i].getTileType() == TileType.Purple) {
                 mosaic += "d";
                 mosaic += i / 5;
                 mosaic += i % 5;
-            }
-            if (tiles[i].getTileType() == TileType.Red) {
+                }
+                if (tiles[i].getTileType() == TileType.Red) {
                     mosaic += "e";
                     mosaic += i / 5;
                     mosaic += i % 5;
-            }
-           } catch (Exception e){
+                }
+            } catch (Exception e){ //in case there is a null in Tile[], avoid exception
         }
             i = i + 1;
         }
@@ -105,19 +107,20 @@ public class Mosaic {
      * @return list of TileType
      */
     public TileType[] colorList(int row) {
+        //find the number of tiles in the specific row
         int num = 0;
         for (int i = row * 5 - 5; i < row * 5; i++) {
             if (tiles[i] != null) {
                 num += 1;
             }
         }
-        TileType[] colorList = new TileType[num];
+        TileType[] colorList = new TileType[num]; //initialise a list which length is equal to number of tiles in the row
         for(int n = 0; n < num;){
             for (int i = row * 5 - 5; i < row * 5; i++) {
                 try{
-                    colorList[n] = tiles[i].getTileType();
+                    colorList[n] = tiles[i].getTileType(); //add the color in the list if tile is not null
                     n = n + 1;
-                }catch (Exception e){
+                }catch (Exception e){ //avoid Exception in case tiles[i] is null
                 }
             }
         }
@@ -144,7 +147,8 @@ public class Mosaic {
          * Written by Xiao Xu 4/25/2021
          */
         String mosaic = getCode();
-        String number = "";
+        String number = ""; //initialise a string
+        //extract all the numbers in mosaic
         if(mosaic != null && !"".equals(mosaic)) {
             for (int i = 0; i < mosaic.length(); i++) {
                 if (mosaic.charAt(i) >= 48 && mosaic.charAt(i) <= 57) {
@@ -152,6 +156,8 @@ public class Mosaic {
                 }
             }
         }
+        //if the number string containing consecutive numbers, it means that there is at least one row is full
+        //and the round should over
         if(number.contains("0001020304")  || number.contains("1011121314") || number.contains("2021222324") || number.contains("3031323334") || number.contains("4041424344")||number.contains("5051525354")){
             return true;
         }
@@ -160,18 +166,4 @@ public class Mosaic {
         }
     }
 
-    public static void main(String[] args) {
-        Tile[] tiles = new Tile[]{
-                new Tile(TileType.Red), null, null, null, null,
-                null, null, new Tile(TileType.Green), null, new Tile(TileType.Blue),
-                new Tile(TileType.Blue),null, null, null, null,
-                null,new Tile(TileType.Blue),null,null,new Tile(TileType.Purple),
-                new Tile(TileType.Purple), null,new Tile(TileType.Orange),new Tile(TileType.Orange),null
-        };
-        Mosaic m = new Mosaic(tiles);
-        System.out.println(m.isRowFull());
-        System.out.println(m.getCode());
-        System.out.println(m.colorList(5)[2]);
-
-    }
 }
