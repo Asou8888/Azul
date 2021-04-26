@@ -16,3 +16,16 @@ clear evidence of healthy teamwork. Here are some general feedback for this stag
 
 - You could reconsider about the design of the Tile class. Since you have several subclasses of the Tile classes, you
   could consider if it is essential to have all as a subclass. 
+
+## D2C
+
+**Overall mark: 3**
+
+Well down. You guys have made good use of Git and all statement have been submitted correctly. Most of the tasks have been
+finished except for the task 4. I could see you could break placement strings into tile placements, but you also need to
+display images of pieces, draw images of the game areas and translate piece positions to appropriate x and y positions in the 
+window. About the overall design, I would say your initial design is pretty good, but you need to use it in the following weeks.
+Currently, your overall solution is still heavily based on String. Making use of your skeleton design could help you solve
+this assignment easier in the future. Also, it would be better if you could have some inline comments with your code so that 
+people can easily follow your idea. One future note is you could check the difference between `==` and `.equals()`, and try
+to understand when we should use which one.
