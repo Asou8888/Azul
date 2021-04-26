@@ -33,7 +33,17 @@ Yixin Ge: Task 7 getBonusPoints & task 4 fill in player text in the viewer - 18 
 
 ## Week 7
 
+Everyone: Weekly meeting - 25 April 22:00PM GMT+8
+
+Xiao Xu: complete the methods in Mosaic
+
+Ruizheng Shen: complete the methods in Storage, search information of game's UI.
+
+Yixin Ge: complete the methods in Floor
+
 ## Week 8
+
+Everyone: Weekly meeting - 27 April 13:00AM GMT+8
 
 ## Week 9
 

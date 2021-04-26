@@ -13,12 +13,14 @@ public class Player {
     private final String code;
     public final Floor floor;
     public final Mosaic mosaic;
+    public final Storage storage;
 
     public Player(String name, String code) {
         this.playerName = name;
         this.code = code; // the code could be 'A' - 'D', assigned by Azul
         this.floor = new Floor();
         this.mosaic = new Mosaic();
+        this.storage = new Storage();
     }
 
     /**

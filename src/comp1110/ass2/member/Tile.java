@@ -26,7 +26,7 @@ public class Tile {
     private char colorChar; // the code for this tile.(considering using a map from color name to code.)
 
     // Constructor
-    Tile(TileType color) {
+    public Tile(TileType color) {
         this.tileType = color;
         switch (color) {
             case Blue -> this.colorChar = 'a';
