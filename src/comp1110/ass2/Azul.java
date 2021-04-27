@@ -15,15 +15,14 @@ public class Azul {
     static final int TILES_NUM_IN_FACTORY = 4;
 
     /**
-     * Split the state string.
+     * Split the shared state string.
      * Author: Ruizheng Shen, Date: 2021.4.27
      * @param state (an array of 2 strings)
      * @return the splited string.
      */
-    public static String[] splitState(String[] state) {
+    public static String[] splitSharedState(String[] state) {
         // TODO: test
         String sharedState = state[0]; // the shared state {Turn}{Factory}{Centre}{Bag}{Discard}
-        String playerState = state[1]; // the player state {Player}{Score}{Mosaic}{Storage}{Floor}
 
         // Split the shared state
         // {Turn} state
@@ -33,50 +32,86 @@ public class Azul {
 
         // {Factory} state
         // pointer now points to 'F' in sharedState.
-        int endFactory = sharedState.substring(pointer).indexOf('C'); // find the ending position of factory.
+        int endFactory = sharedState.substring(pointer).indexOf('C') + pointer; // find the ending position of factory.
         String factory = sharedState.substring(pointer, endFactory);
         pointer = endFactory; // move the pointer to the centre.
 
         // {Centre} state
-        int endCentre = sharedState.substring(pointer).indexOf('B'); // find the ending position of centre.
+        int endCentre = sharedState.substring(pointer).indexOf('B') + pointer; // find the ending position of centre.
         String centre = sharedState.substring(pointer, endCentre);
         pointer = endCentre; // move the pointer to the bag.
 
         // {Bag} state
-        int endBag = sharedState.substring(pointer).indexOf('D'); // find the ending position of bag.
+        int endBag = sharedState.substring(pointer).indexOf('D') + pointer; // find the ending position of bag.
         String bag = sharedState.substring(pointer, endBag);
         pointer = endBag; // move the pointer to the discard.
 
         // {Discord} state
-        String discord = sharedState.substring(pointer); // The remaining is the discord.
+        String discord = sharedState.substring(pointer) + pointer; // The remaining is the discord.
+        return new String[]{turn, factory, centre, bag, discord};
+    }
 
-        // Split the player state
-        pointer = 0; // reset the pointer. This time points to the playerState.
-        // {Player} state
-        String player = playerState.substring(pointer, pointer + 1); // take the first character. {Player}
-        pointer++; // move the pointer to the score.
+    /**
+     * split the player state into a map \<String, String\>,
+     * The String is the player String("A"-"D")
+     * The String[] is the player state. {Score}{Mosaic}{Storage}{Floor}.
+     * @param state
+     * @return the map from player String to player state.
+     */
+    public static HashMap<String, String[]> splitPlayerState(String[] state) {
+        // TODO: test
+        // the player state {Player}{Score}{Mosaic}{Storage}{Floor}
+        String[] playerStates = state[1].split("[ABCD]"); // get the player state from state.(split by regex: "[ABCD]")
+        String[] player = new String[4];
+        int playerCnt = 0;
+        // find the number of player
+        if (state[1].indexOf('A') >= 0) {
+            player[playerCnt] = "A";
+            playerCnt++;
+        }
+        if (state[1].indexOf('B') >= 0) {
+            player[playerCnt] = "B";
+            playerCnt++;
+        }
+        if (state[1].indexOf('C') >= 0) {
+            player[playerCnt] = "C";
+            playerCnt++;
+        }
+        if (state[1].indexOf('D') >= 0) {
+            player[playerCnt] = "D";
+            playerCnt++;
+        }
+        HashMap<String, String[]> splitPlayerState = new HashMap<>();
+        int i = 0;
+        for (String playerState: playerStates) {
+            if (playerState == "") continue;
+            int pointer = 0; // the pointer record the current visiting location.
 
-        // {Score} state
-        int endScore = playerState.substring(pointer).indexOf('M'); // find the ending position of score.
-        String score = playerState.substring(pointer, endScore);
-        pointer = endScore; // move the pointer to the Mosaic.
+            // {Score} state
+            int endScore = playerState.indexOf('M'); // find the ending position of score.
+            String score = playerState.substring(pointer, endScore);
+            pointer = endScore; // move the pointer to the Mosaic.
 
-        // {Mosaic} state
-        int endMosaic = playerState.substring(pointer).indexOf('S'); // find the ending position of mosaic.
-        String mosaic = playerState.substring(pointer, endMosaic);
-        pointer = endMosaic; // move the pointer to the Storage.
+            // {Mosaic} state
+            int endMosaic = playerState.indexOf('S'); // find the ending position of mosaic.
+            String mosaic = playerState.substring(pointer, endMosaic);
+            pointer = endMosaic; // move the pointer to the Storage.
 
-        // {Storage} state
-        int endStorage = playerState.substring(pointer).indexOf('F'); // find th ending position of storage.
-        String storage = playerState.substring(pointer, endStorage);
-        pointer = endStorage; // move the pointer to the floor.
+            // {Storage} state
+            int endStorage = playerState.indexOf('F'); // find th ending position of storage.
+            String storage = playerState.substring(pointer, endStorage);
+            pointer = endStorage; // move the pointer to the floor.
 
-        // {Floor} state
-        String floor = playerState.substring(pointer);
-        String[] splited = new String[]{
-                turn, factory, centre, bag, discord, player, score, mosaic, storage, floor
-        };
-        return splited;
+            // {Floor} state
+            String floor = playerState.substring(pointer);
+
+            String[] statesForThisPlayer = new String[]{
+                    score, mosaic, storage, floor
+            };
+            splitPlayerState.put(player[i], statesForThisPlayer); // map this player with its state.
+            i++;
+        }
+        return splitPlayerState;
     }
 
 
@@ -204,8 +239,8 @@ public class Azul {
 
         //test if center is well-formed
         String center = sharedState.substring(C,B);
-        for(int n = 1; n < center.length()-1;n++){
-            if(Integer.valueOf(center.toCharArray()[n]) > Integer.valueOf(center.toCharArray()[n+1])){
+        for (int n = 1; n < center.length()-1;n++){
+            if (Integer.valueOf(center.toCharArray()[n]) > Integer.valueOf(center.toCharArray()[n+1])) {
                 return false;
             }
         }
@@ -1134,6 +1169,36 @@ public class Azul {
         // FIXME Task 13
         return null;
         // FIXME Task 15 Implement a "smart" generateAction()
+    }
+
+    /*
+    public static void main(String[] args) {
+        String[] testSplit = new String[]{
+                "AFCB1915161614D0000000000",
+                "A0MS0d11c22b33e44e1FefB0MS0a11b22d33c2FC0MS0d11c22b33e44e1FefD0MS0a11b22d33c2F"
+        };
+        System.out.println("Test: ");
+        for (String s: testSplit) {
+            System.out.println(s);
+        }
+        System.out.println("After split: ");
+        // split shared state
+        String[] sharedStates = splitSharedState(testSplit);
+        System.out.print("Shared state: [");
+        for (String sharedState : sharedStates) {
+            System.out.print(sharedState + ", ");
+        }
+        System.out.println("]");
+        // split player state
+        HashMap<String, String[]> playerStates = splitPlayerState(testSplit);
+        System.out.println("Player state: ");
+        playerStates.forEach((player, states) -> {
+            System.out.print("Player " + player + ": ");
+            for (String s: states) {
+                System.out.print(s + " ");
+            }
+            System.out.println();
+        });
     }
 
 /*

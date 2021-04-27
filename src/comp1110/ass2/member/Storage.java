@@ -106,8 +106,10 @@ public class Storage {
      */
     public void decode(String storage) {
         // TODO: test
+        // String storage: S{[row][colorChar][number]}*
+        // storage.charAt(0) == 'S'
         for (int i = 1; i < storage.length(); i = i + 3) {
-            int row = storage.charAt(i) - '0'; // (which row)translate character to int.
+            int row = storage.charAt(i) - '0'; // (which row)translate character to int.(EX: (ascii)'4' - (ascii)'0' = 4)
             char tile = storage.charAt(i + 1); // the tile colorChar.
             int num = storage.charAt(i + 2) - '0'; // (how many)translate character to int.
             Tile[] newTiles = new Tile[num];
@@ -121,8 +123,8 @@ public class Storage {
     /**
      * place the tiles in the storage.
      * Author: Ruizheng Shen, Date: 2021.4.27
-     * @param tiles
-     * @param row
+     * @param tiles the tiles which will be placed in the storage
+     * @param row the row to place
      */
     public void placeTiles(Tile[] tiles, int row) {
         // TODO: test, first check the validity(not finished yet)
@@ -204,5 +206,21 @@ public class Storage {
         // TODO: test
         // the rightmost position in a row, should be 'STORAGE_ROW_LENGTH[row] - 1'.
         return this.tiles[row][STORAGE_ROW_LENGTH[row] - 1] == null;
+    }
+
+    public static void main(String[] args) {
+        Storage s = new Storage();
+        s.decode("S2a13e44a1"); // decode the String and put them into the storage
+        for (int i = 0; i < STORAGE_ROW_NUM; i++) {
+            System.out.print("[");
+            for (int j = 0; j < STORAGE_ROW_LENGTH[i]; j++) {
+                if (s.tiles[i][j] == null) {
+                    System.out.print(" , ");
+                } else {
+                    System.out.print(s.tiles[i][j].getCode() + ", ");
+                }
+            }
+            System.out.println("]");
+        }
     }
 }
