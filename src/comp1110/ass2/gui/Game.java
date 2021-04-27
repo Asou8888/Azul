@@ -23,8 +23,13 @@ public class Game extends Application {
         Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
 
         // start game
+
+        // Initialize players
+        String[] name = new String[]{"Tom", "Alice"}; // set default
         Player[] players = new Player[PLAYER_NUM]; // set to 2 player
-        
+        for (int i = 0; i < players.length; i++) {
+            players[i] = new Player(name[i], Character.toString('A' + i));
+        }
 
         // player board
 

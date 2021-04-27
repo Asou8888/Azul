@@ -12,6 +12,72 @@ public class Azul {
     static final int BAG_STATE_LENGTH = 11;
     static final int FACTORY_NUM = 5; // 2 - 5, 3 - 7, 4 - 9
     static final int TILES_NUM_IN_FACTORY = 4;
+
+    /**
+     * Split the state string.
+     * @param state (an array of 2 strings)
+     * @return the splited string.
+     */
+    public static String[] splitState(String[] state) {
+        // TODO: test
+        String sharedState = state[0]; // the shared state {Turn}{Factory}{Centre}{Bag}{Discard}
+        String playerState = state[1]; // the player state {Player}{Score}{Mosaic}{Storage}{Floor}
+
+        // Split the shared state
+        // {Turn} state
+        int pointer = 0; // the pointer record the current visited position in String sharedState.
+        String turn = sharedState.substring(pointer, pointer + 1); // take the first character. {Turn}
+        pointer++; // move the pointer to the factory.
+
+        // {Factory} state
+        // pointer now points to 'F' in sharedState.
+        int endFactory = sharedState.substring(pointer).indexOf('C'); // find the ending position of factory.
+        String factory = sharedState.substring(pointer, endFactory);
+        pointer = endFactory; // move the pointer to the centre.
+
+        // {Centre} state
+        int endCentre = sharedState.substring(pointer).indexOf('B'); // find the ending position of centre.
+        String centre = sharedState.substring(pointer, endCentre);
+        pointer = endCentre; // move the pointer to the bag.
+
+        // {Bag} state
+        int endBag = sharedState.substring(pointer).indexOf('D'); // find the ending position of bag.
+        String bag = sharedState.substring(pointer, endBag);
+        pointer = endBag; // move the pointer to the discard.
+
+        // {Discord} state
+        String discord = sharedState.substring(pointer); // The remaining is the discord.
+
+        // Split the player state
+        pointer = 0; // reset the pointer. This time points to the playerState.
+        // {Player} state
+        String player = playerState.substring(pointer, pointer + 1); // take the first character. {Player}
+        pointer++; // move the pointer to the score.
+
+        // {Score} state
+        int endScore = playerState.substring(pointer).indexOf('M'); // find the ending position of score.
+        String score = playerState.substring(pointer, endScore);
+        pointer = endScore; // move the pointer to the Mosaic.
+
+        // {Mosaic} state
+        int endMosaic = playerState.substring(pointer).indexOf('S'); // find the ending position of mosaic.
+        String mosaic = playerState.substring(pointer, endMosaic);
+        pointer = endMosaic; // move the pointer to the Storage.
+
+        // {Storage} state
+        int endStorage = playerState.substring(pointer).indexOf('F'); // find th ending position of storage.
+        String storage = playerState.substring(pointer, endStorage);
+        pointer = endStorage; // move the pointer to the floor.
+
+        // {Floor} state
+        String floor = playerState.substring(pointer);
+        String[] splited = new String[]{
+                turn, factory, centre, bag, discord, player, score, mosaic, storage, floor
+        };
+        return splited;
+    }
+
+    
     /**
      * Given a shared state string, determine if it is well-formed.
      * Note: you don't need to consider validity for this task.
