@@ -15,6 +15,7 @@ public class Azul {
 
     /**
      * Split the state string.
+     * Author: Ruizheng Shen, Date: 2021.4.27
      * @param state (an array of 2 strings)
      * @return the splited string.
      */
@@ -77,7 +78,7 @@ public class Azul {
         return splited;
     }
 
-    
+
     /**
      * Given a shared state string, determine if it is well-formed.
      * Note: you don't need to consider validity for this task.

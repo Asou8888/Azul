@@ -38,6 +38,23 @@ public class Tile {
         }
     }
 
+    /**
+     * Constructor: initialize the Tile with colorChar
+     * Author: Ruizheng Shen, Date: 2021.4.27
+     * @param colorChar
+     */
+    public Tile(char colorChar) {
+        this.colorChar = colorChar;
+        switch (colorChar) {
+            case 'a' -> this.tileType = TileType.Blue;
+            case 'b' -> this.tileType = TileType.Green;
+            case 'c' -> this.tileType = TileType.Orange;
+            case 'd' -> this.tileType = TileType.Purple;
+            case 'e' -> this.tileType = TileType.Red;
+            default -> this.tileType = TileType.FirstPlayer;
+        }
+    }
+
     /* Given a char from tile and returns in string form*/
     public String getCode() {
         return String.valueOf(colorChar);

@@ -26,7 +26,7 @@ public class Storage {
             new Tile[STORAGE_ROW_LENGTH[3]],
             new Tile[STORAGE_ROW_LENGTH[4]]
     };
-    private static final int STORAGE_WIDTH = 15;
+
     /**
      * Constructor for the Storage. Given an array of tiles, returns the
      * current state of where each char represented tile is location in the storage.
@@ -52,6 +52,7 @@ public class Storage {
      * Constructor with no parameters.
      */
     public Storage() {}
+
 
     /**
      * Return the code of the current state in Storage.
@@ -96,6 +97,38 @@ public class Storage {
             }
         }
         return code.toString();
+    }
+
+    /**
+     * decode the state String(storage) to the storage class
+     * Author: Ruizheng Shen, Date: 2021.4.27
+     * @param storage
+     */
+    public void decode(String storage) {
+        // TODO: test
+        for (int i = 1; i < storage.length(); i = i + 3) {
+            int row = storage.charAt(i) - '0'; // (which row)translate character to int.
+            char tile = storage.charAt(i + 1); // the tile colorChar.
+            int num = storage.charAt(i + 2) - '0'; // (how many)translate character to int.
+            Tile[] newTiles = new Tile[num];
+            for (int j = 0; j < num; j++) {
+                newTiles[j] = new Tile(tile); // initialize the tile with colorChar.
+            }
+            placeTiles(newTiles, row);
+        }
+    }
+
+    /**
+     * place the tiles in the storage.
+     * Author: Ruizheng Shen, Date: 2021.4.27
+     * @param tiles
+     * @param row
+     */
+    public void placeTiles(Tile[] tiles, int row) {
+        // TODO: test, first check the validity(not finished yet)
+        for (int i = 0; i < tiles.length; i++) {
+            this.tiles[row][STORAGE_ROW_LENGTH[row] - 1 - i] = tiles[i];
+        }
     }
 
     /**
