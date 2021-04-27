@@ -1171,6 +1171,17 @@ public class Azul {
         // FIXME Task 15 Implement a "smart" generateAction()
     }
 
+    public static void main(String[] args) {
+        String[] testSplit = new String[]{
+                "AFCB1915161614D0000000000",
+                "A0MS0d11c22b33e44e1FefB0MS0a11b22d33c2FC0MS0d11c22b33e44e1FefD0MS0a11b22d33c2F"
+        };
+        // split player state
+        HashMap<String, String[]> splitPlayerStates = splitPlayerState(testSplit);
+        // visit A's floor state
+        String floor = splitPlayerStates.get("A")[3]; // {Score}{Mosaic}{Storage}{Floor}
+        System.out.println(floor);
+    }
     /*
     public static void main(String[] args) {
         String[] testSplit = new String[]{
