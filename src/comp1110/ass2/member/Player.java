@@ -10,17 +10,19 @@ package comp1110.ass2.member;
 public class Player {
 
     private final String playerName;
-    private final String code;
+    private final String playerCode;
     public final Floor floor;
     public final Mosaic mosaic;
     public final Storage storage;
+    public int score;
 
-    public Player(String name, String code) {
+    public Player(String name, String playerCode) {
         this.playerName = name;
-        this.code = code; // the code could be 'A' - 'D', assigned by Azul
+        this.playerCode = playerCode; // the code could be 'A' - 'D', assigned by Azul
         this.floor = new Floor();
         this.mosaic = new Mosaic();
         this.storage = new Storage();
+        this.score = 0;
     }
 
     /**
@@ -70,8 +72,30 @@ public class Player {
         return false;
     }
 
+    public String getPlayerCode() {
+        return this.playerCode;
+    }
+    public int getScore() {
+        return this.score;
+    }
+
+    /**
+     * encode player state
+     * @author Ruizheng Shen, @date: 2021.4.28
+     * @return the player state of this player
+     */
+    private String encode() {
+        return getPlayerCode() + getScore() + mosaic.getCode() + storage.getCode() + floor.getCode();
+    }
     public String getCode() {
-        return this.code;
+        return encode();
+    }
+
+    /**
+     * calculate the score of this player
+     */
+    public void calculateScore() {
+        // TODO: calculate the score of this player
     }
 
 }
