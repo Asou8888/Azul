@@ -1,5 +1,11 @@
 package comp1110.ass2.member;
 
+import gittest.A;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  * The player class implements the player in the game. Including the implements of player's name and player's moves.
  *
@@ -57,6 +63,14 @@ public class Player {
      */
     public boolean draftMove(Tile[] tiles, int row) {
         // TODO: implements the draftMove method.
+        // check whether there's a 'first player' tile.
+        tiles = placeFirstPlayerTile(tiles);
+        // move tiles to storage
+        if (storage.placeTiles(tiles, row)) {
+            // the move success;
+        } else {
+            // the move failed;
+        }
         return false;
     }
 
@@ -72,6 +86,23 @@ public class Player {
         return false;
     }
 
+    /**
+     * If there's a 'first player' tile in the tiles, put it on the floor.
+     * @param tiles
+     */
+    public Tile[] placeFirstPlayerTile(Tile[] tiles) {
+        // TODO: test
+        ArrayList<Tile> newTiles = (ArrayList<Tile>) Arrays.asList(tiles);
+        for (Tile t: newTiles) {
+            if (t.getTileType() == TileType.FirstPlayer) {
+                // remove this tile, move it to floor.
+                floor.placeTile(new Tile[]{t});
+                newTiles.remove(t);
+                break;
+            }
+        }
+        return (Tile[]) newTiles.toArray();
+    }
     public String getPlayerCode() {
         return this.playerCode;
     }

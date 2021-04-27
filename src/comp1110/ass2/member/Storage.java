@@ -125,12 +125,14 @@ public class Storage {
      * Author: Ruizheng Shen, Date: 2021.4.27
      * @param tiles the tiles which will be placed in the storage
      * @param row the row to place
+     * @return whether this move is valid.
      */
-    public void placeTiles(Tile[] tiles, int row) {
+    public boolean placeTiles(Tile[] tiles, int row) {
         // TODO: test, first check the validity(not finished yet)
         for (int i = 0; i < tiles.length; i++) {
             this.tiles[row][STORAGE_ROW_LENGTH[row] - 1 - i] = tiles[i];
         }
+        return false;
     }
 
     /**
