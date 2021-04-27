@@ -1,5 +1,6 @@
 package comp1110.ass2;
 
+import comp1110.ass2.member.Floor;
 import gittest.A;
 import gittest.B;
 import gittest.C;
@@ -985,7 +986,20 @@ public class Azul {
          */
     public static boolean isStateValid(String[] gameState) {
         // FIXME Task 9
-        return false;
+
+        return (tileOnFloor(gameState));
+    }
+
+    public static boolean tileOnFloor (String[] gameState){
+        String a  = gameState[1];
+        int x = a.indexOf("B");
+        String playerA = a.substring(0,x);
+        int b = playerA.indexOf("F");
+        String facA = playerA.substring(b+1);
+        String playerB = a.substring(x);
+        int n = playerB.indexOf("F");
+        String facB = playerB.substring(n+1);
+        return (facA.length()<8 && facB.length()<8);
     }
 
     /**
