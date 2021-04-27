@@ -103,4 +103,43 @@ public class Floor {
 
     }
 
+    public void decode (String floor){
+        if (floor.charAt(0) == 'F' && floor.length() <= FLOOR_WIDTH+1){
+            Tile[] newTiles = new Tile[floor.length()];
+            for(int i = 1; i < floor.length();i++){
+                char tile  = floor.charAt(i);
+                newTiles[i-1] = new Tile(tile);
+            }
+            placeTile(newTiles);
+        }
+    }
+
+    public boolean placeTile(Tile[] tiles) {
+        int cnt = lengthTile();
+        if (cnt + tiles.length <= 7) {
+            System.arraycopy(tiles, 0, this.tiles, cnt, tiles.length);
+            return true;
+        }
+        return false;
+    }
+
+    public int lengthTile(){
+        for (int i = 0; i < FLOOR_WIDTH; i ++){
+            if (this.tiles[i] == null){
+                return i;
+            }
+        }
+        return FLOOR_WIDTH;
+    }
+
+    public static void main(String[] args) {
+        String a = new String("Fabcabc");
+        Floor f = new Floor();
+        f.decode(a);
+        for (int i = 0; i< FLOOR_WIDTH; i++) {
+            if (f.tiles[i] != null) {
+                System.out.print(f.tiles[i].getCode());
+            }
+        }
+    }
 }
