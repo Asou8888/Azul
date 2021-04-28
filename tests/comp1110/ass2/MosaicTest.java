@@ -59,10 +59,15 @@ public class MosaicTest {
                 new Tile(TileType.Purple), null,new Tile(TileType.Orange),new Tile(TileType.Orange),null
         };
         Mosaic m = new Mosaic(tiles);
-        assertEquals(TileType.Red, m.colorList(1)[0]); //test the first element
-        assertEquals(TileType.Blue, m.colorList(2)[1]); //test teh case that the first element in tile[i] is null
-        assertEquals(TileType.Purple, m.colorList(5)[0]); // test the last row
-        assertEquals(TileType.Orange, m.colorList(5)[2]); //test the last element in colorList
+        assertEquals(TileType.Red, m.RowcolorList(1)[0]); //test the first element
+        assertEquals(TileType.Blue, m.RowcolorList(2)[1]); //test teh case that the first element in tile[i] is null
+        assertEquals(TileType.Purple, m.RowcolorList(5)[0]); // test the last row
+        assertEquals(TileType.Orange, m.RowcolorList(5)[2]); //test the last element in colorList
+
+        assertEquals(TileType.Red, m.ColumncolorList(1)[0]);
+        assertEquals(TileType.Blue, m.ColumncolorList(2)[0]);
+        assertEquals(TileType.Blue, m.ColumncolorList(5)[0]);
+        assertEquals(TileType.Purple, m.ColumncolorList(5)[1]);
 
     }
 

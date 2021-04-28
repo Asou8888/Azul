@@ -126,7 +126,7 @@ public class Mosaic {
      * @param row
      * @return list of TileType
      */
-    public TileType[] colorList(int row) {
+    public TileType[] RowcolorList(int row) {
         //find the number of tiles in the specific row
         int num = 0;
         for (int i = row * 5 - 5; i < row * 5; i++) {
@@ -145,6 +145,27 @@ public class Mosaic {
             }
         }
         return colorList;
+    }
+
+    public TileType[] ColumncolorList(int column){
+        int num = 0;
+        for(int i = column-1; i <column+20;i=i+5){
+            if(tiles[i] != null){
+                num +=1;
+            }
+        }
+        TileType[] colorList = new TileType[num];
+        for(int n = 0; n < num;){
+            for (int i = column-1 ; i < column +20; i=i+5) {
+                try{
+                    colorList[n] = tiles[i].getTileType(); //add the color in the list if tile is not null
+                    n = n + 1;
+                }catch (Exception e){ //avoid Exception in case tiles[i] is null
+                }
+            }
+        }
+        return colorList;
+
     }
 
 
@@ -203,7 +224,7 @@ public class Mosaic {
 
     public static void main(String[] args) {
         /**
-         * Written by Xiao Xu 4/28
+         * Test written by Xiao Xu 4/28
          */
         Mosaic m = new Mosaic();
         m.decode("Ma01b02a04"); // decode the String and put them into the storage
@@ -214,6 +235,7 @@ public class Mosaic {
                 System.out.print(m.tiles[i].getCode()+",");
             }
         }
+        System.out.println(m.ColumncolorList(2));
 
     }
 
