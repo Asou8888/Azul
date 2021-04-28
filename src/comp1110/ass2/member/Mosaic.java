@@ -190,5 +190,33 @@ public class Mosaic {
             return false;
         }
     }
+    public void decode(String mosaic){
+        /**
+         * Written by Xiao Xu 4/28
+         */
+        for(int i = 1; i < mosaic.length();i= i+3){
+              int index = Integer.parseInt(String.valueOf(mosaic.toCharArray()[i+1]))*5 + Integer.parseInt(String.valueOf(mosaic.toCharArray()[i+2]));
+              this.tiles[index] = new Tile(mosaic.charAt(i));
+        }
+
+    }
+
+    public static void main(String[] args) {
+        /**
+         * Written by Xiao Xu 4/28
+         */
+        Mosaic m = new Mosaic();
+        m.decode("Ma01b02a04"); // decode the String and put them into the storage
+        for (int i = 0; i < MOSAIC_WIDTH; i++) {
+            if (m.tiles[i] == null) {
+                System.out.print("null,");
+            } else {
+                System.out.print(m.tiles[i].getCode()+",");
+            }
+        }
+
+    }
+
+
 
 }
