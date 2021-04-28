@@ -68,6 +68,9 @@ public class MosaicTest {
         assertEquals(TileType.Blue, m.ColumncolorList(2)[0]);
         assertEquals(TileType.Blue, m.ColumncolorList(5)[0]);
 
+        assertEquals(true, m.isEmpty(0,1));
+        assertEquals(false, m.isEmpty(0,0));
+
     }
 
 }
