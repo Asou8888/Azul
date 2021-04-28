@@ -168,6 +168,14 @@ public class Mosaic {
 
     }
 
+    public boolean isEmpty(int row,int column){
+        if(tiles[row*5+column] == null){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
 
     /**
      * Calculate the final score in the mosaic.(This will be calculated at the end of the game)
@@ -180,7 +188,42 @@ public class Mosaic {
      * @return the bonus score in the mosaic
      */
     public int getBonusScore() {
-        return -1;
+        int bouns = 0;
+        bouns += isRowFull()*2;
+        bouns += isColumnFull()*7;
+        String ListOfTile = "";
+        for(int i = 0;i<tiles.length;i++){
+            if(tiles[i] != null) {
+                ListOfTile += tiles[i].getCode();
+            }
+        }
+        if(getNumofEle(ListOfTile,'a') == 5){
+            bouns += 10;
+        }
+        if(getNumofEle(ListOfTile,'b') == 5){
+            bouns += 10;
+        }
+        if(getNumofEle(ListOfTile,'c') == 5){
+            bouns += 10;
+        }
+        if(getNumofEle(ListOfTile,'d') == 5){
+            bouns += 10;
+        }
+        if(getNumofEle(ListOfTile,'e') == 5){
+            bouns += 10;
+        }
+
+        return bouns;
+    }
+
+    public int getNumofEle(String x,char b){
+        int num = 0;
+        for(int i = 0;i<x.length();i++){
+            if (x.toCharArray()[i] == b){
+                num += 1;
+            }
+        }
+        return num;
     }
 
     /**
@@ -188,7 +231,7 @@ public class Mosaic {
      * one row is full, the current round will over
      * @return true if there is a row is full
      */
-    public boolean isRowFull() {
+    public int isRowFull() {
         /**
          * Written by Xiao Xu 4/25/2021
          */
@@ -204,13 +247,63 @@ public class Mosaic {
         }
         //if the number string containing consecutive numbers, it means that there is at least one row is full
         //and the round should over
-        if(number.contains("0001020304")  || number.contains("1011121314") || number.contains("2021222324") || number.contains("3031323334") || number.contains("4041424344")||number.contains("5051525354")){
-            return true;
+        int num = 0;
+        if(number.contains("0001020304")){
+            num += 1;
         }
-        else {
-            return false;
+        if(number.contains("1011121314")){
+            num += 1;
         }
+        if(number.contains("2021222324")){
+            num += 1;
+        }
+        if(number.contains("3031323334")){
+            num += 1;
+        }
+        if(number.contains("4041424344")){
+            num += 1;
+        }
+
+        return num;
+
     }
+
+    public int isColumnFull() {
+        /**
+         * Written by Xiao Xu 4/25/2021
+         */
+        String mosaic = getCode();
+        String number = ""; //initialise a string
+        //extract all the numbers in mosaic
+        if(mosaic != null && !"".equals(mosaic)) {
+            for (int i = 0; i < mosaic.length(); i++) {
+                if (mosaic.charAt(i) >= 48 && mosaic.charAt(i) <= 57) {
+                    number += mosaic.charAt(i);
+                }
+            }
+        }
+        int num = 0;
+        if(number.contains("0010203040")) {
+            num += 1;
+        }
+        if(number.contains("0111213141")) {
+            num += 1;
+        }
+        if(number.contains("0212223242")) {
+            num += 1;
+        }
+        if(number.contains("0313233343")){
+            num += 1;
+        }
+        if(number.contains("0414243444")) {
+            num += 1;
+        }
+
+        return num;
+
+    }
+
+
     public void decode(String mosaic){
         /**
          * Written by Xiao Xu 4/28
