@@ -6,17 +6,27 @@ package comp1110.ass2.member;
  * @since 2021.3.27
  */
 
+import gittest.C;
+import org.hamcrest.Condition;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  * Modified by Ruizheng Shen, 2021.4.19
  * Add a constructor
  */
 
 public class Center {
-    private Tile[] tiles;
+    private ArrayList<Tile> tiles;
 
     // added by Ruizheng Shen.
     public Center(Tile[] tiles) {
-        this.tiles = tiles;
+        this.tiles = new ArrayList<Tile>(Arrays.asList(tiles));
+    }
+
+    public Center(){
+        this.tiles = new ArrayList<Tile>();
     }
 
 
@@ -40,7 +50,25 @@ public class Center {
 
     public String encode(){
         //TODO
-        return "";
+        /**
+         * Written by Xiao Xu 4/29
+         */
+        String center = "C";
+        for(int i =0;i<tiles.size();i++){
+            center += tiles.get(i).getCode();
+        }
+        return center;
+    }
+
+    public void decode(String center){
+        int num = center.length();
+        for(int i = 1; i<num;i++){
+            for(int n = 1; n<center.length();n++){
+                Tile a = new Tile(center.toCharArray()[n]);
+                 this.tiles.add(a);
+            }
+
+        }
     }
 
 
@@ -70,6 +98,20 @@ public class Center {
     public boolean isEmpty(){
         //TODO:return if the center is empty or not
         return true;
+    }
+
+    public static void main(String[] args) {
+        /**
+         * Test written by Xiao Xu
+         */
+        String a = "Caaaabcf";
+        Center c = new Center();
+        c.decode(a);
+        for(int i = 0; i < a.length();i++){
+            System.out.print(c.tiles.get(i).getCode());
+        }
+
+
     }
 
 }
