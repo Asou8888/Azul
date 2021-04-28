@@ -13,7 +13,7 @@ public class Mosaic {
     private TileType[] pattern;
     private static final int MOSAIC_WIDTH = 25;
     private Player player; //add by Xiao Xu
-    private boolean isVariant; // added by Ruizheng Shen
+    private boolean isVariant; // added by Ruizheng Shen, if using a variant mosaic, isVariant = True; if using a beginner mosaic, isVariant = False
 
     /**
      * Constructor with no parameter, for variant mosaic.

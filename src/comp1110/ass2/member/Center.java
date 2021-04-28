@@ -12,12 +12,13 @@ package comp1110.ass2.member;
  */
 
 public class Center {
-    private Tile[] tiles ;
+    private Tile[] tiles;
 
     // added by Ruizheng Shen.
     public Center(Tile[] tiles) {
         this.tiles = tiles;
     }
+
 
     public String getCode() {
 
