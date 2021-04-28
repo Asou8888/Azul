@@ -168,6 +168,14 @@ public class Mosaic {
 
     }
 
+    public boolean isEmpty(int row,int column){
+        if(tiles[row*5+column] == null){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
 
     /**
      * Calculate the final score in the mosaic.(This will be calculated at the end of the game)
@@ -180,7 +188,15 @@ public class Mosaic {
      * @return the bonus score in the mosaic
      */
     public int getBonusScore() {
-        return -1;
+        int bouns = 0;
+        if(isRowFull()){
+            bouns +=2;
+        }
+        if(isColumnFull()){
+            bouns +=7;
+        }
+
+        return bouns;
     }
 
     /**
@@ -204,13 +220,39 @@ public class Mosaic {
         }
         //if the number string containing consecutive numbers, it means that there is at least one row is full
         //and the round should over
-        if(number.contains("0001020304")  || number.contains("1011121314") || number.contains("2021222324") || number.contains("3031323334") || number.contains("4041424344")||number.contains("5051525354")){
+        if(number.contains("0001020304")  || number.contains("1011121314") || number.contains("2021222324") || number.contains("3031323334") || number.contains("4041424344")){
             return true;
         }
         else {
             return false;
         }
     }
+
+    public boolean isColumnFull() {
+        /**
+         * Written by Xiao Xu 4/25/2021
+         */
+        String mosaic = getCode();
+        String number = ""; //initialise a string
+        //extract all the numbers in mosaic
+        if(mosaic != null && !"".equals(mosaic)) {
+            for (int i = 0; i < mosaic.length(); i++) {
+                if (mosaic.charAt(i) >= 48 && mosaic.charAt(i) <= 57) {
+                    number += mosaic.charAt(i);
+                }
+            }
+        }
+        //if the number string containing consecutive numbers, it means that there is at least one row is full
+        //and the round should over
+        if(number.contains("0010203040")  || number.contains("0111213141") || number.contains("0212223242") || number.contains("0313233343") || number.contains("0414243444")){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+
     public void decode(String mosaic){
         /**
          * Written by Xiao Xu 4/28
