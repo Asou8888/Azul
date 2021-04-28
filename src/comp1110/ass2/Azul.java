@@ -1161,8 +1161,6 @@ public class Azul {
             if (!(rowOrFloor == 'F' || rowOrFloor == '0' || rowOrFloor == '1' || rowOrFloor == '2' || rowOrFloor == '3' || rowOrFloor == '4'))
                 return false;
 
-            int pointer = 0; // record the position visiting in move.
-
             String[] splitSharedState = splitSharedState(gameState); // split the shared state.
 
             //  1. The specified factory/centre contains at least one tile of the specified colour.
@@ -1226,12 +1224,53 @@ public class Azul {
                     // TODO: up to here.
                     // 3. The corresponding mosaic row does not already contain a tile of that colour.
                     String mosaic = playerState[1]; // The mosaic state is stored in the 2nd element.
-                    
+                    Mosaic m = new Mosaic();
+                    m.decode(mosaic);
+                    TileType[] colors = m.colorList(rowOrFloor); // get the colors of the row in mosaic.
+                    for (TileType color: colors) {
+                        if (t.getTileType() == color) {
+                            return false; // the row in mosaic has the same color.
+                        }
+                    }
                 }
             }
-
+            return true;
         } else if (move.length() == 3) {
             // do tile move
+            char player = move.charAt(0);
+            char row = move.charAt(1);
+            char col = move.charAt(2);
+
+            // check player(2 player consequence)
+            if (player != 'A' && player != 'B')
+                return false;
+
+            // check row
+            if (!(row == '0' || row == '1' || row == '2' || row == '3' || row == '4')) {
+                return false;
+            }
+
+            // check column
+            if (!(col == '0' || col == '1' || col == '2' || col == '3' || col == '4')) {
+                return false;
+            }
+
+            // 1. The specified row in the Storage area is full.
+            HashMap<String, String[]> splitPlayerState = splitPlayerState(gameState); // split the player state
+            String[] playerState = splitPlayerState.get(String.valueOf(player)); // get the player state of this player
+            String storage = playerState[2]; // The storage state is stored at the 3rd place.
+            Storage s = new Storage();
+            s.decode(storage);
+            if (!s.isRowFull(row)) {
+                return false; // If this row is not full, return false;
+            }
+            // 2. TODO: The specified column does not already contain a tile of the same colour.
+            String mosaic = playerState[1]; // The mosaic state is stored at the 2nd place.
+
+            // 3. TODO: The specified location in the mosaic is empty.
+
+            // 4. TODO: If the specified column is 'F', no valid move exists from the specified row into the mosaic.
+
         } else {
             // invalid move
             return false;
