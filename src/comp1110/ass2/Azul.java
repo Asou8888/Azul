@@ -1,6 +1,6 @@
 package comp1110.ass2;
 
-import comp1110.ass2.member.Floor;
+import comp1110.ass2.member.*;
 import gittest.A;
 import gittest.B;
 import gittest.C;
@@ -1131,7 +1131,111 @@ public class Azul {
      */
     public static boolean isMoveValid(String[] gameState, String move) {
         // FIXME Task 10
-        return false;
+        // determine whether the game state valid first.
+        if (!isStateValid(gameState)) return false;
+
+        /* If move.length == 4, then it is a draftmove;
+         * If move.length == 3, then it is a tilemove
+         */
+        if (move.length() == 4) {
+            // do draft move
+            char player = move.charAt(0);
+            // check player(2 player consequence)
+            if (player != 'A' && player != 'B')
+                return false;
+
+            char factoryOrCenter = move.charAt(1);
+            // check factory or centre
+            if (!(factoryOrCenter == 'C' || factoryOrCenter == '0' || factoryOrCenter == '1' || factoryOrCenter == '2' || factoryOrCenter == '3' || factoryOrCenter == '4'))
+                return false;
+
+            char tileColor = move.charAt(2);
+            // check tile color
+            if (!(tileColor == 'a' || tileColor == 'b' || tileColor == 'c' || tileColor == 'd' || tileColor == 'e')) {
+                // not a tile of any color
+                return false;
+            }
+
+            char rowOrFloor = move.charAt(3);
+            // check row or floor
+            if (!(rowOrFloor == 'F' || rowOrFloor == '0' || rowOrFloor == '1' || rowOrFloor == '2' || rowOrFloor == '3' || rowOrFloor == '4'))
+                return false;
+
+            int pointer = 0; // record the position visiting in move.
+
+            String[] splitSharedState = splitSharedState(gameState); // split the shared state.
+
+            //  1. The specified factory/centre contains at least one tile of the specified colour.
+            if (factoryOrCenter == 'C') {
+                // if it is centre.
+                String centre = splitSharedState[2]; // The 3nd String is the centre state.
+                // TODO: interact with class Centre?
+                boolean isColorValid = false;
+                for (int i = 1; i < centre.length(); i++) {
+                    // check whether there's a tile is the specified color.
+                    if (centre.charAt(i) == tileColor) {
+                        isColorValid = true;
+                        break;
+                    }
+                }
+                if (!isColorValid)
+                    return false; // no specified tile is found.
+            } else {
+                int num = factoryOrCenter;
+                String factory = splitSharedState[1]; // The 2nd String is the factory state.
+                // TODO: interact with class storage/ factory?
+                boolean isColorValid = false;
+                if (factory.indexOf(num) < 0) {
+                    // This factory does not contain ant tiles, so it is invalid.
+                } else {
+                    boolean isColorContainedInFactory = false;
+                    for (int i = num + 1; i < factory.length(); i++) {
+                        if ('0' <= factory.charAt(i) && '9' <= factory.charAt(i)) {
+                            // reach another factory, break the loop.
+                            break;
+                        } else {
+                            if (factory.charAt(i) == tileColor) {
+                                // find a specified tile
+                                isColorContainedInFactory = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (!isColorContainedInFactory) {
+                        return false; // no specified tile is found.
+                    }
+                }
+            }
+
+            // 2. The storage row the tile is being placed in does not already contain a different colour.
+            // TODO: up to here.
+            HashMap<String, String[]> splitPlayerState = splitPlayerState(gameState); // get the split player state
+            String[] playerState = splitPlayerState.get(String.valueOf(player)); // get the player state from the map("player");
+            if (rowOrFloor != 'F') {
+                // storage
+                String storage = playerState[2]; // The storage state is stored in the 3rd element.
+                // TODO: interact with class Storage?
+                Storage s = new Storage();
+                s.decode(storage); // decode the state, turn it into the tiles array in class Storage.
+                Tile t = new Tile(tileColor); // the tile need to put into the storage
+                if (!s.isRowColorSame(t, rowOrFloor)) {
+                    // does not have the same color
+                    return false;
+                } else {
+                    // has the same color or this row in storage is empty
+                    // TODO: up to here.
+                    // 3. The corresponding mosaic row does not already contain a tile of that colour.
+                    String mosaic = playerState[1]; // The mosaic state is stored in the 2nd element.
+                    
+                }
+            }
+
+        } else if (move.length() == 3) {
+            // do tile move
+        } else {
+            // invalid move
+            return false;
+        }
     }
 
     /**

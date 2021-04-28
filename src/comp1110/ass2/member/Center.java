@@ -29,6 +29,7 @@ public class Center {
         this.tiles = new ArrayList<Tile>();
     }
 
+
     public String getCode() {
 
         return encode();

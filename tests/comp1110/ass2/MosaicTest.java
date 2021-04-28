@@ -67,7 +67,6 @@ public class MosaicTest {
         assertEquals(TileType.Red, m.ColumncolorList(1)[0]);
         assertEquals(TileType.Blue, m.ColumncolorList(2)[0]);
         assertEquals(TileType.Blue, m.ColumncolorList(5)[0]);
-        assertEquals(TileType.Purple, m.ColumncolorList(5)[1]);
 
     }
 
