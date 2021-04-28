@@ -1,8 +1,9 @@
 package comp1110.ass2.gui;
 
-import comp1110.ass2.member.Player;
+import comp1110.ass2.member.*;
 import javafx.application.Application;
 import javafx.scene.Group;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -14,6 +15,22 @@ public class Game extends Application {
     /* game information  */
     private static final int PLAYER_NUM = 2;
 
+    /* game view */
+    private Group[] playerViews;
+
+    /* members */
+    // Players element
+    private Mosaic[] mosaics;
+    private Storage[] storages;
+    private Floor[] floors;
+    private Player[] players;
+    // shared element
+    private Center center;
+    private Factory[] factories;
+    private Bag bag;
+    private Discard discard;
+
+
     @Override
     public void start(Stage stage) throws Exception {
         //  FIXME Task 12: Implement a basic playable Azul game in JavaFX that only allows tiles to be placed in valid places
@@ -22,19 +39,15 @@ public class Game extends Application {
         Group root = new Group();
         Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
 
-        // start game
+        // Group for players
+        this.playerViews = new Group[PLAYER_NUM];
+        for (Group g: this.playerViews) {
+            // add content to each group
 
-        // Initialize players
-        String[] name = new String[]{"Tom", "Alice"}; // set default
-        Player[] players = new Player[PLAYER_NUM]; // set to 2 player
-        for (int i = 0; i < players.length; i++) {
-            players[i] = new Player(name[i], Character.toString('A' + i));
         }
-
-        // player board
-
 
         stage.setScene(scene);
         stage.show();
     }
+
 }
