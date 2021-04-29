@@ -148,6 +148,7 @@ public class Mosaic {
     }
 
     public TileType[] ColumncolorList(int column){
+        // FIXME: case mosaic: "Mc02d33"
         int num = 0;
         for(int i = column-1; i <column+20;i=i+5){
             if(tiles[i] != null){
@@ -235,7 +236,8 @@ public class Mosaic {
          * Test written by Xiao Xu 4/28
          */
         Mosaic m = new Mosaic();
-        m.decode("Ma01b02a04"); // decode the String and put them into the storage
+        // m.decode("Ma01b02a04"); // decode the String and put them into the storage
+        m.decode("Mc02d33");
         for (int i = 0; i < MOSAIC_WIDTH; i++) {
             if (m.tiles[i] == null) {
                 System.out.print("null,");
@@ -243,8 +245,11 @@ public class Mosaic {
                 System.out.print(m.tiles[i].getCode()+",");
             }
         }
+        TileType[] colors = m.ColumncolorList(4);
+        for (TileType color: colors) {
+            System.out.println(color + " ");
+        }
         System.out.println(m.ColumncolorList(2));
-
     }
 
 

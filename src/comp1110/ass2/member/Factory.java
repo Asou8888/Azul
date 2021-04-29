@@ -1,5 +1,7 @@
 package comp1110.ass2.member;
 
+import gittest.A;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -43,7 +45,9 @@ public class Factory {
     /**
      * Empty constructor.
      */
-    public Factory() {}
+    public Factory() {
+        this.tiles = new ArrayList<>();
+    }
     /**
      *
      * @return the number of tiles in this factory
@@ -96,13 +100,29 @@ public class Factory {
         return this.tiles.isEmpty();
     }
 
-    public boolean decode(String thisFactory) {
+    public void decode(String thisFactory) {
         // TODO: test
-        for (int i = 0; i < thisFactory.length(); i++) {
-            //TODO: check whether the code valid
-            this.tiles.add(new Tile(thisFactory.charAt(i))); // add tiles to this factory according to code
+        // If this factory is null, this factory will be empty.
+        if (thisFactory != null) {
+            for (int i = 0; i < thisFactory.length(); i++) {
+                //TODO: check whether the code valid
+                this.tiles.add(new Tile(thisFactory.charAt(i))); // add tiles to this factory according to code
+            }
         }
-        return true;
+    }
+
+    /**
+     * Find the colors of tiles in this factory
+     * @return List of colors(TileType)
+     */
+    public ArrayList<TileType> getColors() {
+        ArrayList<TileType> colors = new ArrayList<>();
+        this.tiles.forEach(t -> {
+            if (!colors.contains(t.getTileType())) {
+                colors.add(t.getTileType());
+            }
+        });
+        return colors;
     }
 
     /**
@@ -113,4 +133,28 @@ public class Factory {
         return this.tiles.size();
     }
 
+    @Override
+    public String toString() {
+        StringBuilder s = new StringBuilder();
+        for (int i = 0; i < this.tiles.size(); i++) {
+            if (i == this.tiles.size() - 1) {
+                s.append(this.tiles.get(i).toString());
+            } else {
+                s.append(this.tiles.get(i).toString()).append(", ");
+            }
+        }
+        return s.toString();
+    }
+
+    public static void main(String[] args) {
+        // test toString()
+        Factory f1 = new Factory();
+        f1.decode("abbe");
+        Factory f2 = new Factory();
+        f2.decode("ccdd");
+        System.out.println("Factory 1: " + f1 + "\nFactory 2: " + f2);
+    }
+
 }
+
+
