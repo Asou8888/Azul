@@ -1132,7 +1132,7 @@ public class Azul {
     public static boolean isMoveValid(String[] gameState, String move) {
         // FIXME Task 10
         // determine whether the game state valid first.
-        if (!isStateValid(gameState)) return false;
+        // TODO: if (!isStateValid(gameState)) return false;
 
         /* If move.length == 4, then it is a draftmove;
          * If move.length == 3, then it is a tilemove
@@ -1179,10 +1179,11 @@ public class Azul {
                 if (!isColorValid)
                     return false; // no specified tile is found.
             } else {
-                int num = factoryOrCenter;
+                int num = factoryOrCenter - '0';
                 String factory = splitSharedState[1]; // The 2nd String is the factory state.
                 // TODO: interact with class storage/ factory?
                 boolean isColorValid = false;
+                // FIXME
                 if (factory.indexOf(num) < 0) {
                     // This factory does not contain ant tiles, so it is invalid.
                 } else {
@@ -1206,17 +1207,17 @@ public class Azul {
             }
 
             // 2. The storage row the tile is being placed in does not already contain a different colour.
-            // TODO: up to here.
             HashMap<String, String[]> splitPlayerState = splitPlayerState(gameState); // get the split player state
             String[] playerState = splitPlayerState.get(String.valueOf(player)); // get the player state from the map("player");
             if (rowOrFloor != 'F') {
+                int row = rowOrFloor - '0';
                 // storage
                 String storage = playerState[2]; // The storage state is stored in the 3rd element.
                 // TODO: interact with class Storage?
                 Storage s = new Storage();
                 s.decode(storage); // decode the state, turn it into the tiles array in class Storage.
                 Tile t = new Tile(tileColor); // the tile need to put into the storage
-                if (!s.isRowColorSame(t, rowOrFloor)) {
+                if (!s.isRowColorSame(t, row)) {
                     // does not have the same color
                     return false;
                 } else {
@@ -1226,7 +1227,7 @@ public class Azul {
                     String mosaic = playerState[1]; // The mosaic state is stored in the 2nd element.
                     Mosaic m = new Mosaic();
                     m.decode(mosaic);
-                    TileType[] colors = m.RowcolorList(rowOrFloor); // get the colors of the row in mosaic.
+                    TileType[] colors = m.RowcolorList(row); // get the colors of the row in mosaic.
                     for (TileType color: colors) {
                         if (t.getTileType() == color) {
                             return false; // the row in mosaic has the same color.
@@ -1238,22 +1239,24 @@ public class Azul {
         } else if (move.length() == 3) {
             // do tile move
             char player = move.charAt(0);
-            char row = move.charAt(1);
-            char col = move.charAt(2);
+            char rowChar = move.charAt(1);
+            char colChar = move.charAt(2);
 
             // check player(2 player consequence)
             if (player != 'A' && player != 'B')
                 return false;
 
             // check row
-            if (!(row == '0' || row == '1' || row == '2' || row == '3' || row == '4')) {
+            if (!(rowChar == '0' || rowChar == '1' || rowChar == '2' || rowChar == '3' || rowChar == '4')) {
                 return false;
             }
+            int row = rowChar;
 
             // check column
-            if (!(col == '0' || col == '1' || col == '2' || col == '3' || col == '4')) {
+            if (!(colChar == '0' || colChar == '1' || colChar == '2' || colChar == '3' || colChar == '4')) {
                 return false;
             }
+            int col = colChar;
 
             // 1. The specified row in the Storage area is full.
             HashMap<String, String[]> splitPlayerState = splitPlayerState(gameState); // split the player state
@@ -1277,10 +1280,12 @@ public class Azul {
                 }
             }
             // 3. TODO: The specified location in the mosaic is empty.
-            
+            if (!m.isEmpty(row, col)) {
+                return false;
+            }
 
             // 4. TODO: If the specified column is 'F', no valid move exists from the specified row into the mosaic.
-
+            return true;
         } else {
             // invalid move
             return false;

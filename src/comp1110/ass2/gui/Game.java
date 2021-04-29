@@ -26,7 +26,7 @@ public class Game extends Application {
     private Player[] players;
     // shared element
     private Center center;
-    private Factory[] factories;
+    private Factory factory;
     private Bag bag;
     private Discard discard;
 
