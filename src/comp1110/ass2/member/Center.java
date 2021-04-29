@@ -78,7 +78,8 @@ public class Center {
      */
     public int getCurrentNum(){
         //TODO:return the number of tiles in current stage
-        return 1;
+        int num = this.tiles.size();
+        return num;
     }
 
     /**
@@ -104,12 +105,14 @@ public class Center {
         /**
          * Test written by Xiao Xu
          */
-        String a = "Caaaabcf";
+        String a = "Caaaabcfb";
         Center c = new Center();
         c.decode(a);
         for(int i = 0; i < a.length();i++){
             System.out.print(c.tiles.get(i).getCode());
         }
+
+        System.out.println(c.getCurrentNum());
 
 
     }

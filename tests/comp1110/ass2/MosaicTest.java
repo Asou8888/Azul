@@ -45,8 +45,8 @@ public class MosaicTest {
                 new Tile(TileType.Purple), null,new Tile(TileType.Orange),new Tile(TileType.Orange),null
         };
         Mosaic m2 = new Mosaic(tiles2);
-        assertEquals(false, m1.isRowFull());
-        assertEquals(true, m2.isRowFull());
+        assertEquals(0, m1.isRowFull());
+        assertEquals(1, m2.isRowFull());
 
     }
     @Test //test ColorList method
@@ -72,5 +72,20 @@ public class MosaicTest {
         assertEquals(false, m.isEmpty(0,0));
 
     }
+    @Test
+    public void testGetBouns() {
+        Tile[] tiles = new Tile[]{
+                new Tile(TileType.Red),new Tile(TileType.Green), new Tile(TileType.Blue), new Tile(TileType.Orange), new Tile(TileType.Purple),
+                null, null, new Tile(TileType.Green), null, new Tile(TileType.Blue),
+                new Tile(TileType.Blue), null, null, null, null,
+                null, new Tile(TileType.Blue), null, null, new Tile(TileType.Purple),
+                new Tile(TileType.Purple), null, new Tile(TileType.Orange), new Tile(TileType.Orange), null
+        };
+        Mosaic m = new Mosaic(tiles);
+
+        assertEquals(2, m.getBonusScore());
+
+    }
+
 
 }
