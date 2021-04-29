@@ -1,16 +1,24 @@
 package comp1110.ass2.member;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  * @author Yixin Ge
  * @version 1.0
  * @since 2021.3.27
  */
 
+/**
+ * Modified By Ruizheng Shen, Date: 2021.4.29
+ */
+
 public class Factory {
     /**
      * Factory is made of 4 tiles.
      */
-    private Tile[] tiles;
+    private static final int MAX_FACTORY_TILES_NUM = 4;
+    private ArrayList<Tile> tiles;
 
 
 
@@ -21,8 +29,27 @@ public class Factory {
      * @param tiles the given array of Tile
      */
     public Factory(Tile[] tiles){
-        //TODO
+        this.tiles = new ArrayList<>(Arrays.asList(tiles));
+    }
+
+    /**
+     * Another constructor with ArrayList as input.
+     * @param tiles
+     */
+    public Factory(ArrayList<Tile> tiles) {
         this.tiles = tiles;
+    }
+
+    /**
+     * Empty constructor.
+     */
+    public Factory() {}
+    /**
+     *
+     * @return the number of tiles in this factory
+     */
+    public int tileNum() {
+        return this.tiles.size();
     }
 
     /**
@@ -54,7 +81,11 @@ public class Factory {
      */
     private String encode() {
         //TODO
-        return "";
+        StringBuilder code = new StringBuilder();
+        this.tiles.forEach(t -> {
+            code.append(t.getCode());
+        });
+        return code.toString();
     }
 
     /**
@@ -62,8 +93,16 @@ public class Factory {
      * @return whether the factory currently has no tiles.
      */
     public boolean isEmpty(){
-        //TODO
-        return false;
+        return this.tiles.isEmpty();
+    }
+
+    public boolean decode(String thisFactory) {
+        // TODO: test
+        for (int i = 0; i < thisFactory.length(); i++) {
+            //TODO: check whether the code valid
+            this.tiles.add(new Tile(thisFactory.charAt(i))); // add tiles to this factory according to code
+        }
+        return true;
     }
 
     /**
@@ -71,8 +110,7 @@ public class Factory {
      * @return the amount of tiles in a Factory
      */
     public int tileAmount(){
-        //TODO
-        return 0;
+        return this.tiles.size();
     }
 
 }
