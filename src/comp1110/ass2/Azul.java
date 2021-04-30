@@ -1076,12 +1076,12 @@ public class Azul {
          * [Storage]
          * 1. The maximum number of tiles stored in a row must not exceed (row_number + 1).
          * 2. The colour of tile stored in a row must not be the same as a colour
-         * already found in the corresponding row of the mosaic.
+         * already found in the corresponding row of the mosaic. (completed)
          * <p>
          * [Floor]
-         * 1. There are no more than 7 tiles on a single player's floor.
+         * 1. There are no more than 7 tiles on a single player's floor.(completed)
          * [Centre]
-         * 1. The number of tiles in the centre is no greater than 3 * the number of empty factories.
+         * 1. The number of tiles in the centre is no greater than 3 * the number of empty factories. (completed)
          * [Factories]
          * 1. At most one factory has less than 4, but greater than 0 tiles.
          * Any factories with factory number greater than this factory must contain 0 tiles.
@@ -1094,20 +1094,76 @@ public class Azul {
          */
     public static boolean isStateValid(String[] gameState) {
         // FIXME Task 9
+        if (!(isSharedStateWellFormed(gameState[0]) && isPlayerStateWellFormed(gameState[1]))){ return  false;}
+        String shared = gameState[0];
+        String player = gameState[1];
+        String[] sharedState = splitSharedState(gameState);
+        String factory = sharedState[1];
+        String centre = sharedState[2];
+        String bag = sharedState[3];
+        String discard = sharedState[4];
+        HashMap<String, String[]> splitPlayerState = splitPlayerState(gameState);
+        String mosaicA = splitPlayerState.get("A")[1];
+        String storageA = splitPlayerState.get("A")[2];
+        String floorA = splitPlayerState.get("A")[3];
+        String mosaicB = splitPlayerState.get("B")[1];
+        String storageB = splitPlayerState.get("B")[2];
+        String floorB = splitPlayerState.get("B")[3];
+        //if (isSharedStateWellFormed(shared) && isPlayerStateWellFormed(player) &&
+        //        tileOnFloor(floorA) && tileOnFloor(floorB) && isSharedStateWellFormed(shared)){
+        //    return(tileStorageMosaicSame(storageA,mosaicA) && tileStorageMosaicSame(storageB,mosaicB) );
+        //}
+        return (tileOnFloor(floorA) && tileOnFloor(floorB) &&
+                tileInCenter(centre,factory) && tileStorageAndMosaic(storageA,mosaicA) &&
+                tileStorageAndMosaic(storageB,mosaicB));
+    }
+    /** [Centre]
+    /1. The number of tiles in the centre is no greater than 3 * the number of empty factories.*/
+    public static boolean tileInCenter (String center, String factory) {
+        int cnt = 0; // number of tiles in centre
+        for (int i = 1; i < center.length();i++){
+            cnt++;
+            if (center.charAt(i) == 'f'){
+                cnt--;
+            }
+        }
+        int num = 0; // number of factory contains tile
+        for(int j = 1; j < factory.length(); j++){
+            if (factory.charAt(j) == 'a'|| factory.charAt(j) == 'b' && factory.charAt(j) == 'c'||
+                    factory.charAt(j) == 'd' || factory.charAt(j) == 'e'){
+                num++;
+            }
+        }
+        return cnt <= (20 - num )/4 * 3;
+    }
+    public  static  boolean tileInRowStorage (String storage){
+        Storage str = new Storage();
+        str.decode(storage);
 
-        return (tileOnFloor(gameState));
+        return false;
+    }
+    /** 2. The colour of tile stored in a row must not be the same as a colour
+     already found in the corresponding row of the mosaic.*/
+    public  static  boolean tileStorageAndMosaic (String storage, String mosaic){
+        Storage str = new Storage();
+        NewMosaic mos = new NewMosaic();
+        str.decode(storage);
+        mos.decode(mosaic);
+        int cnt = 0;
+        for (int i = 0; i < 5;i++) {
+            TileType tileColor = str.rowColor(i);
+            ArrayList<TileType> tileMosaicColor = mos.rowColorList(i);
+            if (tileMosaicColor.contains(tileColor)){
+                cnt++;
+            }
+        }
+        return cnt ==0;
     }
 
-    public static boolean tileOnFloor (String[] gameState){
-        String a  = gameState[1];
-        int x = a.indexOf("B");
-        String playerA = a.substring(0,x);
-        int b = playerA.indexOf("F");
-        String facA = playerA.substring(b+1);
-        String playerB = a.substring(x);
-        int n = playerB.indexOf("F");
-        String facB = playerB.substring(n+1);
-        return (facA.length()<8 && facB.length()<8);
+    /** [Floor]
+    /* 1. There are no more than 7 tiles on a single player's floor.*/
+    public static boolean tileOnFloor (String floor){
+        return (floor.length()<9);
     }
 
     /**
