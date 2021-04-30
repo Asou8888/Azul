@@ -1,6 +1,8 @@
 package comp1110.ass2;
 
 import comp1110.ass2.member.Floor;
+import comp1110.ass2.member.Storage;
+import comp1110.ass2.member.Tile;
 import gittest.A;
 import gittest.B;
 import gittest.C;
@@ -1088,20 +1090,108 @@ public class Azul {
          */
     public static boolean isStateValid(String[] gameState) {
         // FIXME Task 9
+        String shared = gameState[0];
+        String player = gameState[1];
+        String[] sharedState = splitSharedState(gameState);
+        String factory = sharedState[1];
+        String centre = sharedState[2];
+        String bag = sharedState[3];
+        String discard = sharedState[4];
+        HashMap<String, String[]> splitPlayerState = splitPlayerState(gameState);
+        String mosaicA = splitPlayerState.get("A")[1];
+        String storageA = splitPlayerState.get("A")[2];
+        String floorA = splitPlayerState.get("A")[3];
+        String mosaicB = splitPlayerState.get("B")[1];
+        String storageB = splitPlayerState.get("B")[2];
+        String floorB = splitPlayerState.get("B")[3];
+        //if (isSharedStateWellFormed(shared) && isPlayerStateWellFormed(player) &&
+        //        tileOnFloor(floorA) && tileOnFloor(floorB) && isSharedStateWellFormed(shared)){
+        //    return(tileStorageMosaicSame(storageA,mosaicA) && tileStorageMosaicSame(storageB,mosaicB) );
+        //}
+        return (tileOnFloor(floorA) && tileOnFloor(floorB) &&
+                tileInCenter(centre,factory));
+    }
+    public static boolean tileInCenter (String center, String factory) {
+        int cnt = 0; // number of tiles in centre
+        for (int i = 1; i < center.length();i++){
+            cnt++;
+            if (center.charAt(i) == 'f'){
+                cnt--;
+            }
+        }
+        int num = 0; // number of factory contains tile
+        for(int j = 1; j < factory.length(); j++){
+            if (factory.charAt(j) == 'a'|| factory.charAt(j) == 'b' && factory.charAt(j) == 'c'||
+                    factory.charAt(j) == 'd' || factory.charAt(j) == 'e'){
+                num++;
+            }
+        }
+        return cnt <= (20 - num )/4 * 3;
 
-        return (tileOnFloor(gameState));
     }
 
-    public static boolean tileOnFloor (String[] gameState){
-        String a  = gameState[1];
-        int x = a.indexOf("B");
-        String playerA = a.substring(0,x);
-        int b = playerA.indexOf("F");
-        String facA = playerA.substring(b+1);
-        String playerB = a.substring(x);
-        int n = playerB.indexOf("F");
-        String facB = playerB.substring(n+1);
-        return (facA.length()<8 && facB.length()<8);
+    /*public  static boolean tileStorageMosaicSame (String storage,String mosaic) {
+        String[] eachRowTileInStorage = new String[5]; // storage have 5 rows, each have colortype and amount of it eg.["a","b","c",null,null]
+        int everyRow = 0;
+        for (int i = 1; i < storage.length(); i = i + 3) {
+            int row = storage.charAt(i) - '0';
+            char tile = storage.charAt(i + 1);
+            while (everyRow < 5) {
+                if (row == everyRow) {
+                    eachRowTileInStorage[everyRow] = String.valueOf(tile);
+                    if (everyRow < 4) {
+                        everyRow++;
+                    }
+                    break;
+                } else {
+                    eachRowTileInStorage[everyRow] = null;
+                    if (everyRow + 1 == 5) {
+                        break;
+                    } else {
+                        everyRow++;
+                    }
+                }
+            }
+        }
+        int everyRowForMo = 0;
+        String[] eachRowTilesInMosaic = new String[5]; // 5 rows in Mosaic eg.["abc","abcd","ac",null,null]
+        for (int i = 1; i < mosaic.length(); i = i + 3) {
+            char tile = mosaic.charAt(i);
+            int row = mosaic.charAt(i + 1) - '0';
+            while (everyRowForMo < 5) {
+                if (row == everyRowForMo) {
+                    eachRowTilesInMosaic[everyRowForMo] = eachRowTilesInMosaic[everyRowForMo] + String.valueOf(tile);
+                    if (i + 4 < mosaic.length()) {
+                        if (row != mosaic.charAt(i + 4)) {
+                            if (everyRowForMo + 1 == 5) {
+                                break;
+                            } else {
+                                everyRowForMo++;
+                            }
+                        }
+                    } else {
+                        eachRowTilesInMosaic[everyRowForMo] = null;
+                        if (everyRowForMo + 1 == 5) {
+                            break;
+                        } else {
+                            everyRowForMo++;
+                        }
+                    }
+                }
+            }
+            for (int j = 0; j < 5; j++) {
+                if (eachRowTileInStorage[i] != null && eachRowTilesInMosaic[i] != null) {
+                    int containTile = eachRowTilesInMosaic[i].indexOf(eachRowTileInStorage[i]);
+                    return containTile == -1;
+                }
+            }
+        }
+        return false;
+    }
+    */
+
+    public static boolean tileOnFloor (String floor){
+        return (floor.length()<8);
     }
 
     /**
