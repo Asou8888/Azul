@@ -12,6 +12,11 @@ public class NewMosaic {
         this.tiles = new Tile[MOSAIC_WIDTH][MOSAIC_WIDTH];
     }
 
+    public NewMosaic(String mosaic) {
+        this.tiles = new Tile[MOSAIC_WIDTH][MOSAIC_WIDTH];
+        decode(mosaic);
+    }
+
     public NewMosaic(boolean isVariant) {
         this.isVariant = isVariant;
         if (!isVariant) {
@@ -81,6 +86,9 @@ public class NewMosaic {
         }
         return true;
     }
+    public boolean isEmpty(int row, int col) {
+        return tiles[row][col] == null;
+    }
 
     public boolean isRowFull(int row) {
         for (int i = 0; i < MOSAIC_WIDTH; i++) {
@@ -100,7 +108,7 @@ public class NewMosaic {
                 break;
             }
             else {
-               score += 1;
+                score += 1;
             }
         }
         for(int i = row;i >=0 ;i--){
@@ -140,6 +148,7 @@ public class NewMosaic {
         return score;
     }
 
+
     public void decode(String mosaic) {
         // Assume that this state is valid.
         for (int i = 1; i < mosaic.length(); i = i + 3) {
@@ -162,5 +171,6 @@ public class NewMosaic {
 
         System.out.println(m.score(2,3));
     }
+
 
 }
