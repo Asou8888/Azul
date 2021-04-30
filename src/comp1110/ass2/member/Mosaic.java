@@ -148,6 +148,7 @@ public class Mosaic {
     }
 
     public TileType[] ColumncolorList(int column){
+        // FIXME: case mosaic: "Mc02d33"
         int num = 0;
         for(int i = column-1; i <column+20;i=i+5){
             if(tiles[i] != null){
@@ -268,6 +269,7 @@ public class Mosaic {
         return num;
 
     }
+
     public int isColumnFull() {
         /**
          * Written by Xiao Xu 4/25/2021
@@ -275,7 +277,7 @@ public class Mosaic {
         String mosaic = getCode();
         String number = ""; //initialise a string
         //extract all the numbers in mosaic
-        if (mosaic != null && !"".equals(mosaic)) {
+        if(mosaic != null && !"".equals(mosaic)) {
             for (int i = 0; i < mosaic.length(); i++) {
                 if (mosaic.charAt(i) >= 48 && mosaic.charAt(i) <= 57) {
                     number += mosaic.charAt(i);
@@ -283,20 +285,21 @@ public class Mosaic {
             }
         }
         int num = 0;
-        if (number.contains("0010203040")) {
+        if(number.contains("0010203040")) {
             num += 1;
         }
-        if (number.contains("0111213141")) {
+        if(number.contains("0111213141")) {
             num += 1;
         }
-        if (number.contains("0212223242")) {
+        if(number.contains("0212223242")) {
             num += 1;
         }
-        if (number.contains("0313233343")) {
+        if(number.contains("0313233343")) {
             num += 1;
         }
         return num;
     }
+
 
 
     public void decode(String mosaic){
@@ -314,9 +317,9 @@ public class Mosaic {
         /**
          * Test written by Xiao Xu 4/28
          */
-        String mosaic = "Ma01b02a04";
         Mosaic m = new Mosaic();
-        m.decode("Ma01b02a04"); // decode the String and put them into the storage
+        // m.decode("Ma01b02a04"); // decode the String and put them into the storage
+        m.decode("Mc02d33");
         for (int i = 0; i < MOSAIC_WIDTH; i++) {
             if (m.tiles[i] == null) {
                 System.out.print("null,");
@@ -324,35 +327,11 @@ public class Mosaic {
                 System.out.print(m.tiles[i].getCode()+",");
             }
         }
+        TileType[] colors = m.ColumncolorList(4);
+        for (TileType color: colors) {
+            System.out.println(color + " ");
+        }
         System.out.println(m.ColumncolorList(2));
-        String ScoreTile = String.valueOf(mosaic.charAt(mosaic.length()-3));
-        String OtherTiles = mosaic.substring(1,mosaic.length()-3);
-
-        System.out.println(ScoreTile);
-        System.out.println(OtherTiles);
-
-
-        Tile[] tiles = new Tile[]{
-                new Tile(TileType.Red), null, null, null, null,
-                null, null, new Tile(TileType.Green), null, new Tile(TileType.Blue),
-                new Tile(TileType.Blue),null, null, null, null,
-                null,new Tile(TileType.Blue),null,null,new Tile(TileType.Purple),
-                new Tile(TileType.Purple), null,new Tile(TileType.Orange),new Tile(TileType.Orange),null
-        };
-        Mosaic ma = new Mosaic(tiles);
-
-        System.out.println(ma.ColumncolorList(1)[0]);
-        System.out.println(ma.ColumncolorList(1)[1]);
-        System.out.println(ma.ColumncolorList(1)[2]);
-        System.out.println(ma.ColumncolorList(2)[0]);
-        System.out.println(ma.ColumncolorList(3)[0]);
-        System.out.println(ma.ColumncolorList(3)[1]);
-        System.out.println(ma.ColumncolorList(4)[0]);
-        System.out.println(ma.ColumncolorList(5)[0]);
-        System.out.println(ma.ColumncolorList(5)[1]);
-
-
-
     }
 
 

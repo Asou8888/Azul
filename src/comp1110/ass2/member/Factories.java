@@ -1,5 +1,8 @@
 package comp1110.ass2.member;
 
+import gittest.A;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -14,7 +17,7 @@ public class Factories {
      * Constructor: decide the number of factories based on player numbers.
      * @param playerNum
      */
-    Factories(int playerNum) {
+    public Factories(int playerNum) {
         /*  The number of factories depends on the number of players.
          *      * 2 players: 5 factories
          *      * 3 players: 7 factories
@@ -42,7 +45,7 @@ public class Factories {
     /**
      * Constructor: default constructor. 5 factories.
      */
-    Factories() {
+    public Factories() {
         factoryNum = 5;
         factories = new Factory[factoryNum];
         for (int i = 0; i < factoryNum; i++) {
@@ -54,7 +57,7 @@ public class Factories {
      * Constructor: create factories by factory state code
      * @param factory
      */
-    Factories(String factory) {
+    public Factories(String factory) {
         factoryNum = 5;
         this.factories = new Factory[factoryNum];
         for (int i = 0; i < factoryNum; i++) {
@@ -90,29 +93,91 @@ public class Factories {
      * @param factory
      * @return return false if the code invalid
      */
-    public boolean decode(String factory) {
-        char sign = factory.charAt(0);
-        if (sign != 'F') return false; // if the first char is not 'F', the code is invalid.
-        // find the number inside the factory string
-        int pointer = 1;
-        while (pointer < factory.length()) {
-            if ('0' <= factory.charAt(pointer) && factory.charAt(pointer) <= '9') {
-                int num = factory.charAt(pointer) - '0';
-                pointer++;
-                int end = num + 1;
-                while (end < factory.length()) {
-                    if (end < 'a' || end > 'z') {
-                        break;
-                    }
-                    end++;
+    public void decode(String factory) {
+        // TODO: check validity.
+        String[] split = splitFactoryState(factory); //  get the split factory code.
+        for (int i = 0; i < factoryNum; i++) {
+            this.factories[i].decode(split[i]);
+        }
+    }
+
+    /**
+     * Split the factory state into each factory.
+     * @param factory
+     * @return split factory state
+     */
+    String[] splitFactoryState(String factory) {
+        // Assume that the factory state is valid.
+        int start = -1;
+        String[] split = new String[factoryNum];
+        for (int i = 0; i < factory.length(); i++) {
+            if (Character.isDigit(factory.charAt(i))) {
+                // If this index contains a digit/ it reach the last character
+                if (start < 0) {
+                    start = i; // find the first digit.
+                } else {
+                    // find the end of a single factory state.
+                    int num = factory.charAt(start) - '0';
+                    split[num] = factory.substring(start + 1, i);
+                    start = i; // set the start to the new digit.
                 }
-                this.factories[num].decode(factory.substring(pointer, end));
-                pointer = end;
-            } else {
-                // this char is not a number, return false;
-                return false;
+            }
+            if (i == factory.length() - 1) {
+                // if reach the last character.
+                if (start < 0) {
+                    // no digit is found, the factory will not contain tiles.
+                    break;
+                }
+                int num = factory.charAt(start) - '0';
+                split[num] = factory.substring(start + 1);
             }
         }
-        return true;
+        return split;
+    }
+
+    /**
+     * return the color of factory num in ArrayList<TileType>
+     * @param num
+     * @return colors
+     */
+    public ArrayList<TileType> getColors(int num) {
+        if (num >= factoryNum) {
+            // If the number input is larger than the factory numbers, the input is invalid.
+            return (ArrayList<TileType>) null;
+        } else {
+            return this.factories[num].getColors();
+        }
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder s = new StringBuilder("Factories: \n");
+        for (int i = 0; i < factoryNum; i++) {
+            s.append("factory " + i + ": ").append(this.factories[i]).append("\n");
+        }
+        return s.toString();
+    }
+
+    public static void main(String[] args) {
+        // test case 1, test decode(), normal case
+        Factories fs1 = new Factories("F0abbe2ccdd");
+        System.out.println(fs1);
+        // test case 2, test decode(), empty case
+        Factories fsEmpty = new Factories("F");
+        System.out.println(fsEmpty);
+        // test case 3, test decode(), edging case
+        Factories fsEdge1 = new Factories("F4dddd");
+        System.out.println(fsEdge1);
+        // test case 4, test decode() & getColors(), normal case
+        Factories fs2 = new Factories("F0cdde1bbbe2abde3cdee4bcce");
+        System.out.println(fs2);
+        for (int i = 0; i < 5; i++) {
+            // factory 0 - 4
+            ArrayList<TileType> colors = fs2.getColors(i);
+            colors.forEach(t -> {
+                System.out.print(t + " ");
+            });
+            System.out.println();
+        }
     }
 }
