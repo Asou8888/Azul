@@ -101,9 +101,53 @@ public class NewMosaic {
     public int getBonusScore() {
         return -1;
     }
-    public int score() {
-        return -1;
+    public int score(int row,int column) {
+        int score = 0;
+        for(int i = row;i < MOSAIC_WIDTH;i++){
+            if(tiles[i][column] == null){
+                break;
+            }
+            else {
+                score += 1;
+            }
+        }
+        for(int i = row;i >=0 ;i--){
+            if(tiles[i][column] == null){
+                break;
+            }
+            else {
+                score += 1;
+            }
+        }
+        if(score == 2){
+            score = 0;
+        }else {
+            score = score-1;
+        }
+        for(int i = column;i < MOSAIC_WIDTH;i++){
+            if(tiles[row][i] == null){
+                break;
+            }
+            else {
+                score +=1;
+            }
+        }
+        for(int i = column;i >=0;i--){
+            if(tiles[row][i] == null){
+                break;
+            }
+            else {
+                score +=1;
+            }
+        }
+        if(score == 2){
+            score = 1;
+        }else {
+            score = score-1;
+        }
+        return score;
     }
+
 
     public void decode(String mosaic) {
         // Assume that this state is valid.
@@ -114,5 +158,19 @@ public class NewMosaic {
             tiles[row][col] = new Tile(colorChar); // put the tile in this position.
         }
     }
+
+    public static void main(String[] args) {
+        Tile[][] tiles = new Tile[][] {
+                new Tile[]{null, null, null, new Tile(TileType.Purple),null},
+                new Tile[]{null, null, null, new Tile(TileType.Green),null},
+                new Tile[]{null, new Tile(TileType.Orange),null, new Tile(TileType.Red), new Tile(TileType.Green)},
+                new Tile[]{null,null,null,null,null},
+                new Tile[]{null,null,null,null,null}
+        };
+        NewMosaic m = new NewMosaic(tiles);
+
+        System.out.println(m.score(2,3));
+    }
+
 
 }
