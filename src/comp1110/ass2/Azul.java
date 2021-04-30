@@ -235,13 +235,16 @@ public class Azul {
                 four = n;
             }
         }
+        if(F == 0){
+            return false;
+        }
 
         // FIXME: test
         if (factories.equals("")) {
             return false; // the factory string is empty, return false;
         }
         // FIXME
-        /*
+
         ArrayList<Integer> numIndexOfFactory = new ArrayList<>(); // store the index found in shared state
         for (int i = 0; i < factories.length(); i++) {
             if (Character.isDigit(factories.charAt(i))) {
@@ -261,25 +264,24 @@ public class Azul {
         }
         for (int i = 0; i < factoryArray.length; i++) {
             if (i != factoryArray.length - 1) {
-                factoryArray[i] = factories.substring(numIndexOfFactory.get(i), numIndexOfFactory.get(i + 1));
+                int start  = factories.indexOf(String.valueOf(numIndexOfFactory.get(i)));
+                int end = factories.indexOf(String.valueOf(numIndexOfFactory.get(i + 1)));
+                factoryArray[i] = factories.substring(start,end);
             } else {
-                factoryArray[i] = factories.substring(numIndexOfFactory.get(i));
+                int start  = factories.indexOf(String.valueOf(numIndexOfFactory.get(i)));
+                factoryArray[i] = factories.substring(start);
+            }
+        }
+         int numOfValidFac = 0;
+
+        for(String fac:factoryArray){
+            if(fac.length() == 5){
+                numOfValidFac += 1;
             }
         }
 
 
-         */
-
-        String zeroFactories = factories.substring(zero,one);
-        String oneFactories = factories.substring(one,two);
-        String twoFactories = factories.substring(two,three);
-        String threeFactories  = factories.substring(three,four);
-        String fourFactories = factories.substring(four);
-
-        int numOfInvalidFactories = 0;
-
-        if(numOfInvalidFactories == 0 & zeroFactories.length() == 5 & oneFactories.length() == 5 & twoFactories.length() ==5
-                & threeFactories.length() ==5 & fourFactories.length() ==5 & factories.length() == 26){
+        if(numOfValidFac == numIndexOfFactory.size()){
             numberOfWellFormed += 1;
         }
         else if(factories.length() == 1){
@@ -1483,9 +1485,6 @@ public class Azul {
         NewMosaic newmosaic = new NewMosaic(mosaic);
 
 
-
-
-
         Storage s = new Storage();
         s.decode(storage);
         newmosaic.move(s.charRowColor(row),row,column);
@@ -1535,7 +1534,6 @@ public class Azul {
         s.emptyRow(row);
 
         if(move.charAt(0)=='A'){
-
             int score = Integer.parseInt(playerState.substring(1,M));
             gameState[1] = "A"+String.valueOf(score+plusscore) + newmosaic.getCode() + s.getCode() + gameState[1].substring(F);
             String Aplayer = "A"+String.valueOf(score+plusscore) + newmosaic.getCode() + s.getCode() + gameState[1].substring(F,B);
@@ -1556,6 +1554,10 @@ public class Azul {
         }
 
         return gameState;
+    }
+
+    public static String[] Draftingmove(String[] gameState,String move){
+        return null;
     }
 
 
