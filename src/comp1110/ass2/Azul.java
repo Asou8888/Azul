@@ -198,15 +198,15 @@ public class Azul {
         //test if factories if well-formed
         if (F > C) return false; // if C appears in the sharedstate before F, return false;
         String factories = sharedState.substring(F,C);
-        int zero = -1;
+        int zero = 0;
         int zeroCnt = 0;
-        int one = -1;
+        int one = 0;
         int oneCnt = 0;
-        int two = -1;
+        int two = 0;
         int twoCnt = 0;
-        int three = -1;
+        int three = 0;
         int threeCnt = 0;
-        int four = -1;
+        int four = 0;
         int fourCnt = 0;
         for(int n = 0 ; n < factories.length();n++){
             if(factories.toCharArray()[n] == '0'){
@@ -240,10 +240,8 @@ public class Azul {
         if (factories.equals("")) {
             return false; // the factory string is empty, return false;
         }
-        System.out.println(factories);
-        System.out.println(zero + ", " + one);
-
         // FIXME
+        /*
         ArrayList<Integer> numIndexOfFactory = new ArrayList<>(); // store the index found in shared state
         for (int i = 0; i < factories.length(); i++) {
             if (Character.isDigit(factories.charAt(i))) {
@@ -269,6 +267,8 @@ public class Azul {
             }
         }
 
+
+         */
 
         String zeroFactories = factories.substring(zero,one);
         String oneFactories = factories.substring(one,two);
