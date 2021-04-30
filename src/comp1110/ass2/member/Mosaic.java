@@ -13,7 +13,7 @@ public class Mosaic {
     private TileType[] pattern;
     private static final int MOSAIC_WIDTH = 25;
     private Player player; //add by Xiao Xu
-    private boolean isVariant; // added by Ruizheng Shen, if using a variant mosaic, isVariant = True; if using a beginner mosaic, isVariant = False
+    private boolean isVariant; // added by Ruizheng Shen
 
     /**
      * Constructor with no parameter, for variant mosaic.
@@ -126,7 +126,7 @@ public class Mosaic {
      * @param row
      * @return list of TileType
      */
-    public TileType[] RowcolorList(int row) {
+    public TileType[] colorList(int row) {
         //find the number of tiles in the specific row
         int num = 0;
         for (int i = row * 5 - 5; i < row * 5; i++) {
@@ -147,36 +147,6 @@ public class Mosaic {
         return colorList;
     }
 
-    public TileType[] ColumncolorList(int column){
-        // FIXME: case mosaic: "Mc02d33"
-        int num = 0;
-        for(int i = column-1; i <column+20;i=i+5){
-            if(tiles[i] != null){
-                num +=1;
-            }
-        }
-        TileType[] colorList = new TileType[num];
-        for(int n = 0; n < num;){
-            for (int i = column-1 ; i < column +20; i=i+5) {
-                try{
-                    colorList[n] = tiles[i].getTileType(); //add the color in the list if tile is not null
-                    n = n + 1;
-                }catch (Exception e){ //avoid Exception in case tiles[i] is null
-                }
-            }
-        }
-        return colorList;
-
-    }
-
-    public boolean isEmpty(int row,int column){
-        if(tiles[row*5+column] == null){
-            return true;
-        }else {
-            return false;
-        }
-    }
-
 
     /**
      * Calculate the final score in the mosaic.(This will be calculated at the end of the game)
@@ -189,43 +159,7 @@ public class Mosaic {
      * @return the bonus score in the mosaic
      */
     public int getBonusScore() {
-        int bouns = 0;
-        bouns += isRowFull()*2;
-        bouns += isColumnFull()*7;
-        String ListOfTile = "";
-        for(int i = 0;i<tiles.length;i++){
-            if(tiles[i] != null) {
-                ListOfTile += tiles[i].getCode();
-            }
-        }
-        if(getNumofEle(ListOfTile,'a') == 5){
-            bouns += 10;
-        }
-        if(getNumofEle(ListOfTile,'b') == 5){
-            bouns += 10;
-        }
-        if(getNumofEle(ListOfTile,'c') == 5){
-            bouns += 10;
-        }
-        if(getNumofEle(ListOfTile,'d') == 5){
-            bouns += 10;
-        }
-        if(getNumofEle(ListOfTile,'e') == 5){
-            bouns += 10;
-        }
-
-        return bouns;
-    }
-
-    public int getNumofEle(String x,char b){
-        int num = 0;
-        for(int i = 0;i<x.length();i++){
-            if (x.toCharArray()[i] == b){
-                num += 1;
-            }
-        }
-        return num;
-
+        return -1;
     }
 
     /**
@@ -233,7 +167,7 @@ public class Mosaic {
      * one row is full, the current round will over
      * @return true if there is a row is full
      */
-    public int isRowFull() {
+    public boolean isRowFull() {
         /**
          * Written by Xiao Xu 4/25/2021
          */
@@ -249,91 +183,12 @@ public class Mosaic {
         }
         //if the number string containing consecutive numbers, it means that there is at least one row is full
         //and the round should over
-        int num = 0;
-        if(number.contains("0001020304")){
-            num += 1;
+        if(number.contains("0001020304")  || number.contains("1011121314") || number.contains("2021222324") || number.contains("3031323334") || number.contains("4041424344")||number.contains("5051525354")){
+            return true;
         }
-        if(number.contains("1011121314")){
-            num += 1;
+        else {
+            return false;
         }
-        if(number.contains("2021222324")){
-            num += 1;
-        }
-        if(number.contains("3031323334")){
-            num += 1;
-        }
-        if(number.contains("4041424344")){
-            num += 1;
-        }
-
-        return num;
-
     }
-
-    public int isColumnFull() {
-        /**
-         * Written by Xiao Xu 4/25/2021
-         */
-        String mosaic = getCode();
-        String number = ""; //initialise a string
-        //extract all the numbers in mosaic
-        if(mosaic != null && !"".equals(mosaic)) {
-            for (int i = 0; i < mosaic.length(); i++) {
-                if (mosaic.charAt(i) >= 48 && mosaic.charAt(i) <= 57) {
-                    number += mosaic.charAt(i);
-                }
-            }
-        }
-        int num = 0;
-        if(number.contains("0010203040")) {
-            num += 1;
-        }
-        if(number.contains("0111213141")) {
-            num += 1;
-        }
-        if(number.contains("0212223242")) {
-            num += 1;
-        }
-        if(number.contains("0313233343")) {
-            num += 1;
-        }
-        return num;
-    }
-
-
-
-    public void decode(String mosaic){
-        /**
-         * Written by Xiao Xu 4/28
-         */
-        for(int i = 1; i < mosaic.length();i= i+3){
-              int index = Integer.parseInt(String.valueOf(mosaic.toCharArray()[i+1]))*5 + Integer.parseInt(String.valueOf(mosaic.toCharArray()[i+2]));
-              this.tiles[index] = new Tile(mosaic.charAt(i));
-        }
-
-    }
-
-    public static void main(String[] args) {
-        /**
-         * Test written by Xiao Xu 4/28
-         */
-        Mosaic m = new Mosaic();
-        // m.decode("Ma01b02a04"); // decode the String and put them into the storage
-        m.decode("Mc02d33");
-        for (int i = 0; i < MOSAIC_WIDTH; i++) {
-            if (m.tiles[i] == null) {
-                System.out.print("null,");
-            } else {
-                System.out.print(m.tiles[i].getCode()+",");
-            }
-        }
-        TileType[] colors = m.ColumncolorList(4);
-        for (TileType color: colors) {
-            System.out.println(color + " ");
-        }
-        System.out.println(m.ColumncolorList(2));
-    }
-
-
 
 }

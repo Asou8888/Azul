@@ -1,26 +1,16 @@
 package comp1110.ass2.member;
 
-import gittest.A;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-
 /**
  * @author Yixin Ge
  * @version 1.0
  * @since 2021.3.27
  */
 
-/**
- * Modified By Ruizheng Shen, Date: 2021.4.29
- */
-
 public class Factory {
     /**
      * Factory is made of 4 tiles.
      */
-    private static final int MAX_FACTORY_TILES_NUM = 4;
-    private ArrayList<Tile> tiles;
+    private Tile[] tiles;
 
 
 
@@ -31,29 +21,8 @@ public class Factory {
      * @param tiles the given array of Tile
      */
     public Factory(Tile[] tiles){
-        this.tiles = new ArrayList<>(Arrays.asList(tiles));
-    }
-
-    /**
-     * Another constructor with ArrayList as input.
-     * @param tiles
-     */
-    public Factory(ArrayList<Tile> tiles) {
+        //TODO
         this.tiles = tiles;
-    }
-
-    /**
-     * Empty constructor.
-     */
-    public Factory() {
-        this.tiles = new ArrayList<>();
-    }
-    /**
-     *
-     * @return the number of tiles in this factory
-     */
-    public int tileNum() {
-        return this.tiles.size();
     }
 
     /**
@@ -85,11 +54,7 @@ public class Factory {
      */
     private String encode() {
         //TODO
-        StringBuilder code = new StringBuilder();
-        this.tiles.forEach(t -> {
-            code.append(t.getCode());
-        });
-        return code.toString();
+        return "";
     }
 
     /**
@@ -97,32 +62,8 @@ public class Factory {
      * @return whether the factory currently has no tiles.
      */
     public boolean isEmpty(){
-        return this.tiles.isEmpty();
-    }
-
-    public void decode(String thisFactory) {
-        // TODO: test
-        // If this factory is null, this factory will be empty.
-        if (thisFactory != null) {
-            for (int i = 0; i < thisFactory.length(); i++) {
-                //TODO: check whether the code valid
-                this.tiles.add(new Tile(thisFactory.charAt(i))); // add tiles to this factory according to code
-            }
-        }
-    }
-
-    /**
-     * Find the colors of tiles in this factory
-     * @return List of colors(TileType)
-     */
-    public ArrayList<TileType> getColors() {
-        ArrayList<TileType> colors = new ArrayList<>();
-        this.tiles.forEach(t -> {
-            if (!colors.contains(t.getTileType())) {
-                colors.add(t.getTileType());
-            }
-        });
-        return colors;
+        //TODO
+        return false;
     }
 
     /**
@@ -130,31 +71,8 @@ public class Factory {
      * @return the amount of tiles in a Factory
      */
     public int tileAmount(){
-        return this.tiles.size();
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder s = new StringBuilder();
-        for (int i = 0; i < this.tiles.size(); i++) {
-            if (i == this.tiles.size() - 1) {
-                s.append(this.tiles.get(i).toString());
-            } else {
-                s.append(this.tiles.get(i).toString()).append(", ");
-            }
-        }
-        return s.toString();
-    }
-
-    public static void main(String[] args) {
-        // test toString()
-        Factory f1 = new Factory();
-        f1.decode("abbe");
-        Factory f2 = new Factory();
-        f2.decode("ccdd");
-        System.out.println("Factory 1: " + f1 + "\nFactory 2: " + f2);
+        //TODO
+        return 0;
     }
 
 }
-
-

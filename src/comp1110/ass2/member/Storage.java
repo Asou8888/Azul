@@ -147,19 +147,6 @@ public class Storage {
         return true;
     }
 
-
-    public TileType rowColor(int row) {
-        if (isRowEmpty(row)) {
-            return (TileType) null;
-        }
-        for (Tile t: this.tiles[row]) {
-            if (t != null) {
-                return t.getTileType();
-            }
-        }
-        return (TileType) null;
-    }
-
     /**
      * Determines if the color of tiles got from factory is same
      * as the tiles in a row in Storage.

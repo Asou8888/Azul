@@ -45,8 +45,8 @@ public class MosaicTest {
                 new Tile(TileType.Purple), null,new Tile(TileType.Orange),new Tile(TileType.Orange),null
         };
         Mosaic m2 = new Mosaic(tiles2);
-        assertEquals(0, m1.isRowFull());
-        assertEquals(1, m2.isRowFull());
+        assertEquals(false, m1.isRowFull());
+        assertEquals(true, m2.isRowFull());
 
     }
     @Test //test ColorList method
@@ -59,33 +59,11 @@ public class MosaicTest {
                 new Tile(TileType.Purple), null,new Tile(TileType.Orange),new Tile(TileType.Orange),null
         };
         Mosaic m = new Mosaic(tiles);
-        assertEquals(TileType.Red, m.RowcolorList(1)[0]); //test the first element
-        assertEquals(TileType.Blue, m.RowcolorList(2)[1]); //test teh case that the first element in tile[i] is null
-        assertEquals(TileType.Purple, m.RowcolorList(5)[0]); // test the last row
-        assertEquals(TileType.Orange, m.RowcolorList(5)[2]); //test the last element in colorList
-
-        assertEquals(TileType.Red, m.ColumncolorList(1)[0]);
-        assertEquals(TileType.Blue, m.ColumncolorList(2)[0]);
-        assertEquals(TileType.Blue, m.ColumncolorList(5)[0]);
-
-        assertEquals(true, m.isEmpty(0,1));
-        assertEquals(false, m.isEmpty(0,0));
+        assertEquals(TileType.Red, m.colorList(1)[0]); //test the first element
+        assertEquals(TileType.Blue, m.colorList(2)[1]); //test teh case that the first element in tile[i] is null
+        assertEquals(TileType.Purple, m.colorList(5)[0]); // test the last row
+        assertEquals(TileType.Orange, m.colorList(5)[2]); //test the last element in colorList
 
     }
-    @Test
-    public void testGetBouns() {
-        Tile[] tiles = new Tile[]{
-                new Tile(TileType.Red),new Tile(TileType.Green), new Tile(TileType.Blue), new Tile(TileType.Orange), new Tile(TileType.Purple),
-                null, null, new Tile(TileType.Green), null, new Tile(TileType.Blue),
-                new Tile(TileType.Blue), null, null, null, null,
-                null, new Tile(TileType.Blue), null, null, new Tile(TileType.Purple),
-                new Tile(TileType.Purple), null, new Tile(TileType.Orange), new Tile(TileType.Orange), null
-        };
-        Mosaic m = new Mosaic(tiles);
-
-        assertEquals(2, m.getBonusScore());
-
-    }
-
 
 }
