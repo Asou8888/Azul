@@ -47,6 +47,9 @@ public class Storage {
             }
         }
     }
+    public Storage(Tile[][] tiles) {
+        this.tiles = tiles;
+    }
 
     /**
      * Constructor with no parameters.
@@ -159,6 +162,10 @@ public class Storage {
         return null;
     }
 
+    public char charRowColor(int row) {
+        return tiles[row][0].getCode().toCharArray()[0];
+    }
+
     /**
      * Determines if the color of tiles got from factory is same
      * as the tiles in a row in Storage.
@@ -222,6 +229,13 @@ public class Storage {
         return this.tiles[row][STORAGE_ROW_LENGTH[row] - 1] == null;
     }
 
+    public Tile[][] emptyRow(int row){
+        for(int i =0;i<=row;i++){
+            tiles[row][i] = null;
+        }
+        return tiles;
+    }
+
     public static void main(String[] args) {
         Storage s = new Storage();
         s.decode("S2a13e44a1"); // decode the String and put them into the storage
@@ -236,5 +250,7 @@ public class Storage {
             }
             System.out.println("]");
         }
+
     }
+
 }

@@ -6,23 +6,32 @@ package comp1110.ass2.member;
  * @since 2021.3.27
  */
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  * Modified by Ruizheng Shen, 2021.4.19
  * Add a constructor
  */
 
 public class Center {
-    private Tile[] tiles ;
+    private ArrayList<Tile> tiles;
 
     // added by Ruizheng Shen.
     public Center(Tile[] tiles) {
-        this.tiles = tiles;
+        this.tiles = new ArrayList<Tile>(Arrays.asList(tiles));
     }
+
+    public Center(){
+        this.tiles = new ArrayList<Tile>();
+    }
+
 
     public String getCode() {
 
         return encode();
     }
+
 
     /**
      * The encoding for the Centre placement string is very similar for factories, but is not limited to 4 tiles.
@@ -39,17 +48,36 @@ public class Center {
 
     public String encode(){
         //TODO
-        return "";
+        /**
+         * Written by Xiao Xu 4/29
+         */
+        String center = "C";
+        for(int i =0;i<tiles.size();i++){
+            center += tiles.get(i).getCode();
+        }
+        return center;
+    }
+
+    public void decode(String center){
+        int num = center.length();
+        for(int n = 1; n<num;n++){
+            Tile a = new Tile(center.charAt(n));
+            this.tiles.add(a);
+        }
     }
 
 
-    /**
-     *get the number of tiles in current stage
-     * @return the number of tiles in center
-     */
+
+
+        /**
+         *get the number of tiles in current stage
+         * @return the number of tiles in center
+         */
     public int getCurrentNum(){
         //TODO:return the number of tiles in current stage
-        return 1;
+        int num = this.tiles.size();
+        return num;
+
     }
 
     /**
@@ -58,7 +86,14 @@ public class Center {
      */
     public boolean hasFirstPlayer(){
         //TODO:return if there is a firstplayer in center
-        return true;
+        String c = encode();
+        if(c.contains("f")){
+            return  true;
+        }
+        else {
+            return false;
+        }
+
     }
 
 
@@ -68,7 +103,7 @@ public class Center {
      */
     public boolean isEmpty(){
         //TODO:return if the center is empty or not
-        return true;
+        return tiles.size() ==0;
     }
 
 }

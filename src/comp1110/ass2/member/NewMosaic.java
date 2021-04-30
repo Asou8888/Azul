@@ -102,13 +102,14 @@ public class NewMosaic {
         return -1;
     }
     public int score(int row,int column) {
-        int score = 0;
+        int rowscore = 0;
+        int colscore = 0;
         for(int i = row;i < MOSAIC_WIDTH;i++){
             if(tiles[i][column] == null){
                 break;
             }
             else {
-                score += 1;
+                rowscore += 1;
             }
         }
         for(int i = row;i >=0 ;i--){
@@ -116,20 +117,20 @@ public class NewMosaic {
                 break;
             }
             else {
-                score += 1;
+                rowscore += 1;
             }
         }
-        if(score == 2){
-            score = 0;
+        if(rowscore == 2){
+            rowscore = 0;
         }else {
-            score = score-1;
+            rowscore = rowscore-1;
         }
         for(int i = column;i < MOSAIC_WIDTH;i++){
             if(tiles[row][i] == null){
                 break;
             }
             else {
-                score +=1;
+                colscore +=1;
             }
         }
         for(int i = column;i >=0;i--){
@@ -137,15 +138,21 @@ public class NewMosaic {
                 break;
             }
             else {
-                score +=1;
+                colscore +=1;
             }
         }
-        if(score == 2){
-            score = 1;
+        if(colscore == 2){
+            colscore = 0;
         }else {
-            score = score-1;
+            colscore = colscore-1;
         }
-        return score;
+
+        if(rowscore+colscore == 0){
+            return 1;
+        }else {
+            return rowscore +colscore;
+        }
+
     }
 
 
@@ -159,6 +166,13 @@ public class NewMosaic {
         }
     }
 
+    public Tile[][] move(char color,int row,int column){
+        Tile a = new Tile(color);
+        tiles[row][column] = a;
+        return tiles;
+    }
+
+
     public static void main(String[] args) {
         Tile[][] tiles = new Tile[][] {
                 new Tile[]{null, null, null, new Tile(TileType.Purple),null},
@@ -170,7 +184,10 @@ public class NewMosaic {
         NewMosaic m = new NewMosaic(tiles);
 
         System.out.println(m.score(2,3));
+        m.move('a',0,1);
+        System.out.println(tiles[0][1].getCode());
     }
+
 
 
 }
