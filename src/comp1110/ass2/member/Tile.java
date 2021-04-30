@@ -65,5 +65,10 @@ public class Tile {
         return this.tileType;
     }
 
+    @Override
+    public String toString() {
+        return this.getCode() + ": " + this.getTileType();
+    }
+
 
 }
