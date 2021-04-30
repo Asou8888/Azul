@@ -129,4 +129,8 @@ public class Player {
         // TODO: calculate the score of this player
     }
 
+    public Mosaic getMosaic(){
+        return mosaic;
+    }
+
 }
