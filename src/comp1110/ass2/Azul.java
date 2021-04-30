@@ -1340,6 +1340,9 @@ public class Azul {
      */
     public static String[] applyMove(String[] gameState, String move) {
         // FIXME Task 11
+        int A = gameState[1].indexOf("A");
+        int B = gameState[1].indexOf("B");
+
         return null;
     }
 

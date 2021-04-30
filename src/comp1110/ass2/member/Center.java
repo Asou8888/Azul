@@ -62,12 +62,9 @@ public class Center {
 
     public void decode(String center){
         int num = center.length();
-        for(int i = 1; i<num;i++){
-            for(int n = 1; n<center.length();n++){
-                Tile a = new Tile(center.toCharArray()[n]);
-                 this.tiles.add(a);
-            }
-
+        for(int n = 1; n<num;n++){
+            Tile a = new Tile(center.charAt(n));
+            this.tiles.add(a);
         }
     }
 
@@ -88,7 +85,13 @@ public class Center {
      */
     public boolean hasFirstPlayer(){
         //TODO:return if there is a firstplayer in center
-        return true;
+        String c = encode();
+        if(c.contains("f")){
+            return  true;
+        }
+        else {
+            return false;
+        }
     }
 
 
@@ -98,23 +101,21 @@ public class Center {
      */
     public boolean isEmpty(){
         //TODO:return if the center is empty or not
-        return true;
+        return tiles.size() ==0;
     }
 
     public static void main(String[] args) {
         /**
          * Test written by Xiao Xu
          */
-        String a = "Caaaabcfb";
+        String a = "Caaaabcf";
         Center c = new Center();
         c.decode(a);
-        for(int i = 0; i < a.length();i++){
+        for(int i = 0; i < a.length()-1;i++){
             System.out.print(c.tiles.get(i).getCode());
         }
 
         System.out.println(c.getCurrentNum());
-
-
     }
 
 }
