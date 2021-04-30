@@ -16,9 +16,9 @@ public class Bag {
 
 
     // added by Ruizheng Shen
-    public Bag() {
-        this.tiles = new Tile[100];
-    }
+    public Bag() { this.tiles =new Tile[100]; }
+
+    public  Bag(Tile[] tiles){this.tiles = tiles;}
 
     public String getCode() {
         return encode();
@@ -127,17 +127,26 @@ public class Bag {
     }
 
     public static void main(String[] args) {
-        Tile[] tiles = new Tile[]{
+        /*Tile[] tiles = new Tile[]{
                 new Tile(TileType.Red),
                 new Tile(TileType.Green),
                 new Tile(TileType.Blue),
                 new Tile(TileType.Blue),
                 new Tile(TileType.Blue),
                 new Tile(TileType.Blue),
-                new Tile(TileType.Blue)
-        };
-        Bag b = new Bag();
+                new Tile(TileType.Blue)};
+        Bag b = new Bag(tiles);
         System.out.println(b.getCode());
+
+         */
+        String a = new String("B0301000001");
+        Bag d = new Bag();
+        d.decode(a);
+        for (int i = 0; i< 100; i++) {
+            if (d.tiles[i] != null) {
+                System.out.print(d.tiles[i].getCode());
+            }
+        }
     }
 }
 
