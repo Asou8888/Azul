@@ -113,6 +113,18 @@ public class Mosaic {
         return mosaic;
     }
 
+    public void decode(String mosaic){
+        /**
+         * Written by Xiao Xu 4/28
+         */
+        for(int i = 1; i < mosaic.length();i= i+3){
+            int index = Integer.parseInt(String.valueOf(mosaic.toCharArray()[i+1]))*5 + Integer.parseInt(String.valueOf(mosaic.toCharArray()[i+2]));
+            this.tiles[index] = new Tile(mosaic.charAt(i));
+        }
+
+    }
+
+
     /**
      * Calculate the current score in the mosaic.(This will be calculated at the end of each round)
      * @return the current score in the mosaic
