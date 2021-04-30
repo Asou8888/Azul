@@ -1163,6 +1163,11 @@ public class Azul {
 
             String[] splitSharedState = splitSharedState(gameState); // split the shared state.
 
+            // check whose turn
+            if (splitSharedState[0].charAt(0) != player) {
+                return false;
+            }
+
             //  1. The specified factory/centre contains at least one tile of the specified colour.
             if (factoryOrCenter == 'C') {
                 // if it is centre.
@@ -1182,27 +1187,11 @@ public class Azul {
                 int num = factoryOrCenter - '0';
                 String factory = splitSharedState[1]; // The 2nd String is the factory state.
                 // TODO: interact with class storage/ factory?
-                boolean isColorValid = false;
-                // FIXME
-                if (factory.indexOf(num) < 0) {
-                    // This factory does not contain ant tiles, so it is invalid.
-                } else {
-                    boolean isColorContainedInFactory = false;
-                    for (int i = num + 1; i < factory.length(); i++) {
-                        if ('0' <= factory.charAt(i) && '9' <= factory.charAt(i)) {
-                            // reach another factory, break the loop.
-                            break;
-                        } else {
-                            if (factory.charAt(i) == tileColor) {
-                                // find a specified tile
-                                isColorContainedInFactory = true;
-                                break;
-                            }
-                        }
-                    }
-                    if (!isColorContainedInFactory) {
-                        return false; // no specified tile is found.
-                    }
+                Factories fs = new Factories(factory); //  create the factories according to the factory code.
+                Tile t = new Tile(tileColor);
+                if (fs.getColors(num) == null || !fs.getColors(num).contains(t.getTileType())) {
+                    // if the input number of factory is invalid / the factory does not have the tiles of this color.
+                    return false;
                 }
             }
 
@@ -1250,13 +1239,13 @@ public class Azul {
             if (!(rowChar == '0' || rowChar == '1' || rowChar == '2' || rowChar == '3' || rowChar == '4')) {
                 return false;
             }
-            int row = rowChar;
+            int row = rowChar - '0';
 
             // check column
             if (!(colChar == '0' || colChar == '1' || colChar == '2' || colChar == '3' || colChar == '4')) {
                 return false;
             }
-            int col = colChar;
+            int col = colChar - '0';
 
             // 1. The specified row in the Storage area is full.
             HashMap<String, String[]> splitPlayerState = splitPlayerState(gameState); // split the player state
@@ -1313,6 +1302,9 @@ public class Azul {
      */
     public static String[] applyMove(String[] gameState, String move) {
         // FIXME Task 11
+        int A = gameState[1].indexOf("A");
+        int B = gameState[1].indexOf("B");
+
         return null;
     }
 

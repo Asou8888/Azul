@@ -65,5 +65,17 @@ public class Tile {
         return this.tileType;
     }
 
+    @Override
+    public String toString() {
+        return "'" + this.colorChar + "'" + ": " + this.getTileType() + " tile";
+    }
+
+    public static void main(String[] args) {
+        // test toString()
+        Tile t1 = new Tile(TileType.Red);
+        Tile t2 = new Tile(TileType.Purple);
+        Tile t3 = new Tile(TileType.FirstPlayer);
+        System.out.println("1) " + t1 + "2) " + t2 + "3) " + t3);
+    }
 
 }
