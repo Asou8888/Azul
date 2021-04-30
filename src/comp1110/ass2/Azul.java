@@ -195,31 +195,80 @@ public class Azul {
 
         int numberOfWellFormed = 0;
 
-
         //test if factories if well-formed
+        if (F > C) return false; // if C appears in the sharedstate before F, return false;
         String factories = sharedState.substring(F,C);
-        int zero = 0;
-        int one = 0;
-        int two = 0;
-        int three = 0;
-        int four = 0;
+        int zero = -1;
+        int zeroCnt = 0;
+        int one = -1;
+        int oneCnt = 0;
+        int two = -1;
+        int twoCnt = 0;
+        int three = -1;
+        int threeCnt = 0;
+        int four = -1;
+        int fourCnt = 0;
         for(int n = 0 ; n < factories.length();n++){
             if(factories.toCharArray()[n] == '0'){
+                if (zeroCnt == 0) zeroCnt++;
+                else return false; // if more than one '0' in the factory state, return false;
                 zero = n;
             }
             else if(factories.toCharArray()[n] == '1'){
+                if (oneCnt == 0) oneCnt++;
+                else return false;
                 one = n;
             }
             else if(factories.toCharArray()[n] == '2'){
+                if (twoCnt == 0) twoCnt++;
+                else return false;
                 two = n;
             }
             else if(factories.toCharArray()[n] == '3'){
+                if (threeCnt == 0) threeCnt++;
+                else return false;
                 three = n;
             }
             else if(factories.toCharArray()[n] == '4'){
+                if (fourCnt == 0) fourCnt++;
+                else return false;
                 four = n;
             }
         }
+
+        // FIXME: test
+        if (factories.equals("")) {
+            return false; // the factory string is empty, return false;
+        }
+        System.out.println(factories);
+        System.out.println(zero + ", " + one);
+
+        // FIXME
+        ArrayList<Integer> numIndexOfFactory = new ArrayList<>(); // store the index found in shared state
+        for (int i = 0; i < factories.length(); i++) {
+            if (Character.isDigit(factories.charAt(i))) {
+                // This character is a digit.
+                numIndexOfFactory.add(factories.charAt(i) - '0');
+            }
+        }
+        // if there's more than 5 digits is found in the sharedstate, return false;
+        if (numIndexOfFactory.size() > 5) return false;
+
+        String[] factoryArray = new String[numIndexOfFactory.size()];
+        for (int i = 0; i < numIndexOfFactory.size(); i++) {
+            if (i != numIndexOfFactory.size() - 1 && numIndexOfFactory.get(i) >= numIndexOfFactory.get(i + 1)) {
+                return false; // number order
+            }
+            if (numIndexOfFactory.get(i) >= 5) return false; // no number is bigger than 5.
+        }
+        for (int i = 0; i < factoryArray.length; i++) {
+            if (i != factoryArray.length - 1) {
+                factoryArray[i] = factories.substring(numIndexOfFactory.get(i), numIndexOfFactory.get(i + 1));
+            } else {
+                factoryArray[i] = factories.substring(numIndexOfFactory.get(i));
+            }
+        }
+
 
         String zeroFactories = factories.substring(zero,one);
         String oneFactories = factories.substring(one,two);
@@ -250,6 +299,7 @@ public class Azul {
             }
         }
 
+        if (sharedState.indexOf('B') < 0) return false; // check whether there's 'B' in sharedstate.
         //test if bag is well-formed
         String bag =sharedState.substring(B,B+11);
         try {
