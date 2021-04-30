@@ -1,8 +1,6 @@
 package comp1110.ass2;
 
-import comp1110.ass2.member.Floor;
-import comp1110.ass2.member.Storage;
-import comp1110.ass2.member.Tile;
+import comp1110.ass2.member.*;
 import gittest.A;
 import gittest.B;
 import gittest.C;
@@ -1090,108 +1088,20 @@ public class Azul {
          */
     public static boolean isStateValid(String[] gameState) {
         // FIXME Task 9
-        String shared = gameState[0];
-        String player = gameState[1];
-        String[] sharedState = splitSharedState(gameState);
-        String factory = sharedState[1];
-        String centre = sharedState[2];
-        String bag = sharedState[3];
-        String discard = sharedState[4];
-        HashMap<String, String[]> splitPlayerState = splitPlayerState(gameState);
-        String mosaicA = splitPlayerState.get("A")[1];
-        String storageA = splitPlayerState.get("A")[2];
-        String floorA = splitPlayerState.get("A")[3];
-        String mosaicB = splitPlayerState.get("B")[1];
-        String storageB = splitPlayerState.get("B")[2];
-        String floorB = splitPlayerState.get("B")[3];
-        //if (isSharedStateWellFormed(shared) && isPlayerStateWellFormed(player) &&
-        //        tileOnFloor(floorA) && tileOnFloor(floorB) && isSharedStateWellFormed(shared)){
-        //    return(tileStorageMosaicSame(storageA,mosaicA) && tileStorageMosaicSame(storageB,mosaicB) );
-        //}
-        return (tileOnFloor(floorA) && tileOnFloor(floorB) &&
-                tileInCenter(centre,factory));
-    }
-    public static boolean tileInCenter (String center, String factory) {
-        int cnt = 0; // number of tiles in centre
-        for (int i = 1; i < center.length();i++){
-            cnt++;
-            if (center.charAt(i) == 'f'){
-                cnt--;
-            }
-        }
-        int num = 0; // number of factory contains tile
-        for(int j = 1; j < factory.length(); j++){
-            if (factory.charAt(j) == 'a'|| factory.charAt(j) == 'b' && factory.charAt(j) == 'c'||
-                    factory.charAt(j) == 'd' || factory.charAt(j) == 'e'){
-                num++;
-            }
-        }
-        return cnt <= (20 - num )/4 * 3;
 
+        return (tileOnFloor(gameState));
     }
 
-    /*public  static boolean tileStorageMosaicSame (String storage,String mosaic) {
-        String[] eachRowTileInStorage = new String[5]; // storage have 5 rows, each have colortype and amount of it eg.["a","b","c",null,null]
-        int everyRow = 0;
-        for (int i = 1; i < storage.length(); i = i + 3) {
-            int row = storage.charAt(i) - '0';
-            char tile = storage.charAt(i + 1);
-            while (everyRow < 5) {
-                if (row == everyRow) {
-                    eachRowTileInStorage[everyRow] = String.valueOf(tile);
-                    if (everyRow < 4) {
-                        everyRow++;
-                    }
-                    break;
-                } else {
-                    eachRowTileInStorage[everyRow] = null;
-                    if (everyRow + 1 == 5) {
-                        break;
-                    } else {
-                        everyRow++;
-                    }
-                }
-            }
-        }
-        int everyRowForMo = 0;
-        String[] eachRowTilesInMosaic = new String[5]; // 5 rows in Mosaic eg.["abc","abcd","ac",null,null]
-        for (int i = 1; i < mosaic.length(); i = i + 3) {
-            char tile = mosaic.charAt(i);
-            int row = mosaic.charAt(i + 1) - '0';
-            while (everyRowForMo < 5) {
-                if (row == everyRowForMo) {
-                    eachRowTilesInMosaic[everyRowForMo] = eachRowTilesInMosaic[everyRowForMo] + String.valueOf(tile);
-                    if (i + 4 < mosaic.length()) {
-                        if (row != mosaic.charAt(i + 4)) {
-                            if (everyRowForMo + 1 == 5) {
-                                break;
-                            } else {
-                                everyRowForMo++;
-                            }
-                        }
-                    } else {
-                        eachRowTilesInMosaic[everyRowForMo] = null;
-                        if (everyRowForMo + 1 == 5) {
-                            break;
-                        } else {
-                            everyRowForMo++;
-                        }
-                    }
-                }
-            }
-            for (int j = 0; j < 5; j++) {
-                if (eachRowTileInStorage[i] != null && eachRowTilesInMosaic[i] != null) {
-                    int containTile = eachRowTilesInMosaic[i].indexOf(eachRowTileInStorage[i]);
-                    return containTile == -1;
-                }
-            }
-        }
-        return false;
-    }
-    */
-
-    public static boolean tileOnFloor (String floor){
-        return (floor.length()<8);
+    public static boolean tileOnFloor (String[] gameState){
+        String a  = gameState[1];
+        int x = a.indexOf("B");
+        String playerA = a.substring(0,x);
+        int b = playerA.indexOf("F");
+        String facA = playerA.substring(b+1);
+        String playerB = a.substring(x);
+        int n = playerB.indexOf("F");
+        String facB = playerB.substring(n+1);
+        return (facA.length()<8 && facB.length()<8);
     }
 
     /**
@@ -1221,7 +1131,192 @@ public class Azul {
      */
     public static boolean isMoveValid(String[] gameState, String move) {
         // FIXME Task 10
-        return false;
+        // determine whether the game state valid first.
+        // TODO: if (!isStateValid(gameState)) return false;
+
+        /* If move.length == 4, then it is a draftmove;
+         * If move.length == 3, then it is a tilemove
+         */
+        if (move.length() == 4) {
+            // do draft move
+            char player = move.charAt(0);
+            // check player(2 player consequence)
+            if (player != 'A' && player != 'B')
+                return false;
+
+            char factoryOrCenter = move.charAt(1);
+            // check factory or centre
+            if (!(factoryOrCenter == 'C' || factoryOrCenter == '0' || factoryOrCenter == '1' || factoryOrCenter == '2' || factoryOrCenter == '3' || factoryOrCenter == '4'))
+                return false;
+
+            char tileColor = move.charAt(2);
+            // check tile color
+            if (!(tileColor == 'a' || tileColor == 'b' || tileColor == 'c' || tileColor == 'd' || tileColor == 'e')) {
+                // not a tile of any color
+                return false;
+            }
+
+            char rowOrFloor = move.charAt(3);
+            // check row or floor
+            if (!(rowOrFloor == 'F' || rowOrFloor == '0' || rowOrFloor == '1' || rowOrFloor == '2' || rowOrFloor == '3' || rowOrFloor == '4'))
+                return false;
+
+            String[] splitSharedState = splitSharedState(gameState); // split the shared state.
+
+            // check whose turn
+            if (splitSharedState[0].charAt(0) != player) {
+                return false;
+            }
+
+            //  1. The specified factory/centre contains at least one tile of the specified colour.
+            if (factoryOrCenter == 'C') {
+                // if it is centre.
+                String centre = splitSharedState[2]; // The 3nd String is the centre state.
+                // TODO: interact with class Centre?
+                boolean isColorValid = false;
+                for (int i = 1; i < centre.length(); i++) {
+                    // check whether there's a tile is the specified color.
+                    if (centre.charAt(i) == tileColor) {
+                        isColorValid = true;
+                        break;
+                    }
+                }
+                if (!isColorValid)
+                    return false; // no specified tile is found.
+            } else {
+                int num = factoryOrCenter - '0';
+                String factory = splitSharedState[1]; // The 2nd String is the factory state.
+                // TODO: interact with class storage/ factory?
+                Factories fs = new Factories(factory); //  create the factories according to the factory code.
+                Tile t = new Tile(tileColor);
+                if (fs.getColors(num) == null || !fs.getColors(num).contains(t.getTileType())) {
+                    // if the input number of factory is invalid / the factory does not have the tiles of this color.
+                    return false;
+                }
+            }
+
+            // 2. The storage row the tile is being placed in does not already contain a different colour.
+            HashMap<String, String[]> splitPlayerState = splitPlayerState(gameState); // get the split player state
+            String[] playerState = splitPlayerState.get(String.valueOf(player)); // get the player state from the map("player");
+            if (rowOrFloor != 'F') {
+                int row = rowOrFloor - '0';
+                // storage
+                String storage = playerState[2]; // The storage state is stored in the 3rd element.
+                // TODO: interact with class Storage?
+                Storage s = new Storage();
+                s.decode(storage); // decode the state, turn it into the tiles array in class Storage.
+                Tile t = new Tile(tileColor); // the tile need to put into the storage
+                if (!s.isRowColorSame(t, row)) {
+                    // does not have the same color
+                    return false;
+                } else {
+                    // has the same color or this row in storage is empty
+                    // TODO: up to here.
+                    // 3. The corresponding mosaic row does not already contain a tile of that colour.
+                    String mosaic = playerState[1]; // The mosaic state is stored in the 2nd element.
+                    NewMosaic m = new NewMosaic(mosaic);
+                    ArrayList<TileType> colors = m.rowColorList(row); // get the colors of the row in mosaic.
+                    for (TileType color: colors) {
+                        if (t.getTileType() == color) {
+                            return false; // the row in mosaic has the same color.
+                        }
+                    }
+                }
+            }
+            return true;
+        } else if (move.length() == 3) {
+            // do tile move
+            char player = move.charAt(0);
+            char rowChar = move.charAt(1);
+            char colChar = move.charAt(2);
+
+            // check player(2 player consequence)
+            if (player != 'A' && player != 'B')
+                return false;
+
+            // check row
+            if (!(rowChar == '0' || rowChar == '1' || rowChar == '2' || rowChar == '3' || rowChar == '4')) {
+                return false;
+            }
+            int row = rowChar - '0';
+
+            // check column
+            if (!(colChar == '0' || colChar == '1' || colChar == '2' || colChar == '3' || colChar == '4' || colChar == 'F')) {
+                return false;
+            }
+            int col = colChar == 'F' ? colChar : colChar - '0';
+
+            // check whose turn
+            String[] splitSharedState = splitSharedState(gameState);
+            if (player != splitSharedState[0].charAt(0)) {
+                return false;
+            }
+
+            if (colChar != 'F') {
+                // 1. The specified row in the Storage area is full.
+                HashMap<String, String[]> splitPlayerState = splitPlayerState(gameState); // split the player state
+                String[] playerState = splitPlayerState.get(String.valueOf(player)); // get the player state of this player
+                String storage = playerState[2]; // The storage state is stored at the 3rd place.
+                Storage s = new Storage();
+                s.decode(storage);
+                if (!s.isRowFull(row)) {
+                    return false; // If this row is not full, return false;
+                }
+                // 2. TODO: The specified column does not already contain a tile of the same colour.
+                String mosaic = playerState[1]; // The mosaic state is stored at the 2nd place.
+                NewMosaic m = new NewMosaic(mosaic);
+                TileType rowColor = s.rowColor(row); // get the color of the tiles in this row of storage.
+                ArrayList<TileType> colors = m.colColorList(col);
+                for (TileType color : colors) {
+                    if (rowColor == null || rowColor == color) {
+                        // The row in storage is empty/ the col in mosaic has the same color as this row.
+                        return false;
+                    }
+                }
+                // 3. TODO: The specified location in the mosaic is empty.
+                if (!m.isEmpty(row, col)) {
+                    return false;
+                }
+            } else {
+                // 4. TODO: If the specified column is 'F', no valid move exists from the specified row into the mosaic.
+                // find whether there's a valid move from storage to mosaic
+                HashMap<String, String[]> splitPlayerState = splitPlayerState(gameState); // split the player state
+                String[] playerState = splitPlayerState.get(String.valueOf(player)); // get the player state of this player
+                String storage = playerState[2]; // The storage state is stored at the 3rd place.
+                Storage s = new Storage();
+                s.decode(storage);
+                String mosaic = playerState[1];
+                NewMosaic m = new NewMosaic(mosaic);
+                // check the row in storage
+                if (s.isRowFull(row)) {
+                    // this row is full, check the same row in mosaic.
+                    TileType colorInStorage = s.rowColor(row); // get the tile color of this row in storage.
+                    ArrayList<TileType> rowColorsInMosaic = m.rowColorList(row);
+                    // if there's a same color tile in this row in mosaic, then the tilemove of this row in invalid.
+                    if (!rowColorsInMosaic.contains(colorInStorage)) {
+                        // does not have the same color tile
+                        // check whether there's an empty space in this row, and then check whether the columns have the same color tile.
+                        for (int j = 0; j < 5; j++) {
+                            if (m.isEmpty(row, j)) {
+                                ArrayList<TileType> colColorsInMosaic = m.colColorList(j);
+                                if (!colColorsInMosaic.contains(colorInStorage)) {
+                                    // this column does not contain the same color tile, so this space in mosaic is valid.
+                                    // Thus there's valid tile move from storage to mosaic, the move to floor should be invalid.
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    // TODO: [ask in piazza, case: B0F, why this is false]if the row is not full, return false
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            // invalid move
+            return false;
+        }
     }
 
     /**
@@ -1245,8 +1340,12 @@ public class Azul {
      */
     public static String[] applyMove(String[] gameState, String move) {
         // FIXME Task 11
+        int A = gameState[1].indexOf("A");
+        int B = gameState[1].indexOf("B");
+
         return null;
     }
+
 
     /**
      * Given a valid game state, return a valid move.
