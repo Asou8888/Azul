@@ -1214,9 +1214,8 @@ public class Azul {
                     // TODO: up to here.
                     // 3. The corresponding mosaic row does not already contain a tile of that colour.
                     String mosaic = playerState[1]; // The mosaic state is stored in the 2nd element.
-                    Mosaic m = new Mosaic();
-                    m.decode(mosaic);
-                    TileType[] colors = m.RowcolorList(row); // get the colors of the row in mosaic.
+                    NewMosaic m = new NewMosaic(mosaic);
+                    ArrayList<TileType> colors = m.rowColorList(row); // get the colors of the row in mosaic.
                     for (TileType color: colors) {
                         if (t.getTileType() == color) {
                             return false; // the row in mosaic has the same color.
@@ -1242,38 +1241,77 @@ public class Azul {
             int row = rowChar - '0';
 
             // check column
-            if (!(colChar == '0' || colChar == '1' || colChar == '2' || colChar == '3' || colChar == '4')) {
+            if (!(colChar == '0' || colChar == '1' || colChar == '2' || colChar == '3' || colChar == '4' || colChar == 'F')) {
                 return false;
             }
-            int col = colChar - '0';
+            int col = colChar == 'F' ? colChar : colChar - '0';
 
-            // 1. The specified row in the Storage area is full.
-            HashMap<String, String[]> splitPlayerState = splitPlayerState(gameState); // split the player state
-            String[] playerState = splitPlayerState.get(String.valueOf(player)); // get the player state of this player
-            String storage = playerState[2]; // The storage state is stored at the 3rd place.
-            Storage s = new Storage();
-            s.decode(storage);
-            if (!s.isRowFull(row)) {
-                return false; // If this row is not full, return false;
+            // check whose turn
+            String[] splitSharedState = splitSharedState(gameState);
+            if (player != splitSharedState[0].charAt(0)) {
+                return false;
             }
-            // 2. TODO: The specified column does not already contain a tile of the same colour.
-            String mosaic = playerState[1]; // The mosaic state is stored at the 2nd place.
-            Mosaic m = new Mosaic();
-            m.decode(mosaic);
-            TileType rowColor = s.rowColor(row); // get the color of the tiles in this row of storage.
-            TileType[] colors = m.ColumncolorList(col);
-            for (TileType color: colors) {
-                if (rowColor == null || rowColor == color) {
-                    // The row in storage is empty/ the col in mosaic has the same color as this row.
+
+            if (colChar != 'F') {
+                // 1. The specified row in the Storage area is full.
+                HashMap<String, String[]> splitPlayerState = splitPlayerState(gameState); // split the player state
+                String[] playerState = splitPlayerState.get(String.valueOf(player)); // get the player state of this player
+                String storage = playerState[2]; // The storage state is stored at the 3rd place.
+                Storage s = new Storage();
+                s.decode(storage);
+                if (!s.isRowFull(row)) {
+                    return false; // If this row is not full, return false;
+                }
+                // 2. TODO: The specified column does not already contain a tile of the same colour.
+                String mosaic = playerState[1]; // The mosaic state is stored at the 2nd place.
+                NewMosaic m = new NewMosaic(mosaic);
+                TileType rowColor = s.rowColor(row); // get the color of the tiles in this row of storage.
+                ArrayList<TileType> colors = m.colColorList(col);
+                for (TileType color : colors) {
+                    if (rowColor == null || rowColor == color) {
+                        // The row in storage is empty/ the col in mosaic has the same color as this row.
+                        return false;
+                    }
+                }
+                // 3. TODO: The specified location in the mosaic is empty.
+                if (!m.isEmpty(row, col)) {
+                    return false;
+                }
+            } else {
+                // 4. TODO: If the specified column is 'F', no valid move exists from the specified row into the mosaic.
+                // find whether there's a valid move from storage to mosaic
+                HashMap<String, String[]> splitPlayerState = splitPlayerState(gameState); // split the player state
+                String[] playerState = splitPlayerState.get(String.valueOf(player)); // get the player state of this player
+                String storage = playerState[2]; // The storage state is stored at the 3rd place.
+                Storage s = new Storage();
+                s.decode(storage);
+                String mosaic = playerState[1];
+                NewMosaic m = new NewMosaic(mosaic);
+                // check the row in storage
+                if (s.isRowFull(row)) {
+                    // this row is full, check the same row in mosaic.
+                    TileType colorInStorage = s.rowColor(row); // get the tile color of this row in storage.
+                    ArrayList<TileType> rowColorsInMosaic = m.rowColorList(row);
+                    // if there's a same color tile in this row in mosaic, then the tilemove of this row in invalid.
+                    if (!rowColorsInMosaic.contains(colorInStorage)) {
+                        // does not have the same color tile
+                        // check whether there's an empty space in this row, and then check whether the columns have the same color tile.
+                        for (int j = 0; j < 5; j++) {
+                            if (m.isEmpty(row, j)) {
+                                ArrayList<TileType> colColorsInMosaic = m.colColorList(j);
+                                if (!colColorsInMosaic.contains(colorInStorage)) {
+                                    // this column does not contain the same color tile, so this space in mosaic is valid.
+                                    // Thus there's valid tile move from storage to mosaic, the move to floor should be invalid.
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    // TODO: [ask in piazza, case: B0F, why this is false]if the row is not full, return false
                     return false;
                 }
             }
-            // 3. TODO: The specified location in the mosaic is empty.
-            if (!m.isEmpty(row, col)) {
-                return false;
-            }
-
-            // 4. TODO: If the specified column is 'F', no valid move exists from the specified row into the mosaic.
             return true;
         } else {
             // invalid move

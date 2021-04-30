@@ -1,6 +1,7 @@
 package comp1110.ass2.member;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class NewMosaic {
     private Tile[][] tiles;
@@ -10,6 +11,11 @@ public class NewMosaic {
 
     public NewMosaic() {
         this.tiles = new Tile[MOSAIC_WIDTH][MOSAIC_WIDTH];
+    }
+
+    public NewMosaic(String mosaic) {
+        this.tiles = new Tile[MOSAIC_WIDTH][MOSAIC_WIDTH];
+        decode(mosaic);
     }
 
     public NewMosaic(boolean isVariant) {
@@ -81,6 +87,9 @@ public class NewMosaic {
         }
         return true;
     }
+    public boolean isEmpty(int row, int col) {
+        return tiles[row][col] == null;
+    }
 
     public boolean isRowFull(int row) {
         for (int i = 0; i < MOSAIC_WIDTH; i++) {
@@ -105,6 +114,53 @@ public class NewMosaic {
             int col = mosaic.charAt(i + 2) - '0'; // the column of this tile.
             tiles[row][col] = new Tile(colorChar); // put the tile in this position.
         }
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder s = new StringBuilder("Mosaic: ");
+        s.append(isVariant ? "Variant" : "Beginner").append("\n");
+        for (int i = 0; i < MOSAIC_WIDTH; i++) {
+            for (int j = 0; j < MOSAIC_WIDTH; j++) {
+                if (tiles[i][j] != null) {
+                    s.append(tiles[i][j].toString()).append("  ");
+                } else {
+                    s.append("null  ");
+                }
+            }
+            s.append("\n");
+        }
+        return s.toString();
+    }
+
+    public static void main(String[] args) {
+        // test new mosaic mothod: decode(), normal case 1
+        NewMosaic m1 = new NewMosaic("Mb00a02a13e42");
+        System.out.println(m1);
+        // test isRowFull()
+        System.out.println("Is row 0 full ? " + m1.isRowFull(0));
+        // test rowColorList()
+        System.out.println("Row 0 colors(Not empty): ");
+        m1.rowColorList(0).forEach(t -> {
+            System.out.print(t + " ");
+        });
+        System.out.println();
+        System.out.println("Row 3 colors(empty): ");
+        m1.rowColorList(3).forEach(t -> {
+            System.out.print(t + " ");
+        });
+        System.out.println();
+        // test colColorList()
+        System.out.println("Col 2 colors(Not empty):");
+        m1.colColorList(2).forEach(t -> {
+            System.out.print(t + " ");
+        });
+        System.out.println();
+        System.out.println("Col 1 colors(empty):");
+        m1.colColorList(1).forEach(t -> {
+            System.out.print(t + " ");
+        });
+        System.out.println();
     }
 
 }
