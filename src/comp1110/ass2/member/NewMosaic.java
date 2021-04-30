@@ -99,9 +99,11 @@ public class NewMosaic {
     }
 
     public int getBonusScore() {
+        // TODO:
         return -1;
     }
     public int score() {
+        // TODO
         return -1;
     }
 
