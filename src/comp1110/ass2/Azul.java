@@ -225,22 +225,27 @@ public class Azul {
         String oneFactories = factories.substring(one,two);
         String twoFactories = factories.substring(two,three);
         String threeFactories  = factories.substring(three,four);
-        String fourFactories = factories.substring(four,factories.length());
+        String fourFactories = factories.substring(four);
 
         int numOfInvalidFactories = 0;
 
         if(numOfInvalidFactories == 0 & zeroFactories.length() == 5 & oneFactories.length() == 5 & twoFactories.length() ==5
-        & threeFactories.length() ==5 & fourFactories.length() ==5 & factories.length() == 26){
+                & threeFactories.length() ==5 & fourFactories.length() ==5 & factories.length() == 26){
             numberOfWellFormed += 1;
         }
         else if(factories.length() == 1){
             numberOfWellFormed += 1;
         }
 
+        if(factories.contains("g")){
+            numberOfWellFormed -= 1;
+        }
+
+
         //test if center is well-formed
         String center = sharedState.substring(C,B);
-        for (int n = 1; n < center.length()-1;n++){
-            if (Integer.valueOf(center.toCharArray()[n]) > Integer.valueOf(center.toCharArray()[n+1])) {
+        for(int n = 1; n < center.length()-1;n++){
+            if(Integer.valueOf(center.toCharArray()[n]) > Integer.valueOf(center.toCharArray()[n+1])){
                 return false;
             }
         }
@@ -279,6 +284,7 @@ public class Azul {
             return false;
         }
     }
+
 
     /**
      * Tool 1: isPlayerChar
