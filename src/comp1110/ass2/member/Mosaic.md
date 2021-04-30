@@ -1,4 +1,4 @@
-c# Class *Mosaic* Description
+# Class *Mosaic* Description
 
 <ul>
 - The Mosaic class implements the mosaic of a player, which has a tile array(5*5)<br>

@@ -6,29 +6,18 @@ package comp1110.ass2.member;
  * @since 2021.3.27
  */
 
-import gittest.C;
-import org.hamcrest.Condition;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-
 /**
  * Modified by Ruizheng Shen, 2021.4.19
  * Add a constructor
  */
 
 public class Center {
-    private ArrayList<Tile> tiles;
+    private Tile[] tiles ;
 
     // added by Ruizheng Shen.
     public Center(Tile[] tiles) {
-        this.tiles = new ArrayList<Tile>(Arrays.asList(tiles));
+        this.tiles = tiles;
     }
-
-    public Center(){
-        this.tiles = new ArrayList<Tile>();
-    }
-
 
     public String getCode() {
 
@@ -50,22 +39,7 @@ public class Center {
 
     public String encode(){
         //TODO
-        /**
-         * Written by Xiao Xu 4/29
-         */
-        String center = "C";
-        for(int i =0;i<tiles.size();i++){
-            center += tiles.get(i).getCode();
-        }
-        return center;
-    }
-
-    public void decode(String center){
-        int num = center.length();
-        for(int n = 1; n<num;n++){
-            Tile a = new Tile(center.charAt(n));
-            this.tiles.add(a);
-        }
+        return "";
     }
 
 
@@ -75,8 +49,7 @@ public class Center {
      */
     public int getCurrentNum(){
         //TODO:return the number of tiles in current stage
-        int num = this.tiles.size();
-        return num;
+        return 1;
     }
 
     /**
@@ -85,13 +58,7 @@ public class Center {
      */
     public boolean hasFirstPlayer(){
         //TODO:return if there is a firstplayer in center
-        String c = encode();
-        if(c.contains("f")){
-            return  true;
-        }
-        else {
-            return false;
-        }
+        return true;
     }
 
 
@@ -101,21 +68,7 @@ public class Center {
      */
     public boolean isEmpty(){
         //TODO:return if the center is empty or not
-        return tiles.size() ==0;
-    }
-
-    public static void main(String[] args) {
-        /**
-         * Test written by Xiao Xu
-         */
-        String a = "Caaaabcf";
-        Center c = new Center();
-        c.decode(a);
-        for(int i = 0; i < a.length()-1;i++){
-            System.out.print(c.tiles.get(i).getCode());
-        }
-
-        System.out.println(c.getCurrentNum());
+        return true;
     }
 
 }
