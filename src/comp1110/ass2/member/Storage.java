@@ -132,10 +132,24 @@ public class Storage {
      */
     public boolean placeTiles(Tile[] tiles, int row) {
         // TODO: test, first check the validity(not finished yet)
+        if (!isPlaceValid(tiles, row)) return false;
         for (int i = 0; i < tiles.length; i++) {
             this.tiles[row][STORAGE_ROW_LENGTH[row] - 1 - i] = tiles[i];
         }
-        return false;
+        return true;
+    }
+    public boolean isPlaceValid(Tile[] tiles, int row) {
+        // check the tiles color
+        for (Tile t: tiles) {
+            if (isRowColorSame(t, row)) return false;
+        }
+        // check the empty space in this row
+        int spaceCnt = 0;
+        for (int i = 0; i < STORAGE_ROW_LENGTH[row]; i++) {
+            if (this.tiles[row][i] == null) spaceCnt++;
+        }
+        if (tiles.length > spaceCnt) return false;
+        return true;
     }
 
     /**
@@ -250,6 +264,13 @@ public class Storage {
             }
             System.out.println("]");
         }
+        // test case, test placeTile() validity
+        Storage s1 = new Storage();
+        Tile[] tiles = new Tile[] {
+                new Tile('a'),
+                new Tile('a'),
+        };
+        System.out.println(s1.placeTiles(tiles, 0));
 
     }
 
