@@ -47,7 +47,7 @@ public class Azul {
         pointer = endBag; // move the pointer to the discard.
 
         // {Discord} state
-        String discord = sharedState.substring(pointer) + pointer; // The remaining is the discord.
+        String discord = sharedState.substring(pointer); // The remaining is the discord.
         return new String[]{turn, factory, centre, bag, discord};
     }
 
@@ -1164,35 +1164,36 @@ public class Azul {
         return (tileOnFloor(floorA) && tileOnFloor(floorB) &&
                 tileInCenter(centre,factory) && tileStorageAndMosaic(storageA,mosaicA) &&
                 tileStorageAndMosaic(storageB,mosaicB) && containOneF(centre,player) &&
-                noMoreThan20(factory,bag,discard,mosaicA,storageA,floorA,mosaicB,storageB,floorB));
+                noMoreThan20(centre,factory,bag,discard,mosaicA,storageA,floorA,mosaicB,storageB,floorB));
     }
 
     /** 2. There are no more than 20 of each colour of tile across all player
      * areas, factories, bag and discard*/
-    public static boolean noMoreThan20 (String fac, String bag,String dis,String mosA,String stoA,String flrA,String mosB,String stoB,String flrB){
-        int a = noMoreThan20InShared(fac,bag,dis)[0] + noMoreThan20InPlayer(mosA,stoA,flrA)[0] + noMoreThan20InPlayer(mosB,stoB,flrB)[0];
-        int b = noMoreThan20InShared(fac,bag,dis)[1] + noMoreThan20InPlayer(mosA,stoA,flrA)[1] + noMoreThan20InPlayer(mosB,stoB,flrB)[1];
-        int c = noMoreThan20InShared(fac,bag,dis)[2] + noMoreThan20InPlayer(mosA,stoA,flrA)[2] + noMoreThan20InPlayer(mosB,stoB,flrB)[2];
-        int d = noMoreThan20InShared(fac,bag,dis)[3] + noMoreThan20InPlayer(mosA,stoA,flrA)[3] + noMoreThan20InPlayer(mosB,stoB,flrB)[3];
-        int e = noMoreThan20InShared(fac,bag,dis)[4] + noMoreThan20InPlayer(mosA,stoA,flrA)[4] + noMoreThan20InPlayer(mosB,stoB,flrB)[4];
-        return(a <= 20 && b<=20 && c <= 20 && d <=20 && e <= 20);
+    public static boolean noMoreThan20 (String cen, String fac, String bag,String dis,String mosA,String stoA,String flrA,String mosB,String stoB,String flrB){
+        if (dis.length() > 11) return false;
+        int a = noMoreThan20InShared(cen,fac,bag,dis)[0] + noMoreThan20InPlayer(mosA,stoA,flrA)[0] + noMoreThan20InPlayer(mosB,stoB,flrB)[0];
+        int b = noMoreThan20InShared(cen,fac,bag,dis)[1] + noMoreThan20InPlayer(mosA,stoA,flrA)[1] + noMoreThan20InPlayer(mosB,stoB,flrB)[1];
+        int c = noMoreThan20InShared(cen,fac,bag,dis)[2] + noMoreThan20InPlayer(mosA,stoA,flrA)[2] + noMoreThan20InPlayer(mosB,stoB,flrB)[2];
+        int d = noMoreThan20InShared(cen,fac,bag,dis)[3] + noMoreThan20InPlayer(mosA,stoA,flrA)[3] + noMoreThan20InPlayer(mosB,stoB,flrB)[3];
+        int e = noMoreThan20InShared(cen,fac,bag,dis)[4] + noMoreThan20InPlayer(mosA,stoA,flrA)[4] + noMoreThan20InPlayer(mosB,stoB,flrB)[4];
+        return(a == 20 && b==20 && c == 20 && d ==20 && e == 20);
     }
 
     /** return amount of a,b,c,d,e in list in factories,bag,discard.*/
-    public static int[] noMoreThan20InShared (String factory,String bag, String discard){
+    public static int[] noMoreThan20InShared (String centre,String factory,String bag, String discard){
         int[] ints = new int[5];
-        ints[0] = Integer.parseInt(bag.substring(1,3)) + Integer.parseInt(discard.substring(1,3)) + cantainChar(factory,"a");
-        ints[1] = Integer.parseInt(bag.substring(3,5)) + Integer.parseInt(discard.substring(3,5)) + cantainChar(factory,"b");
-        ints[2] = Integer.parseInt(bag.substring(5,7)) + Integer.parseInt(discard.substring(5,7)) + cantainChar(factory,"c");
-        ints[3] = Integer.parseInt(bag.substring(7,9)) + Integer.parseInt(discard.substring(7,9)) + cantainChar(factory,"d");
-        ints[4] = Integer.parseInt(bag.substring(9)) + Integer.parseInt(discard.substring(9)) + cantainChar(factory,"e");
+        ints[0] = cantainChar(centre,"a") + Integer.parseInt(bag.substring(1,3)) + Integer.parseInt(discard.substring(1,3)) + cantainChar(factory,"a");
+        ints[1] = cantainChar(centre,"b") + Integer.parseInt(bag.substring(3,5)) + Integer.parseInt(discard.substring(3,5)) + cantainChar(factory,"b");
+        ints[2] = cantainChar(centre,"c") + Integer.parseInt(bag.substring(5,7)) + Integer.parseInt(discard.substring(5,7)) + cantainChar(factory,"c");
+        ints[3] = cantainChar(centre,"d") + Integer.parseInt(bag.substring(7,9)) + Integer.parseInt(discard.substring(7,9)) + cantainChar(factory,"d");
+        ints[4] = cantainChar(centre,"e") + Integer.parseInt(bag.substring(9, 11)) + Integer.parseInt(discard.substring(9, 11)) + cantainChar(factory,"e");
         return ints;}
 
     /**return amount of a char present in a string.*/
     public static int cantainChar (String str, String cha){
          int cnt = 0;
          for(int i =0; i < str.length(); i++ ) {
-             int n = str.indexOf(cha);
+             int n = str.indexOf(cha,i);
              if (n == i) {
                  cnt++;
              }
@@ -1712,6 +1713,14 @@ public class Azul {
     }
 
     public static void main(String[] args) {
+        // Test case for task 9
+        String[] test = new String[] {
+                "BFCB1412141614D0000000000",
+                "A0MS0a11c22a33c44b5FB0MS0e11a22b33d44e5Ff"
+        };
+        System.out.println(isStateValid(test));
+    }
+        /*
         String[] testSplit = new String[]{
                 "AFCB1915161614D0000000000",
                 "A0MS0d11c22b33e44e1FefB0MS0a11b22d33c2FC0MS0d11c22b33e44e1FefD0MS0a11b22d33c2F"
@@ -1723,7 +1732,8 @@ public class Azul {
         System.out.println(floor);
         String[] gameState = {"BFCB1412141614D0000000000", "A0MS0a11c22a33c44b5FB0MS0e11a22b33d44e5Ff"};
         System.out.println(isStateValid(gameState));
-    }
+
+         */
     /*
     public static void main(String[] args) {
         String[] testSplit = new String[]{
