@@ -23,8 +23,8 @@ public class Center {
 
     /* Member for javafx */
     private final Group tilesView = new Group();
-    public static final int CENTER_HEIGHT = 5;
-    public static final int CENTER_WIDTH = 6;
+    public static final int CENTER_HEIGHT = 2;
+    public static final int CENTER_WIDTH = 14;
     int xIndex; // the layoutX in board
     int yIndex; // the layoutY in board
 

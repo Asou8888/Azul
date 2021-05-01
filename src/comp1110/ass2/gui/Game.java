@@ -44,14 +44,14 @@ public class Game extends Application {
         // root.getChildren().add(bagView);
 
         // TODO: add center(testing)
-        this.center = new Center(100, 100);
+        this.center = new Center(525, 20);
         center.decode("Caaaabbcf");
         center.removeTiles(TileType.Blue);
         root.getChildren().add(center.getTilesView());
 
         // TODO: add factories
         this.factories = new Factories("F0abbe2ccdd");
-        this.factories.setLocation(500, 500);
+        this.factories.setLocation(1, 20);
         Group[] fs = factories.getFactoriesView();
         for (Group g: fs) {
             root.getChildren().add(g);
@@ -59,13 +59,13 @@ public class Game extends Application {
 
         // TODO: NewMosaic
         this.mosaic = new NewMosaic("Mb00a02a13e42");
-        this.mosaic.setLocation(1000, 500);
+        this.mosaic.setLocation(400, 300);
         root.getChildren().add(this.mosaic.getMosaicView());
 
         // TODO: Floor
         this.floor = new Floor();
         this.floor.decode("Faabbe");
-        this.floor.setLocation(1000, 100);
+        this.floor.setLocation(100, 600);
         root.getChildren().add(this.floor.getFloorView());
 
 
