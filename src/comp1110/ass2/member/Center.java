@@ -249,6 +249,12 @@ public class Center {
         center.decode(c);
         center.addTile("ab");
         System.out.println(center.getCode());
+
+        // test case for task 11
+        Center c1 = new Center();
+        c1.decode("CfB1616181614");
+        c1.addTile("bbe");
+        c1.encode();
     }
 
 }

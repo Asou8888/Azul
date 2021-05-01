@@ -1686,8 +1686,10 @@ public class Azul {
             factory1.decode(factoryCode);
             String otherTiles = factory1.deleteTile(move.charAt(2));
             Center center1 = new Center();
-            center1.decode(center);
-            center1.addTile(otherTiles);
+            // FIXME System.out.println("Center: " + center);
+            center1.decode(center); // CfB1616181614
+            center1.addTile(otherTiles); // bbe
+            // FIXME System.out.println("Other Tiles: " + otherTiles);
             if(Character.isDigit(move.charAt(3))){
                 /**
                  * 从factory移动到storage
@@ -1702,6 +1704,7 @@ public class Azul {
                         discard1.placeTiles(move.charAt(2),moreTile-numOfFloorEmptySpace);
                     }
                 }
+                // FIXME System.out.println("Center 1" + center1.getCode());
                 if(gameState[0].charAt(0) =='A'){
                     factories.clear(move.charAt(1)-'0');
                     gameState[0] = "B" + factories.getCode() + center1.getCode() + bag + discard1.getCode();

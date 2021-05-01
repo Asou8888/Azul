@@ -243,7 +243,7 @@ public class Storage {
         return this.tiles[row][STORAGE_ROW_LENGTH[row] - 1] == null;
     }
 
-    public Tile[][] emptyRow(int row){
+    public Tile[][] emptyRow (int row){
         for(int i =0;i<=row;i++){
             tiles[row][i] = null;
         }
