@@ -1,5 +1,7 @@
 package comp1110.ass2.member;
 
+import javafx.scene.Group;
+
 /**
  * The Floor class implements the floor of a player, which has a lostPoint array to record the lost points and a tiles array,
  * which are the tiles in the floor.
@@ -13,6 +15,13 @@ public class Floor {
     private static final int FLOOR_WIDTH = 7;
     public static final int[] lostPoint = {-1, -1, -2, -2, -2, -3, -3};
 
+    /* Members of Floor */
+    private Group floorView = new Group();
+    int xIndex;
+    int yIndex;
+
+
+
     public Floor() {
         this.tiles = new Tile[FLOOR_WIDTH];
     }
@@ -20,6 +29,36 @@ public class Floor {
     public Floor(Tile[] tiles) {
         this.tiles = tiles;
     }
+
+    private void createView() {
+        // TODO
+        for (int i = 0; i < FLOOR_WIDTH; i++) {
+            this.floorView.getChildren().add(new Tile(' ', i * Tile.TILE_WIDTH, 0));
+        }
+    }
+    public void setLocation(int xIndex, int yIndex) {
+        // TODO
+        this.xIndex = xIndex;
+        this.yIndex = yIndex;
+        this.floorView.setLayoutX(this.xIndex);
+        this.floorView.setLayoutY(this.yIndex);
+    }
+    public void updateFloorView() {
+        // TODO
+        this.floorView.getChildren().clear();
+        for (int i = 0; i < FLOOR_WIDTH; i++) {
+            if (this.tiles[i] != (Tile) null) {
+                this.floorView.getChildren().add(new Tile(tiles[i].getTileType(), i * Tile.TILE_WIDTH, 0));
+            } else {
+                this.floorView.getChildren().add(new Tile(' ', i * Tile.TILE_WIDTH, 0));
+            }
+        }
+    }
+    public Group getFloorView() {
+        updateFloorView();
+        return this.floorView;
+    }
+
     /**
      * return the code of the current state of floor.
      *
