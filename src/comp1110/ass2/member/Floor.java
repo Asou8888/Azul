@@ -132,8 +132,37 @@ public class Floor {
         return FLOOR_WIDTH;
     }
 
+    public int emptyNum(){
+        int num = 0;
+        for(int i = 0;i<FLOOR_WIDTH;i++){
+            if(tiles[i] == null){
+                num += 1;
+            }
+        }
+        return num;
+    }
+
+    public Tile[] placeTile(char color,int num){
+        if(emptyNum() >= num){
+            num = num;
+        }else {
+            num = emptyNum();
+        }
+        int numOfTiles = 0;
+        for(int i =0;i<FLOOR_WIDTH;i++){
+            if(tiles[i] == null){
+                tiles[i] = new Tile(color);
+                numOfTiles += 1;
+                if(numOfTiles == num){
+                    break;
+                }
+            }
+        }
+        return tiles;
+    }
+
     public static void main(String[] args) {
-        String a = new String("Fabcabc");
+        String a = new String("Fabc");
         Floor f = new Floor();
         f.decode(a);
         for (int i = 0; i< FLOOR_WIDTH; i++) {
@@ -141,5 +170,14 @@ public class Floor {
                 System.out.print(f.tiles[i].getCode());
             }
         }
+        System.out.println(f.emptyNum());
+        Tile[] ad = f.placeTile('a',3);
+        System.out.println(ad[0]);
+        System.out.println(ad[1]);
+        System.out.println(ad[2]);
+        System.out.println(ad[3]);
+        System.out.println(ad[4]);
+        System.out.println(ad[5]);
+        System.out.println(ad[6]);
     }
 }
