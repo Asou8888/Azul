@@ -211,6 +211,13 @@ public class Factory {
         return this.tiles.size();
     }
 
+    /**
+     * clear this factory
+     */
+    public void clear() {
+        this.tiles.clear();
+    }
+
 
 
     @Override

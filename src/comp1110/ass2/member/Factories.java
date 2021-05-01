@@ -188,6 +188,14 @@ public class Factories {
         }
     }
 
+    /**
+     * clear factory[num]
+     * @param num
+     */
+    public void clear(int num) {
+        this.factories[num].clear();
+    }
+
     public void setLocation(int x, int y) {
         this.xIndex = x;
         this.yIndex = y;

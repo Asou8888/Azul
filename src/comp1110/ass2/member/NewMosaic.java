@@ -22,6 +22,7 @@ public class NewMosaic {
     int xIndex;
     int yIndex;
 
+    // FIXME: createView
     public NewMosaic() {
         this.tiles = new Tile[MOSAIC_WIDTH][MOSAIC_WIDTH];
         createView();
