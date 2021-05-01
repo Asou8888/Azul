@@ -153,6 +153,10 @@ public class Factories {
         }
     }
 
+    public Factory getFactory(int num){
+        return factories[num];
+    }
+
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder("Factories: \n");

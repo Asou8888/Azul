@@ -1544,7 +1544,7 @@ public class Azul {
             return Tilingmove(gameState,move);
         }
         else {
-            return null;
+            return Draftingmove(gameState,move);
         }
     }
 
@@ -1641,7 +1641,75 @@ public class Azul {
     }
 
     public static String[] Draftingmove(String[] gameState,String move){
-        return null;
+        String sharedState = gameState[0];
+        int A = gameState[1].indexOf("A");
+        int B = gameState[1].indexOf("B");
+        String playerState = "";
+        if(move.charAt(0)=='A'){
+            playerState = gameState[1].substring(A,B);
+        }else {
+            playerState = gameState[1].substring(B);
+        }
+        int Fa = sharedState.indexOf("F");
+        int Cen = sharedState.indexOf("C");
+        int D = sharedState.indexOf("D");
+        int S = playerState.indexOf("S");
+        int F = playerState.indexOf("F");
+        String discard = sharedState.substring(D);
+        String storage = playerState.substring(S,F);
+        String floor = playerState.substring(F);
+        Discard discard1 = new Discard();
+        discard1.decode(discard);
+        Floor floor1 = new Floor();
+        floor1.decode(floor);
+        Storage storage1 = new Storage();
+        storage1.decode(storage);
+        String factoryString = sharedState.substring(Fa,Cen);
+        Factories factories = new Factories(factoryString);
+        if (Character.isDigit(move.charAt(1))){
+            int numOfFactory = move.charAt(1) -'0';
+            String factoryCode = factories.getFactory(numOfFactory).getCode();
+            int numOfTiles = factories.getFactory(numOfFactory).tileNum(move.charAt(2));
+            if(Character.isDigit(move.charAt(3))){
+                /**
+                 * 从factory移动到storage
+                 */
+                int numOfStorageEmptySpace = storage1.emptySpace(move.charAt(3)-'0');
+                int numOfFloorEmptySpace = floor1.emptyNum();
+                storage1.move(move.charAt(2),(move.charAt(3)-'0'),numOfTiles);
+                if(numOfTiles > numOfStorageEmptySpace){
+                    int moreTile = numOfTiles - numOfStorageEmptySpace;
+                    floor1.placeTile(move.charAt(2),moreTile);
+                    if(moreTile > numOfFloorEmptySpace){
+                        discard1.placeTiles(move.charAt(2),moreTile-numOfFloorEmptySpace);
+                    }
+                }
+                if(gameState[0].charAt(0) =='A'){
+                    gameState[0] = "B" ;
+                }else {
+                    playerState = gameState[1].substring(B);
+                }
+
+
+            }else {
+                /**
+                 * 从factory移动到floor
+                 */
+
+            }
+
+        }else{
+            if(Character.isDigit(move.charAt(3))){
+                /**
+                 * 从center移动到storage
+                 */
+            }else{
+                /**
+                 * 从center移动到floor
+                 */
+            }
+        }
+        return gameState;
     }
 
 
