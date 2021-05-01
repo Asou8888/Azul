@@ -1,5 +1,7 @@
 package comp1110.ass2.member;
 
+import javafx.scene.Group;
+
 import java.awt.*;
 
 /**
@@ -27,6 +29,11 @@ public class Storage {
             new Tile[STORAGE_ROW_LENGTH[4]]
     };
 
+    /* Member of javafx */
+    private Group storageView = new Group();
+    int xIndex;
+    int yIndex;
+
     /**
      * Constructor for the Storage. Given an array of tiles, returns the
      * current state of where each char represented tile is location in the storage.
@@ -34,6 +41,7 @@ public class Storage {
      * @param tiles the given array of Tile
      */
     public Storage(Tile[] tiles) {
+        createView();
         int pointer = 0;
         for (int i = 0; i < STORAGE_ROW_NUM; i++) {
             for (int j = 0; j < STORAGE_ROW_LENGTH[i]; j++) {
@@ -48,13 +56,46 @@ public class Storage {
         }
     }
     public Storage(Tile[][] tiles) {
+        createView();
         this.tiles = tiles;
     }
 
     /**
      * Constructor with no parameters.
      */
-    public Storage() {}
+    public Storage() {
+        createView();
+    }
+
+    private void createView() {
+        for (int i = 0; i < STORAGE_ROW_NUM; i++) {
+            for (int j = 0; j < STORAGE_ROW_LENGTH[i]; j++) {
+                this.storageView.getChildren().add(new Tile(' ', i * Tile.TILE_WIDTH, j * Tile.TILE_WIDTH));
+            }
+        }
+    }
+    public void updateStorageView() {
+        this.storageView.getChildren().clear();
+        for (int i = 0; i < STORAGE_ROW_NUM; i++) {
+            for (int j = 0; j < STORAGE_ROW_LENGTH[i]; j++) {
+                if (this.tiles[i][j] == null) {
+                    this.storageView.getChildren().add(new Tile(' ', i * Tile.TILE_WIDTH, j * Tile.TILE_WIDTH));
+                } else {
+                    this.storageView.getChildren().add(new Tile(tiles[i][j].getTileType(), i * Tile.TILE_WIDTH, j * Tile.TILE_WIDTH));
+                }
+            }
+        }
+    }
+    public Group getStorageView() {
+        updateStorageView();
+        return this.storageView;
+    }
+    public void setLocation(int xIndex, int yIndex) {
+        this.xIndex = xIndex;
+        this.yIndex = yIndex;
+        this.storageView.setLayoutX(this.xIndex);
+        this.storageView.setLayoutY(this.yIndex);
+    }
 
 
     /**
@@ -304,9 +345,6 @@ public class Storage {
                 new Tile('a'),
         };
         System.out.println(s1.placeTiles(tiles, 0));
-
-
-
     }
 
 }
