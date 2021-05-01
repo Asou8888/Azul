@@ -23,8 +23,8 @@ public class Center {
 
     /* Member for javafx */
     private final Group tilesView = new Group();
-    public static final int CENTER_HEIGHT = 5;
-    public static final int CENTER_WIDTH = 6;
+    public static final int CENTER_HEIGHT = 2;
+    public static final int CENTER_WIDTH = 14;
     int xIndex; // the layoutX in board
     int yIndex; // the layoutY in board
 
@@ -151,6 +151,28 @@ public class Center {
         //TODO:return if there is a firstplayer in center
         String c = encode();
         return c.contains("f");
+    }
+
+    public int tileNum(char color){
+        int num = 0;
+        String center = getCode();
+        for(int i = 0;i<center.length();i++){
+            if(center.charAt(i) == color){
+                num += 1;
+            }
+        }
+        return num;
+    }
+
+    public String deleteTile(char color){
+        String c = encode();
+        String newcenter = "";
+        for(int i = 0; i<c.length();i++){
+            if(c.charAt(i) != color){
+                newcenter += c.charAt(i);
+            }
+        }
+        return newcenter;
     }
 
 

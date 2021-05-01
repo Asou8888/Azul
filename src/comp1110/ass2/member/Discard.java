@@ -44,7 +44,7 @@ public class Discard {
         code.append(bCnt);
         String cCnt = amountChar( 'c');
         code.append(cCnt);
-        String dCnt = amountChar( 'c');
+        String dCnt = amountChar( 'd');
         code.append(dCnt);
         String eCnt = amountChar('e');
         code.append(eCnt);
