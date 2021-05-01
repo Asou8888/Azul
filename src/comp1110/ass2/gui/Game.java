@@ -25,6 +25,7 @@ public class Game extends Application {
     private Center center;
     private Factories factories;
     private NewMosaic mosaic;
+    private Floor floor;
     private Group bagView = new Group();
     private Group playerView = new Group();
 
@@ -61,6 +62,11 @@ public class Game extends Application {
         this.mosaic.setLocation(1000, 500);
         root.getChildren().add(this.mosaic.getMosaicView());
 
+        // TODO: Floor
+        this.floor = new Floor();
+        this.floor.decode("Faabbe");
+        this.floor.setLocation(1000, 100);
+        root.getChildren().add(this.floor.getFloorView());
 
 
         // (add the player view)

@@ -1147,8 +1147,6 @@ public class Azul {
     public static boolean isStateValid(String[] gameState) {
         // FIXME Task 9
         if (!(isSharedStateWellFormed(gameState[0]) && isPlayerStateWellFormed(gameState[1]))){ return  false;}
-        String shared = gameState[0];
-        String player = gameState[1];
         String[] sharedState = splitSharedState(gameState);
         String factory = sharedState[1];
         String centre = sharedState[2];
@@ -1164,7 +1162,8 @@ public class Azul {
         return (tileOnFloor(floorA) && tileOnFloor(floorB) &&
                 tileInCenter(centre,factory) && tileStorageAndMosaic(storageA,mosaicA) &&
                 tileStorageAndMosaic(storageB,mosaicB) && containOneF(centre,mosaicA,storageA,floorA,mosaicB,storageB,floorB) &&
-                noMoreThan20(centre,factory,bag,discard,mosaicA,storageA,floorA,mosaicB,storageB,floorB));
+                noMoreThan20(centre,factory,bag,discard,mosaicA,storageA,floorA,mosaicB,storageB,floorB) &&
+                extraTileInSto(storageA) && extraTileInSto(storageB));
     }
 
     /** 2. There are no more than 20 of each colour of tile across all player
@@ -1220,8 +1219,8 @@ public class Azul {
         }
         return cnt;
     }
-    /** 3. Exactly one first player token 'f' must be present across all player
-     * boards and the centre.*/
+     /**3. Exactly one first player token 'f' must be present across all player
+         * boards and the centre. */
     public static boolean containOneF (String cent, String mosA,String stoA,String flrA,String mosB,String stoB,String flrB){
         return((containFInCentre(cent) + containOneFInPlayer(mosA,stoA,flrA) + containOneFInPlayer(mosB,stoB,flrB)) < 2);
     }
@@ -1252,6 +1251,16 @@ public class Azul {
         }
         int fcnt3 = tileInStorage(storage,"f");
         return ( fcnt1 + fcnt2 + fcnt3 );
+    }
+    /** [Storage]
+     * 1. The maximum number of tiles stored in a row must not exceed (row_number + 1).*/
+    public static boolean extraTileInSto (String storage){
+        for (int i = 1; i < storage.length();i = i+3){
+            int row = storage.charAt(i) - '0';
+            int num = storage.charAt(i+2) - '0';
+            if (row + 1 < num) {return false;}
+        }
+        return true;
     }
     /** [Centre]
     /1. The number of tiles in the centre is no greater than 3 * the number of empty factories.*/
