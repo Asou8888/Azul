@@ -1115,11 +1115,11 @@ public class Azul {
          * A game state is valid if it satisfies the following conditions.
          * <p>
          * [General]
-         * 1. The game state is well-formed.
+         * 1. The game state is well-formed. (completed)
          * 2. There are no more than 20 of each colour of tile across all player
          * areas, factories, bag and discard
          * 3. Exactly one first player token 'f' must be present across all player
-         * boards and the centre.
+         * boards and the centre. (completed)
          * <p>
          * [Mosaic]
          * 1. No two tiles occupy the same location on a single player's mosaic.
@@ -1161,13 +1161,82 @@ public class Azul {
         String mosaicB = splitPlayerState.get("B")[1];
         String storageB = splitPlayerState.get("B")[2];
         String floorB = splitPlayerState.get("B")[3];
-        //if (isSharedStateWellFormed(shared) && isPlayerStateWellFormed(player) &&
-        //        tileOnFloor(floorA) && tileOnFloor(floorB) && isSharedStateWellFormed(shared)){
-        //    return(tileStorageMosaicSame(storageA,mosaicA) && tileStorageMosaicSame(storageB,mosaicB) );
-        //}
         return (tileOnFloor(floorA) && tileOnFloor(floorB) &&
                 tileInCenter(centre,factory) && tileStorageAndMosaic(storageA,mosaicA) &&
-                tileStorageAndMosaic(storageB,mosaicB));
+                tileStorageAndMosaic(storageB,mosaicB) && containOneF(centre,player) &&
+                noMoreThan20(factory,bag,discard,mosaicA,storageA,floorA,mosaicB,storageB,floorB));
+    }
+
+    /** 2. There are no more than 20 of each colour of tile across all player
+     * areas, factories, bag and discard*/
+    public static boolean noMoreThan20 (String fac, String bag,String dis,String mosA,String stoA,String flrA,String mosB,String stoB,String flrB){
+        int a = noMoreThan20InShared(fac,bag,dis)[0] + noMoreThan20InPlayer(mosA,stoA,flrA)[0] + noMoreThan20InPlayer(mosB,stoB,flrB)[0];
+        int b = noMoreThan20InShared(fac,bag,dis)[1] + noMoreThan20InPlayer(mosA,stoA,flrA)[1] + noMoreThan20InPlayer(mosB,stoB,flrB)[1];
+        int c = noMoreThan20InShared(fac,bag,dis)[2] + noMoreThan20InPlayer(mosA,stoA,flrA)[2] + noMoreThan20InPlayer(mosB,stoB,flrB)[2];
+        int d = noMoreThan20InShared(fac,bag,dis)[3] + noMoreThan20InPlayer(mosA,stoA,flrA)[3] + noMoreThan20InPlayer(mosB,stoB,flrB)[3];
+        int e = noMoreThan20InShared(fac,bag,dis)[4] + noMoreThan20InPlayer(mosA,stoA,flrA)[4] + noMoreThan20InPlayer(mosB,stoB,flrB)[4];
+        return(a <= 20 && b<=20 && c <= 20 && d <=20 && e <= 20);
+    }
+
+    /** return amount of a,b,c,d,e in list in factories,bag,discard.*/
+    public static int[] noMoreThan20InShared (String factory,String bag, String discard){
+        int[] ints = new int[5];
+        ints[0] = Integer.parseInt(bag.substring(1,3)) + Integer.parseInt(discard.substring(1,3)) + cantainChar(factory,"a");
+        ints[1] = Integer.parseInt(bag.substring(3,5)) + Integer.parseInt(discard.substring(3,5)) + cantainChar(factory,"b");
+        ints[2] = Integer.parseInt(bag.substring(5,7)) + Integer.parseInt(discard.substring(5,7)) + cantainChar(factory,"c");
+        ints[3] = Integer.parseInt(bag.substring(7,9)) + Integer.parseInt(discard.substring(7,9)) + cantainChar(factory,"d");
+        ints[4] = Integer.parseInt(bag.substring(9)) + Integer.parseInt(discard.substring(9)) + cantainChar(factory,"e");
+        return ints;}
+
+    /**return amount of a char present in a string.*/
+    public static int cantainChar (String str, String cha){
+         int cnt = 0;
+         for(int i =0; i < str.length(); i++ ) {
+             int n = str.indexOf(cha);
+             if (n == i) {
+                 cnt++;
+             }
+         }
+         return cnt;
+     }
+    /** return amount of a,b,c,d,e in list in mosaic,storage,floor.*/
+    public static int[] noMoreThan20InPlayer (String mosaic,String storage,String floor){
+        int[] intsPlayer = new int[5];
+        intsPlayer[0] = cantainChar(mosaic,"a") + cantainChar(floor,"a") + tileInStorage(storage,"a");
+        intsPlayer[1] = cantainChar(mosaic,"b") + cantainChar(floor,"b") + tileInStorage(storage,"b");
+        intsPlayer[2] = cantainChar(mosaic,"c") + cantainChar(floor,"c") + tileInStorage(storage,"c");
+        intsPlayer[3] = cantainChar(mosaic,"d") + cantainChar(floor,"d") + tileInStorage(storage,"d");
+        intsPlayer[4] = cantainChar(mosaic,"e") + cantainChar(floor,"e") + tileInStorage(storage,"e");
+        return intsPlayer;
+    }
+    public static int tileInStorage (String storage, String cha) {
+        int cnt = 0;
+        for(int i = 1; i < storage.length(); i = i + 3){
+            int n = storage.indexOf(cha,i);
+            if (n-1 == i){
+                cnt = cnt + storage.charAt(i + 2) - '0';
+            }
+        }
+        return cnt;
+    }
+    /** 3. Exactly one first player token 'f' must be present across all player
+     * boards and the centre.*/
+    public  static  boolean containOneF (String centre, String player) {
+        int fcnt = 0 ;
+        for (int i = 0; i < centre.length(); i++){
+            int n = centre.indexOf("f",i);
+            if (i == n) {
+                fcnt ++;
+            }
+        }
+        int fcnt1 = 0;
+        for (int j = 0; j < player.length(); j ++){
+            int m = player.indexOf("f",j);
+            if (j == m ) {
+                fcnt1 ++;
+            }
+        }
+        return (fcnt + fcnt1 < 2);
     }
     /** [Centre]
     /1. The number of tiles in the centre is no greater than 3 * the number of empty factories.*/
@@ -1584,6 +1653,8 @@ public class Azul {
         // visit A's floor state
         String floor = splitPlayerStates.get("A")[3]; // {Score}{Mosaic}{Storage}{Floor}
         System.out.println(floor);
+        String[] gameState = {"BFCB1412141614D0000000000", "A0MS0a11c22a33c44b5FB0MS0e11a22b33d44e5Ff"};
+        System.out.println(isStateValid(gameState));
     }
     /*
     public static void main(String[] args) {
