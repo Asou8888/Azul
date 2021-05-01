@@ -113,11 +113,11 @@ public class Storage {
         // storage.charAt(0) == 'S'
         for (int i = 1; i < storage.length(); i = i + 3) {
             int row = storage.charAt(i) - '0'; // (which row)translate character to int.(EX: (ascii)'4' - (ascii)'0' = 4)
-            char tile = storage.charAt(i + 1); // the tile colorChar.
+            char colorChar = storage.charAt(i + 1); // the tile colorChar.
             int num = storage.charAt(i + 2) - '0'; // (how many)translate character to int.
             Tile[] newTiles = new Tile[num];
             for (int j = 0; j < num; j++) {
-                newTiles[j] = new Tile(tile); // initialize the tile with colorChar.
+                newTiles[j] = new Tile(colorChar); // initialize the tile with colorChar.
             }
             placeTiles(newTiles, row);
         }
@@ -141,7 +141,7 @@ public class Storage {
     public boolean isPlaceValid(Tile[] tiles, int row) {
         // check the tiles color
         for (Tile t: tiles) {
-            if (isRowColorSame(t, row)) return false;
+            if (!isRowColorSame(t, row)) return false;
         }
         // check the empty space in this row
         int spaceCnt = 0;
@@ -280,9 +280,12 @@ public class Storage {
         return tiles;
     }
 
+
+
+
     public static void main(String[] args) {
         Storage s = new Storage();
-        s.decode("S2a13e44a1"); // decode the String and put them into the storage
+        s.decode("S0a11c22a33c44b5"); // decode the String and put them into the storage
         for (int i = 0; i < STORAGE_ROW_NUM; i++) {
             System.out.print("[");
             for (int j = 0; j < STORAGE_ROW_LENGTH[i]; j++) {

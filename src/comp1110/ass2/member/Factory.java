@@ -101,6 +101,8 @@ public class Factory {
     public void setLocation(int x, int y) {
         this.xIndex = x;
         this.yIndex = y;
+        this.factoryView.setLayoutX(this.xIndex);
+        this.factoryView.setLayoutY(this.yIndex);
     }
 
     /**

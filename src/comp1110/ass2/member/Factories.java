@@ -193,7 +193,8 @@ public class Factories {
         this.yIndex = y;
         // TODO: set layout for all factories.
         for (int i = 0; i < factoryNum; i++) {
-            factories[i].setLocation();
+            // FIXME
+            factories[i].setLocation(this.xIndex, this.yIndex);
         }
     }
     public int getxIndex() {
