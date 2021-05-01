@@ -203,6 +203,10 @@ public class Factories {
         return this.yIndex;
     }
 
+    public Factory getFactory(int index) {
+        return factories[index];
+    }
+
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder("Factories: \n");
