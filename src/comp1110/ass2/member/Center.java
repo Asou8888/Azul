@@ -7,6 +7,7 @@ package comp1110.ass2.member;
  */
 
 import gittest.A;
+import gittest.C;
 import javafx.scene.Group;
 
 import java.util.ArrayList;
@@ -152,6 +153,13 @@ public class Center {
         return tiles.size() == 0;
     }
 
+    public void addTile(String tile){
+        for(int i =0;i<tile.length();i++){
+            Tile a = new Tile(tile.charAt(i));
+            tiles.add(a);
+        }
+    }
+
     /**
      * The visitor for tilesView
      *
@@ -233,6 +241,14 @@ public class Center {
                 }
             }
         }
+    }
+
+    public static void main(String[] args) {
+        String c = "Cbbef";
+        Center center = new Center();
+        center.decode(c);
+        center.addTile("ab");
+        System.out.println(center.getCode());
     }
 
 }
