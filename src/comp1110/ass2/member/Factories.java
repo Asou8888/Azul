@@ -1,6 +1,7 @@
 package comp1110.ass2.member;
 
 import gittest.A;
+import javafx.scene.Group;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -12,6 +13,9 @@ import java.util.ArrayList;
 public class Factories {
     private static int factoryNum;
     private Factory[] factories;
+
+    /* Members for javafx */
+    private final Group factoryView = new Group();
 
     /**
      * Constructor: decide the number of factories based on player numbers.
