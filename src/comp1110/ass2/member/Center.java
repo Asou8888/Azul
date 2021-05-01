@@ -98,11 +98,27 @@ public class Center {
         /**
          * Written by Xiao Xu 4/29
          */
+        /*
         String center = "C";
         for (int i = 0; i < tiles.size(); i++) {
             center += tiles.get(i).getCode();
         }
-        return center;
+
+         */
+        /**
+         * Modified bby Ruizheng Shen, 5.1
+         */
+        StringBuilder center = new StringBuilder("C");
+        boolean hasFirstPlayer = false;
+        for (int i = 0; i < tiles.size(); i++) {
+            if (tiles.get(i).getTileType() != TileType.FirstPlayer) {
+                center.append(tiles.get(i).getCode());
+            } else {
+                hasFirstPlayer = true;
+            }
+        }
+        if (hasFirstPlayer) center.append("f");
+        return center.toString();
     }
 
     public void decode(String center) {
@@ -134,12 +150,7 @@ public class Center {
     public boolean hasFirstPlayer() {
         //TODO:return if there is a firstplayer in center
         String c = encode();
-        if (c.contains("f")) {
-            return true;
-        } else {
-            return false;
-        }
-
+        return c.contains("f");
     }
 
 
@@ -252,9 +263,9 @@ public class Center {
 
         // test case for task 11
         Center c1 = new Center();
-        c1.decode("CfB1616181614");
+        c1.decode("Cf");
         c1.addTile("bbe");
-        c1.encode();
+        System.out.println(c1.getCode());
     }
 
 }
