@@ -17,6 +17,7 @@ public class Discard {
     public Discard() {
         this.tiles = new Tile[100];
     }
+    public Discard(Tile[] tiles){this.tiles = tiles;}
 
 
 
