@@ -72,7 +72,7 @@ public class Tile extends Rectangle {
             }
             default -> {
                 this.colorChar = ' ';
-                setFill(Color.WHITE);
+                setFill(Color.LIGHTGRAY);
             }
         }
     }

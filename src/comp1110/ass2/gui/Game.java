@@ -58,7 +58,7 @@ public class Game extends Application {
 
         // TODO: NewMosaic
         this.mosaic = new NewMosaic("Mb00a02a13e42");
-        this.mosaic.setLocation(1000, 1000);
+        this.mosaic.setLocation(1000, 500);
         root.getChildren().add(this.mosaic.getMosaicView());
 
 

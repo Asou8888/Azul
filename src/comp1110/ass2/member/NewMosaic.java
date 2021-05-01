@@ -25,11 +25,14 @@ public class NewMosaic {
     // FIXME: createView
     public NewMosaic() {
         this.tiles = new Tile[MOSAIC_WIDTH][MOSAIC_WIDTH];
+        this.isVariant = true;
         createView();
     }
 
     public NewMosaic(String mosaic) {
         this.tiles = new Tile[MOSAIC_WIDTH][MOSAIC_WIDTH];
+        this.isVariant = true;
+        createView();
         decode(mosaic);
     }
 
@@ -45,9 +48,12 @@ public class NewMosaic {
                     new TileType[]{TileType.Green, TileType.Orange, TileType.Purple, TileType.Red, TileType.Blue}
             };
         }
+        createView();
     }
 
     public NewMosaic(Tile[] tiles) {
+        this.isVariant = true;
+        createView();
         for (int i = 0; i < MOSAIC_WIDTH; i++) {
             for (int j = 0; j < MOSAIC_WIDTH; j++) {
                 this.tiles[i][j] = tiles[MOSAIC_WIDTH * i + j];
@@ -55,6 +61,8 @@ public class NewMosaic {
         }
     }
     public NewMosaic(Tile[][] tiles) {
+        this.isVariant = true;
+        createView();
         this.tiles = tiles;
     }
 
@@ -86,7 +94,7 @@ public class NewMosaic {
         this.mosaicView.getChildren().clear();
         for (int i = 0; i < MOSAIC_WIDTH; i++) {
             for (int j = 0; j < MOSAIC_WIDTH; j++) {
-                if (tiles[i][j] != null) {
+                if (tiles[i][j] != (Tile) null) {
                     this.mosaicView.getChildren().add(new Tile(tiles[i][j].getTileType(), i * Tile.TILE_WIDTH, j * Tile.TILE_WIDTH));
                 } else {
                     this.mosaicView.getChildren().add(new Tile(' ', i * Tile.TILE_WIDTH, j * Tile.TILE_WIDTH));
