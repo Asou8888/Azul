@@ -24,6 +24,7 @@ public class Game extends Application {
     /* Members in the game */
     private Center center;
     private Factories factories;
+    private NewMosaic mosaic;
     private Group bagView = new Group();
     private Group playerView = new Group();
 
@@ -54,6 +55,11 @@ public class Game extends Application {
         for (Group g: fs) {
             root.getChildren().add(g);
         }
+
+        // TODO: NewMosaic
+        this.mosaic = new NewMosaic("Mb00a02a13e42");
+        this.mosaic.setLocation(1000, 1000);
+        root.getChildren().add(this.mosaic.getMosaicView());
 
 
 

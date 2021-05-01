@@ -1,5 +1,13 @@
 package comp1110.ass2.member;
 
+/**
+ * @author Ruizheng Shen
+ * @Date 2021.5.1
+ * @version 2.0(improve on Mosaic)
+ */
+
+import javafx.scene.Group;
+
 import java.util.ArrayList;
 
 public class NewMosaic {
@@ -8,8 +16,15 @@ public class NewMosaic {
     private static final int MOSAIC_WIDTH = 5;
     private boolean isVariant; // whether the mosaic is variant, if not, the mosaic will be the beginner mosaic.
 
+
+    /* Members of javafx */
+    private Group mosaicView = new Group();
+    int xIndex;
+    int yIndex;
+
     public NewMosaic() {
         this.tiles = new Tile[MOSAIC_WIDTH][MOSAIC_WIDTH];
+        createView();
     }
 
     public NewMosaic(String mosaic) {
@@ -41,6 +56,59 @@ public class NewMosaic {
     public NewMosaic(Tile[][] tiles) {
         this.tiles = tiles;
     }
+
+    private void createView() {
+        // TODO
+        if (isVariant) {
+            for (int i = 0; i < MOSAIC_WIDTH; i++) {
+                for (int j = 0; j < MOSAIC_WIDTH; j++) {
+                    this.mosaicView.getChildren().add(new Tile(' ', i * Tile.TILE_WIDTH, j * Tile.TILE_WIDTH));
+                }
+            }
+        } else {
+            for (int i = 0; i < MOSAIC_WIDTH; i++) {
+                for (int j = 0; j < MOSAIC_WIDTH; j++) {
+                    this.mosaicView.getChildren().add(new Tile(pattern[i][j], i * Tile.TILE_WIDTH, j * Tile.TILE_WIDTH));
+                }
+            }
+        }
+    }
+    public void setLocation(int xIndex, int yIndex) {
+        // TODO
+        this.xIndex = xIndex;
+        this.yIndex = yIndex;
+        this.mosaicView.setLayoutX(this.xIndex);
+        this.mosaicView.setLayoutY(this.yIndex);
+    }
+    public void updateMosaicView() {
+        // TODO
+        this.mosaicView.getChildren().clear();
+        for (int i = 0; i < MOSAIC_WIDTH; i++) {
+            for (int j = 0; j < MOSAIC_WIDTH; j++) {
+                if (tiles[i][j] != null) {
+                    this.mosaicView.getChildren().add(new Tile(tiles[i][j].getTileType(), i * Tile.TILE_WIDTH, j * Tile.TILE_WIDTH));
+                } else {
+                    this.mosaicView.getChildren().add(new Tile(' ', i * Tile.TILE_WIDTH, j * Tile.TILE_WIDTH));
+                }
+            }
+        }
+    }
+    public Group getMosaicView() {
+        // TODO
+        updateMosaicView();
+        return this.mosaicView;
+    }
+
+    /**
+     * The visitor of xIndex and yIndex
+     */
+    public int getxIndex() {
+        return xIndex;
+    }
+    public int getyIndex() {
+        return yIndex;
+    }
+
 
     public String getCode() {
         return encode();

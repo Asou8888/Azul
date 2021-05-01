@@ -1,5 +1,7 @@
 package comp1110.ass2.member;
 
+import javafx.scene.Group;
+
 /**
  * The Mosaic class implements the mosaic of a player, which has a tile array(5*5)
  * @author Ruizheng Shen
@@ -36,10 +38,10 @@ public class Mosaic {
         }
     }
 
-
     public Mosaic(Tile[] tiles) {
         this.tiles = tiles; //add by Xiao Xu
     }
+
 
     /**
      * Return the code of the current state in mosaic.
