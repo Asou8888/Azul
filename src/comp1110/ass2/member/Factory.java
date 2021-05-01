@@ -56,6 +56,27 @@ public class Factory {
         return this.tiles.size();
     }
 
+    public int tileNum(char color){
+        int num = 0;
+        for(int i = 0;i<tiles.size();i++){
+            if(tiles.get(i).getCode() == String.valueOf(color)){
+                num += 1;
+            }
+        }
+        return num;
+    }
+
+    public String deleteTile(char color){
+        String factory = encode();
+        String newFactory = "";
+        for(int i = 0; i< factory.length();i++){
+            if(factory.charAt(i) != color){
+                newFactory += String.valueOf(factory.charAt(i));
+            }
+        }
+        return newFactory;
+    }
+
     /**
      * Return the code of the current state in Factory.
      * @return the String code of Factory.
@@ -133,6 +154,8 @@ public class Factory {
         return this.tiles.size();
     }
 
+
+
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
@@ -153,6 +176,7 @@ public class Factory {
         Factory f2 = new Factory();
         f2.decode("ccdd");
         System.out.println("Factory 1: " + f1 + "\nFactory 2: " + f2);
+
     }
 
 }

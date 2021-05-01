@@ -236,6 +236,36 @@ public class Storage {
         return tiles;
     }
 
+    public int emptySpace(int row){
+        int num = 0;
+        for(int i = 0; i<=row;i++){
+            if(tiles[row][i] == null){
+                num += 1;
+            }
+        }
+        return num;
+    }
+
+    public Tile[][] move(char color,int row,int num){
+        if(emptySpace(row) >= num) {
+            num = num;
+        }else {
+            num = emptySpace(row);
+        }
+            int numOfTile = 0;
+            for(int i = 0;i<=row;i++){
+                if(tiles[row][i] == null){
+                    tiles[row][i] = new Tile(color);
+                    numOfTile += 1;
+                    if(numOfTile == num){
+                        break;
+                    }
+                }
+            }
+
+        return tiles;
+    }
+
     public static void main(String[] args) {
         Storage s = new Storage();
         s.decode("S2a13e44a1"); // decode the String and put them into the storage
@@ -250,6 +280,8 @@ public class Storage {
             }
             System.out.println("]");
         }
+
+
 
     }
 

@@ -93,6 +93,20 @@ public class Discard {
         placeTiles(newTiles);
     }
 
+    public void placeTiles(char color,int num){
+        int numOfTiles = 0;
+        for(int i = 0; i < tiles.length;i++){
+            if(tiles[i] == null){
+                tiles[i] = new Tile(color);
+                numOfTiles += 1;
+                if(numOfTiles == num){
+                    break;
+                }
+            }
+        }
+
+    }
+
     public boolean placeTiles(Tile[] tiles) {
         int cnt = lengthTile();
         if (cnt + tiles.length <= 100) {
@@ -130,10 +144,12 @@ public class Discard {
         String a = new String("D0301000001");
         Discard d = new Discard();
         d.decode(a);
+
         for (int i = 0; i< 100; i++) {
             if (d.tiles[i] != null) {
                 System.out.print(d.tiles[i].getCode());
             }
         }
+
     }
 }
