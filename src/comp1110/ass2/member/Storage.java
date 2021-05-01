@@ -260,24 +260,22 @@ public class Storage {
         return num;
     }
 
-    public Tile[][] move(char color,int row,int num){
-        if(emptySpace(row) >= num) {
+    public void move(char color,int row,int num) {
+        if (emptySpace(row) >= num) {
             num = num;
-        }else {
+        } else {
             num = emptySpace(row);
         }
-            int numOfTile = 0;
-            for(int i = 0;i<=row;i++){
-                if(tiles[row][i] == null){
-                    tiles[row][i] = new Tile(color);
-                    numOfTile += 1;
-                    if(numOfTile == num){
-                        break;
-                    }
+        int numOfTile = 0;
+        for (int i = 0; i <= row; i++) {
+            if (tiles[row][i] == null) {
+                tiles[row][i] = new Tile(color);
+                numOfTile += 1;
+                if (numOfTile == num) {
+                    break;
                 }
             }
-
-        return tiles;
+        }
     }
 
 
