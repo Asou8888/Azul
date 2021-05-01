@@ -70,7 +70,7 @@ public class Storage {
     private void createView() {
         for (int i = 0; i < STORAGE_ROW_NUM; i++) {
             for (int j = 0; j < STORAGE_ROW_LENGTH[i]; j++) {
-                this.storageView.getChildren().add(new Tile(' ', i * Tile.TILE_WIDTH, j * Tile.TILE_WIDTH));
+                this.storageView.getChildren().add(new Tile(' ', (STORAGE_ROW_NUM - 1 - j) * Tile.TILE_WIDTH, i * Tile.TILE_WIDTH));
             }
         }
     }
@@ -79,9 +79,9 @@ public class Storage {
         for (int i = 0; i < STORAGE_ROW_NUM; i++) {
             for (int j = 0; j < STORAGE_ROW_LENGTH[i]; j++) {
                 if (this.tiles[i][j] == null) {
-                    this.storageView.getChildren().add(new Tile(' ', i * Tile.TILE_WIDTH, j * Tile.TILE_WIDTH));
+                    this.storageView.getChildren().add(new Tile(' ', (STORAGE_ROW_NUM - 1 - j) * Tile.TILE_WIDTH, i * Tile.TILE_WIDTH));
                 } else {
-                    this.storageView.getChildren().add(new Tile(tiles[i][j].getTileType(), i * Tile.TILE_WIDTH, j * Tile.TILE_WIDTH));
+                    this.storageView.getChildren().add(new Tile(tiles[i][j].getTileType(), (STORAGE_ROW_NUM - 1 - j) * Tile.TILE_WIDTH, i * Tile.TILE_WIDTH));
                 }
             }
         }
