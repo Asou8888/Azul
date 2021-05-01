@@ -76,7 +76,7 @@ public class Discard {
         int c = Integer.parseInt(discard.substring(5,7));
         int d = Integer.parseInt(discard.substring(7,9));
         int e = Integer.parseInt(discard.substring(9));
-        Tile[] newTiles = new Tile[discard.length()];
+        Tile[] newTiles = new Tile[a+b+c+d+e];
         for (int i = 0; i < a;i++){
             newTiles[i] = new Tile('a');
         }
@@ -84,13 +84,13 @@ public class Discard {
             newTiles[i + a] = new Tile('b');
         }
         for (int i = 0; i < c;i++){
-            newTiles[i + a + b] = new Tile('c');
+            newTiles[i + a + b ] = new Tile('c');
         }
         for (int i = 0; i < d;i++){
             newTiles[i + a + b + c] = new Tile('d');
         }
         for (int i = 0; i < e;i++){
-            newTiles[i + a + b + c +d] = new Tile('e');
+            newTiles[i + a + b + c +d ] = new Tile('e');
         }
         placeTiles(newTiles);
     }
@@ -143,7 +143,7 @@ public class Discard {
 
 
     public static void main(String[] args) {
-        String a = new String("D0301000001");
+        String a = new String("D0409050713");
         Discard d = new Discard();
         d.decode(a);
 
