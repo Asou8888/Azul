@@ -1163,7 +1163,7 @@ public class Azul {
         String floorB = splitPlayerState.get("B")[3];
         return (tileOnFloor(floorA) && tileOnFloor(floorB) &&
                 tileInCenter(centre,factory) && tileStorageAndMosaic(storageA,mosaicA) &&
-                tileStorageAndMosaic(storageB,mosaicB) && containOneF(centre,player) &&
+                tileStorageAndMosaic(storageB,mosaicB) && containOneF(centre,mosaicA,storageA,floorA,mosaicB,storageB,floorB) &&
                 noMoreThan20(centre,factory,bag,discard,mosaicA,storageA,floorA,mosaicB,storageB,floorB));
     }
 
@@ -1222,22 +1222,36 @@ public class Azul {
     }
     /** 3. Exactly one first player token 'f' must be present across all player
      * boards and the centre.*/
-    public  static  boolean containOneF (String centre, String player) {
-        int fcnt = 0 ;
-        for (int i = 0; i < centre.length(); i++){
-            int n = centre.indexOf("f",i);
-            if (i == n) {
+    public static boolean containOneF (String cent, String mosA,String stoA,String flrA,String mosB,String stoB,String flrB){
+        return((containFInCentre(cent) + containOneFInPlayer(mosA,stoA,flrA) + containOneFInPlayer(mosB,stoB,flrB)) < 2);
+    }
+    public static int containFInCentre (String centre) {
+        int fcnt = 0;
+        for (int j = 0; j < centre.length(); j ++){
+            int m = centre.indexOf("f",j);
+            if (j == m ) {
                 fcnt ++;
             }
         }
+        return fcnt;
+    }
+    public  static  int containOneFInPlayer (String mosaic, String storage, String floor) {
         int fcnt1 = 0;
-        for (int j = 0; j < player.length(); j ++){
-            int m = player.indexOf("f",j);
+        for (int j = 0; j < mosaic.length(); j ++){
+            int m = mosaic.indexOf("f",j);
             if (j == m ) {
                 fcnt1 ++;
             }
         }
-        return (fcnt + fcnt1 < 2);
+        int fcnt2 = 0;
+        for (int j = 0; j < floor.length(); j ++){
+            int m = floor.indexOf("f",j);
+            if (j == m ) {
+                fcnt2 ++;
+            }
+        }
+        int fcnt3 = tileInStorage(storage,"f");
+        return ( fcnt1 + fcnt2 + fcnt3 );
     }
     /** [Centre]
     /1. The number of tiles in the centre is no greater than 3 * the number of empty factories.*/
