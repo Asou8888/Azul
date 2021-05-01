@@ -37,7 +37,7 @@ public class Tile extends Rectangle {
     private char colorChar; // the code for this tile.(considering using a map from color name to code.)
 
     // TODO:For javafx
-    public static final int TILE_WIDTH = 20; // set the size of tile in the play board.
+    public static final int TILE_WIDTH = 48; // set the size of tile in the play board.
     int xIndex;
     int yIndex;
 
