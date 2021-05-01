@@ -194,7 +194,7 @@ public class Factories {
         // TODO: set layout for all factories.
         for (int i = 0; i < factoryNum; i++) {
             // FIXME
-            factories[i].setLocation(this.xIndex, this.yIndex);
+            factories[i].setLocation(this.xIndex + i * (2 * Tile.TILE_WIDTH) + i * 10, this.yIndex);
         }
     }
     public int getxIndex() {

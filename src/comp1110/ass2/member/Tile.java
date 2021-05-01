@@ -112,7 +112,7 @@ public class Tile extends Rectangle {
 
             }
             default -> {
-                setFill(Color.WHITE);
+                setFill(Color.LIGHTGRAY);
                 this.tileType = null;
                 this.colorChar = ' '; // colorChar of null tile is empty
             }

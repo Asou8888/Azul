@@ -65,14 +65,14 @@ public class Factory {
         int cnt = 0;
         for (int i = 0; i < MAX_FACTORY_TILES_NUM / 2; i++) {
             for (int j = 0; j < MAX_FACTORY_TILES_NUM / 2; j++) {
-                if (tiles.get(cnt) == null) {
+                if (tiles.isEmpty() || tiles.get(cnt) == null) {
                     cnt++;
                     factoryView.getChildren().add(new Tile(' ', i * Tile.TILE_WIDTH, j * Tile.TILE_WIDTH));
                 } else {
-                    cnt++;
                     Tile t = tiles.get(cnt);
                     t.setLocation(i * Tile.TILE_WIDTH, j * Tile.TILE_WIDTH);
                     factoryView.getChildren().add(t);
+                    cnt++;
                 }
             }
         }
@@ -81,15 +81,15 @@ public class Factory {
         this.factoryView.getChildren().clear(); // clear the previous view.
         int cnt = 0;
         for (int i = 0; i < MAX_FACTORY_TILES_NUM / 2; i++) {
-            for (int j = 0; j < MAX_FACTORY_TILES_NUM; j++) {
-                if (tiles.get(cnt) == null) {
+            for (int j = 0; j < MAX_FACTORY_TILES_NUM / 2; j++) {
+                if (cnt >= tiles.size()) {
                     cnt++;
                     factoryView.getChildren().add(new Tile(' ', i * Tile.TILE_WIDTH, j * Tile.TILE_WIDTH));
                 } else {
-                    cnt++;
                     Tile t = tiles.get(cnt);
                     t.setLocation(i * Tile.TILE_WIDTH, j * Tile.TILE_WIDTH);
                     factoryView.getChildren().add(t);
+                    cnt++;
                 }
             }
         }

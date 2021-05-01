@@ -49,6 +49,12 @@ public class Game extends Application {
 
         // TODO: add factories
         this.factories = new Factories("F0abbe2ccdd");
+        this.factories.setLocation(500, 500);
+        Group[] fs = factories.getFactoriesView();
+        for (Group g: fs) {
+            root.getChildren().add(g);
+        }
+
 
 
         // (add the player view)
