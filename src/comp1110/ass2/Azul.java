@@ -47,7 +47,7 @@ public class Azul {
         pointer = endBag; // move the pointer to the discard.
 
         // {Discord} state
-        String discord = sharedState.substring(pointer) + pointer; // The remaining is the discord.
+        String discord = sharedState.substring(pointer); // The remaining is the discord.
         return new String[]{turn, factory, centre, bag, discord};
     }
 
@@ -1170,6 +1170,7 @@ public class Azul {
     /** 2. There are no more than 20 of each colour of tile across all player
      * areas, factories, bag and discard*/
     public static boolean noMoreThan20 (String fac, String bag,String dis,String mosA,String stoA,String flrA,String mosB,String stoB,String flrB){
+        if (dis.length() > 11) return false;
         int a = noMoreThan20InShared(fac,bag,dis)[0] + noMoreThan20InPlayer(mosA,stoA,flrA)[0] + noMoreThan20InPlayer(mosB,stoB,flrB)[0];
         int b = noMoreThan20InShared(fac,bag,dis)[1] + noMoreThan20InPlayer(mosA,stoA,flrA)[1] + noMoreThan20InPlayer(mosB,stoB,flrB)[1];
         int c = noMoreThan20InShared(fac,bag,dis)[2] + noMoreThan20InPlayer(mosA,stoA,flrA)[2] + noMoreThan20InPlayer(mosB,stoB,flrB)[2];
@@ -1185,7 +1186,7 @@ public class Azul {
         ints[1] = Integer.parseInt(bag.substring(3,5)) + Integer.parseInt(discard.substring(3,5)) + cantainChar(factory,"b");
         ints[2] = Integer.parseInt(bag.substring(5,7)) + Integer.parseInt(discard.substring(5,7)) + cantainChar(factory,"c");
         ints[3] = Integer.parseInt(bag.substring(7,9)) + Integer.parseInt(discard.substring(7,9)) + cantainChar(factory,"d");
-        ints[4] = Integer.parseInt(bag.substring(9)) + Integer.parseInt(discard.substring(9)) + cantainChar(factory,"e");
+        ints[4] = Integer.parseInt(bag.substring(9, 11)) + Integer.parseInt(discard.substring(9, 11)) + cantainChar(factory,"e");
         return ints;}
 
     /**return amount of a char present in a string.*/
@@ -1644,6 +1645,14 @@ public class Azul {
     }
 
     public static void main(String[] args) {
+        // Test case for task 9
+        String[] test = new String[] {
+                "BFCB1412141614D0000000000",
+                "A0MS0a11c22a33c44b5FB0MS0e11a22b33d44e5Ff"
+        };
+        System.out.println(isStateValid(test));
+    }
+        /*
         String[] testSplit = new String[]{
                 "AFCB1915161614D0000000000",
                 "A0MS0d11c22b33e44e1FefB0MS0a11b22d33c2FC0MS0d11c22b33e44e1FefD0MS0a11b22d33c2F"
@@ -1655,7 +1664,8 @@ public class Azul {
         System.out.println(floor);
         String[] gameState = {"BFCB1412141614D0000000000", "A0MS0a11c22a33c44b5FB0MS0e11a22b33d44e5Ff"};
         System.out.println(isStateValid(gameState));
-    }
+
+         */
     /*
     public static void main(String[] args) {
         String[] testSplit = new String[]{
