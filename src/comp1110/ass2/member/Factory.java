@@ -1,6 +1,7 @@
 package comp1110.ass2.member;
 
 import gittest.A;
+import javafx.scene.Group;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,6 +22,12 @@ public class Factory {
      */
     private static final int MAX_FACTORY_TILES_NUM = 4;
     private ArrayList<Tile> tiles;
+
+    /* Members for javafx */
+    int xIndex;
+    int yIndex;
+    Group factoryView = new Group();
+
 
 
 
@@ -47,7 +54,55 @@ public class Factory {
      */
     public Factory() {
         this.tiles = new ArrayList<>();
+        createView();
     }
+
+    /**
+     * Create view for a factory, only called by the constructor
+     */
+    private void createView() {
+        factoryView = new Group();
+        int cnt = 0;
+        for (int i = 0; i < MAX_FACTORY_TILES_NUM / 2; i++) {
+            for (int j = 0; j < MAX_FACTORY_TILES_NUM / 2; j++) {
+                if (tiles.get(cnt) == null) {
+                    cnt++;
+                    factoryView.getChildren().add(new Tile(' ', i * Tile.TILE_WIDTH, j * Tile.TILE_WIDTH));
+                } else {
+                    cnt++;
+                    Tile t = tiles.get(cnt);
+                    t.setLocation(i * Tile.TILE_WIDTH, j * Tile.TILE_WIDTH);
+                    factoryView.getChildren().add(t);
+                }
+            }
+        }
+    }
+    public void updateFactoryView() {
+        this.factoryView.getChildren().clear(); // clear the previous view.
+        int cnt = 0;
+        for (int i = 0; i < MAX_FACTORY_TILES_NUM / 2; i++) {
+            for (int j = 0; j < MAX_FACTORY_TILES_NUM; j++) {
+                if (tiles.get(cnt) == null) {
+                    cnt++;
+                    factoryView.getChildren().add(new Tile(' ', i * Tile.TILE_WIDTH, j * Tile.TILE_WIDTH));
+                } else {
+                    cnt++;
+                    Tile t = tiles.get(cnt);
+                    t.setLocation(i * Tile.TILE_WIDTH, j * Tile.TILE_WIDTH);
+                    factoryView.getChildren().add(t);
+                }
+            }
+        }
+    }
+    public Group getFactoryView() {
+        updateFactoryView();
+        return this.factoryView;
+    }
+    public void setLocation(int x, int y) {
+        this.xIndex = x;
+        this.yIndex = y;
+    }
+
     /**
      *
      * @return the number of tiles in this factory

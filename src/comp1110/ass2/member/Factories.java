@@ -15,7 +15,9 @@ public class Factories {
     private Factory[] factories;
 
     /* Members for javafx */
-    private final Group factoryView = new Group();
+    private Group[] factoriesView;
+    int xIndex;
+    int yIndex;
 
     /**
      * Constructor: decide the number of factories based on player numbers.
@@ -44,6 +46,8 @@ public class Factories {
         for (int i = 0; i < factoryNum; i++) {
             factories[i] = new Factory();
         }
+        // create factoryView.
+        createView();
     }
 
     /**
@@ -55,6 +59,8 @@ public class Factories {
         for (int i = 0; i < factoryNum; i++) {
             factories[i] = new Factory();
         }
+        // create factoryView
+        createView();
     }
 
     /**
@@ -68,7 +74,36 @@ public class Factories {
             this.factories[i] = new Factory();
         }
         decode(factory);
+        // create factoryView
+        createView();
     }
+
+    /**
+     * create view for factory
+     */
+    private void createView() {
+        this.factoriesView = new Group[factoryNum];
+        updateFactoriesView();
+    }
+
+    /**
+     * Update the factories view, should be called after each action.
+     */
+    public void updateFactoriesView() {
+        for (int i = 0; i < factoryNum; i++) {
+            this.factoriesView[i] = factories[i].getFactoryView();
+        }
+    }
+
+    /**
+     * The visitor of factoriesView(5 grids in normal case)
+     * @return View of factories
+     */
+    public Group[] getFactoriesView() {
+        updateFactoriesView();
+        return this.factoriesView;
+    }
+
 
     /**
      * encode the current state in factories.
@@ -151,6 +186,21 @@ public class Factories {
         } else {
             return this.factories[num].getColors();
         }
+    }
+
+    public void setLocation(int x, int y) {
+        this.xIndex = x;
+        this.yIndex = y;
+        // TODO: set layout for all factories.
+        for (int i = 0; i < factoryNum; i++) {
+            factories[i].setLocation();
+        }
+    }
+    public int getxIndex() {
+        return this.xIndex;
+    }
+    public int getyIndex() {
+        return this.yIndex;
     }
 
     @Override

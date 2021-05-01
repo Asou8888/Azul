@@ -1,9 +1,6 @@
 package comp1110.ass2.gui;
 
-import comp1110.ass2.member.Center;
-import comp1110.ass2.member.Player;
-import comp1110.ass2.member.Tile;
-import comp1110.ass2.member.TileType;
+import comp1110.ass2.member.*;
 import gittest.C;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -26,8 +23,7 @@ public class Game extends Application {
 
     /* Members in the game */
     private Center center;
-    private Group centerView;
-    private Group factoriesView = new Group();
+    private Factories factories;
     private Group bagView = new Group();
     private Group playerView = new Group();
 
@@ -50,6 +46,10 @@ public class Game extends Application {
         center.decode("Caaaabbcf");
         center.removeTiles(TileType.Blue);
         root.getChildren().add(center.getTilesView());
+
+        // TODO: add factories
+        this.factories = new Factories("F0abbe2ccdd");
+
 
         // (add the player view)
 
