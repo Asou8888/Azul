@@ -116,12 +116,13 @@ public class Factory {
     public int tileNum(char color){
         int num = 0;
         for(int i = 0;i<tiles.size();i++){
-            if(tiles.get(i).getCode() == String.valueOf(color)){
+            if(tiles.get(i).getCode().equals(String.valueOf(color))){
                 num += 1;
             }
         }
         return num;
     }
+
 
     public String deleteTile(char color){
         String factory = encode();
@@ -241,6 +242,7 @@ public class Factory {
         f2.decode("ccdd");
         System.out.println("Factory 1: " + f1 + "\nFactory 2: " + f2);
 
+        System.out.println(f1.tileNum('b'));
     }
 
 }

@@ -142,7 +142,7 @@ public class Floor {
         return num;
     }
 
-    public Tile[] placeTile(char color,int num){
+    public void placeTile(char color,int num){
         if(emptyNum() >= num){
             num = num;
         }else {
@@ -158,7 +158,6 @@ public class Floor {
                 }
             }
         }
-        return tiles;
     }
 
     public static void main(String[] args) {
@@ -171,13 +170,5 @@ public class Floor {
             }
         }
         System.out.println(f.emptyNum());
-        Tile[] ad = f.placeTile('a',3);
-        System.out.println(ad[0]);
-        System.out.println(ad[1]);
-        System.out.println(ad[2]);
-        System.out.println(ad[3]);
-        System.out.println(ad[4]);
-        System.out.println(ad[5]);
-        System.out.println(ad[6]);
     }
 }
