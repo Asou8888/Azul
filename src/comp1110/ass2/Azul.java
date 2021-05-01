@@ -1662,8 +1662,11 @@ public class Azul {
         int Fa = sharedState.indexOf("F");
         int Cen = sharedState.indexOf("C");
         int D = sharedState.indexOf("D");
+        int Bag = sharedState.indexOf("B");
         int S = playerState.indexOf("S");
         int F = playerState.indexOf("F");
+        String bag = sharedState.substring(Bag,D);
+        String center = sharedState.substring(Cen,D);
         String discard = sharedState.substring(D);
         String storage = playerState.substring(S,F);
         String floor = playerState.substring(F);
@@ -1679,6 +1682,12 @@ public class Azul {
             int numOfFactory = move.charAt(1) -'0';
             String factoryCode = factories.getFactory(numOfFactory).getCode();
             int numOfTiles = factories.getFactory(numOfFactory).tileNum(move.charAt(2));
+            Factory factory1 = new Factory();
+            factory1.decode(factoryCode);
+            String otherTiles = factory1.deleteTile(move.charAt(2));
+            Center center1 = new Center();
+            center1.decode(center);
+            center1.addTile(otherTiles);
             if(Character.isDigit(move.charAt(3))){
                 /**
                  * 从factory移动到storage
@@ -1694,9 +1703,13 @@ public class Azul {
                     }
                 }
                 if(gameState[0].charAt(0) =='A'){
-                    gameState[0] = "B" ;
+                    factories.clear(move.charAt(1)-'0');
+                    gameState[0] = "B" + factories.getCode() + center1.getCode() + bag + discard1.getCode();
+                    gameState[1] = playerState.substring(0,S) + storage1.getCode() + floor1.getCode() + gameState[1].substring(B);
                 }else {
-                    playerState = gameState[1].substring(B);
+                    factories.clear(move.charAt(1)-'0');
+                    gameState[0] = "A" + factories.getCode() + center1.getCode() + bag + discard1.getCode();
+                    gameState[1] = gameState[1].substring(0,S) + storage1.getCode() + floor1.getCode();
                 }
 
 
