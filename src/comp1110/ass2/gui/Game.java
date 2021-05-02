@@ -33,7 +33,6 @@ public class Game extends Application {
 
     private Group bagView = new Group();
     private Group playerView = new Group();
-    private Storage storage;
 
     private void createBoard() {
         // TODO: create the board.
@@ -92,16 +91,11 @@ public class Game extends Application {
         // TODO: Storage
         this.storage = new Storage();
         this.storage.decode("S2a13e44a1");
-        this.storage.setLocation(300, 100);
+        this.storage.setLocation(10, 300);
         root.getChildren().add(this.storage.getStorageView());
 
         // (add the player view)
 
-        // add Storage
-        this.storage = new Storage();
-        this.storage.decode("S0a11b22c33d44e5");
-        this.storage.setLocation(10,300);
-        root.getChildren().add(this.storage.getStorageView());
 
 
 
