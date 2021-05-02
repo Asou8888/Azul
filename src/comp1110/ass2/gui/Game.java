@@ -26,9 +26,6 @@ public class Game extends Application {
     /* Members in the game */
     private Center center;
     private Factories factories;
-    private NewMosaic mosaic;
-    private Floor floor;
-    private Storage storage;
     private Player[] players;
 
     private Group bagView = new Group();

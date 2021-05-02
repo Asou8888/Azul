@@ -71,13 +71,13 @@ public class NewMosaic {
         if (isVariant) {
             for (int i = 0; i < MOSAIC_WIDTH; i++) {
                 for (int j = 0; j < MOSAIC_WIDTH; j++) {
-                    this.mosaicView.getChildren().add(new Tile(' ', i * Tile.TILE_WIDTH, j * Tile.TILE_WIDTH));
+                    this.mosaicView.getChildren().add(new Tile(' ', j * Tile.TILE_WIDTH, i * Tile.TILE_WIDTH));
                 }
             }
         } else {
             for (int i = 0; i < MOSAIC_WIDTH; i++) {
                 for (int j = 0; j < MOSAIC_WIDTH; j++) {
-                    this.mosaicView.getChildren().add(new Tile(pattern[i][j], i * Tile.TILE_WIDTH, j * Tile.TILE_WIDTH));
+                    this.mosaicView.getChildren().add(new Tile(pattern[i][j], j * Tile.TILE_WIDTH, i * Tile.TILE_WIDTH));
                 }
             }
         }
@@ -95,9 +95,9 @@ public class NewMosaic {
         for (int i = 0; i < MOSAIC_WIDTH; i++) {
             for (int j = 0; j < MOSAIC_WIDTH; j++) {
                 if (tiles[i][j] != (Tile) null) {
-                    this.mosaicView.getChildren().add(new Tile(tiles[i][j].getTileType(), i * Tile.TILE_WIDTH, j * Tile.TILE_WIDTH));
+                    this.mosaicView.getChildren().add(new Tile(tiles[i][j].getTileType(), j * Tile.TILE_WIDTH, i * Tile.TILE_WIDTH));
                 } else {
-                    this.mosaicView.getChildren().add(new Tile(' ', i * Tile.TILE_WIDTH, j * Tile.TILE_WIDTH));
+                    this.mosaicView.getChildren().add(new Tile(' ', j * Tile.TILE_WIDTH, i * Tile.TILE_WIDTH));
                 }
             }
         }
@@ -247,6 +247,18 @@ public class NewMosaic {
         Tile a = new Tile(color);
         tiles[row][column] = a;
         return tiles;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder s = new StringBuilder("Mosaic: \n");
+        for (int i = 0; i < MOSAIC_WIDTH; i++) {
+            for (int j = 0; j < MOSAIC_WIDTH; j++) {
+                s.append(tiles[i][j]).append(" ");
+            }
+            s.append("\n");
+        }
+        return s.toString();
     }
 
 
