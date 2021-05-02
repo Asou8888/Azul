@@ -5,6 +5,7 @@ Reviewed by: Xiao Xu, u7205634
 Reviewing code written by: Ruizheng Shen, u6814863
 
 Component: Azul.IsMoveValid (task10)
+https://gitlab.cecs.anu.edu.au/u7205634/comp1110-ass2-tue12k/-/blob/master/src/comp1110/ass2/Azul.java#L1341
 
 ### Comments 
  - 1.What are the best features of this code?
