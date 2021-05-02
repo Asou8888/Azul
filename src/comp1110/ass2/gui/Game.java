@@ -34,39 +34,9 @@ public class Game extends Application {
     private Group bagView = new Group();
     private Group playerView = new Group();
 
-    private void createBoard() {
+    private void createBoard(Group root) {
         // TODO: create the board.
         // Player Area, Center, Factories, Bag information and Discard.
-    }
-
-    private void createPlayer(Group root) {
-        this.players = new Player[PLAYER_NUM];
-        for (int i = 0; i < PLAYER_NUM; i++) {
-            // TODO: Allow player to enter their name.
-            // create player according to their personal name and playercode.
-            this.players[i] = new Player(DEFAULT_PLAYER_NAME[i], PLAYER_CODE[i]);
-            // TODO: setLocation to each player's board.
-            players[i].setLocation(600*i,300);
-            root.getChildren().add(players[i].getViews());
-
-
-        }
-    }
-
-
-    @Override
-    public void start(Stage stage) throws Exception {
-        //  FIXME Task 12: Implement a basic playable Azul game in JavaFX that only allows tiles to be placed in valid places
-        //  FIXME Task 14: Implement a computer opponent so that a human can play your game against the computer.
-        stage.setTitle("Azul");
-        Group root = new Group();
-        Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
-
-        // start game
-        // (add the shared view)
-        // root.getChildren().add(factoriesView);
-        // root.getChildren().add(bagView);
-
         // TODO: add center(testing)
         this.center = new Center(525, 20);
         center.decode("Caaaabbcf");
@@ -80,38 +50,65 @@ public class Game extends Application {
         for (Group g : fs) {
             root.getChildren().add(g);
         }
+    }
+
+    private void createPlayer(Group root) {
+        this.players = new Player[PLAYER_NUM];
+        for (int i = 0; i < PLAYER_NUM; i++) {
+            // TODO: Allow player to enter their name.
+            // create player according to their personal name and playercode.
+            this.players[i] = new Player(DEFAULT_PLAYER_NAME[i], PLAYER_CODE[i]);
+            // TODO: setLocation to each player's board.
+            players[i].setLocation(600 * i, 300);
+            root.getChildren().add(players[i].getViews());
+        }
+    }
+
+
+    @Override
+    public void start(Stage stage) throws Exception {
+        //  FIXME Task 12: Implement a basic playable Azul game in JavaFX that only allows tiles to be placed in valid places
+        //  FIXME Task 14: Implement a computer opponent so that a human can play your game against the computer.
+        stage.setTitle("Azul");
+        Group root = new Group();
+        Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
+
+        // start game
+        createBoard(root);
         createPlayer(root);
-        stage.setScene(scene);
-        stage.show();
-    }}
-
-       /** // TODO: NewMosaic
-        this.mosaic = new NewMosaic("Mb00a02a13e42");
-        this.mosaic.setLocation(300, 300);
-        root.getChildren().add(this.mosaic.getMosaicView());
-
-        // TODO: Floor
-        this.floor = new Floor();
-        this.floor.decode("Faabbe");
-        this.floor.setLocation(100, 600);
-        root.getChildren().add(this.floor.getFloorView());
-
-        // TODO: Storage
-        this.storage = new Storage();
-        this.storage.decode("S2a13e44a1");
-        this.storage.setLocation(10, 300);
-        root.getChildren().add(this.storage.getStorageView());
-
-        // (add the player view)
-
-
-
-
-
-
-        // player board
         stage.setScene(scene);
         stage.show();
     }
 }
-*/
+
+/**
+ * // TODO: NewMosaic
+ * this.mosaic = new NewMosaic("Mb00a02a13e42");
+ * this.mosaic.setLocation(300, 300);
+ * root.getChildren().add(this.mosaic.getMosaicView());
+ * <p>
+ * // TODO: Floor
+ * this.floor = new Floor();
+ * this.floor.decode("Faabbe");
+ * this.floor.setLocation(100, 600);
+ * root.getChildren().add(this.floor.getFloorView());
+ * <p>
+ * // TODO: Storage
+ * this.storage = new Storage();
+ * this.storage.decode("S2a13e44a1");
+ * this.storage.setLocation(10, 300);
+ * root.getChildren().add(this.storage.getStorageView());
+ * <p>
+ * // (add the player view)
+ * <p>
+ * <p>
+ * <p>
+ * <p>
+ * <p>
+ * <p>
+ * // player board
+ * stage.setScene(scene);
+ * stage.show();
+ * }
+ * }
+ */
