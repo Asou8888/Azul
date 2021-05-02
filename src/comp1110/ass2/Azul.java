@@ -1148,17 +1148,17 @@ public class Azul {
         // FIXME Task 9
         if (!(isSharedStateWellFormed(gameState[0]) && isPlayerStateWellFormed(gameState[1]))){ return  false;}
         String[] sharedState = splitSharedState(gameState);
-        String factory = sharedState[1];
-        String centre = sharedState[2];
-        String bag = sharedState[3];
-        String discard = sharedState[4];
+        String factory = sharedState[1]; //String for factory
+        String centre = sharedState[2]; //String for center
+        String bag = sharedState[3]; //String for bag
+        String discard = sharedState[4]; // String for discard
         HashMap<String, String[]> splitPlayerState = splitPlayerState(gameState);
-        String mosaicA = splitPlayerState.get("A")[1];
-        String storageA = splitPlayerState.get("A")[2];
-        String floorA = splitPlayerState.get("A")[3];
-        String mosaicB = splitPlayerState.get("B")[1];
-        String storageB = splitPlayerState.get("B")[2];
-        String floorB = splitPlayerState.get("B")[3];
+        String mosaicA = splitPlayerState.get("A")[1]; // mosaic for playerA
+        String storageA = splitPlayerState.get("A")[2]; // storage for playerA
+        String floorA = splitPlayerState.get("A")[3]; //floor for playerA
+        String mosaicB = splitPlayerState.get("B")[1]; // mosaic for playerB
+        String storageB = splitPlayerState.get("B")[2]; // storage for playerB
+        String floorB = splitPlayerState.get("B")[3]; // floor for playerB
         return (tileOnFloor(floorA) && tileOnFloor(floorB) &&
                 tileInCenter(centre,factory) && tileStorageAndMosaic(storageA,mosaicA) &&
                 tileStorageAndMosaic(storageB,mosaicB) && containOneF(centre,mosaicA,storageA,floorA,mosaicB,storageB,floorB) &&
@@ -1175,7 +1175,7 @@ public class Azul {
         int c = noMoreThan20InShared(cen,fac,bag,dis)[2] + noMoreThan20InPlayer(mosA,stoA,flrA)[2] + noMoreThan20InPlayer(mosB,stoB,flrB)[2];
         int d = noMoreThan20InShared(cen,fac,bag,dis)[3] + noMoreThan20InPlayer(mosA,stoA,flrA)[3] + noMoreThan20InPlayer(mosB,stoB,flrB)[3];
         int e = noMoreThan20InShared(cen,fac,bag,dis)[4] + noMoreThan20InPlayer(mosA,stoA,flrA)[4] + noMoreThan20InPlayer(mosB,stoB,flrB)[4];
-        return(a == 20 && b==20 && c == 20 && d ==20 && e == 20);
+        return(a == 20 && b==20 && c == 20 && d ==20 && e == 20); // return true only each tile has 20 amount.
     }
 
     /** return amount of a,b,c,d,e in list in factories,bag,discard.*/
@@ -1186,11 +1186,11 @@ public class Azul {
         ints[2] = cantainChar(centre,"c") + Integer.parseInt(bag.substring(5,7)) + Integer.parseInt(discard.substring(5,7)) + cantainChar(factory,"c");
         ints[3] = cantainChar(centre,"d") + Integer.parseInt(bag.substring(7,9)) + Integer.parseInt(discard.substring(7,9)) + cantainChar(factory,"d");
         ints[4] = cantainChar(centre,"e") + Integer.parseInt(bag.substring(9, 11)) + Integer.parseInt(discard.substring(9, 11)) + cantainChar(factory,"e");
-        return ints;}
+        return ints;} //the list contain amount of each tile.
 
     /**return amount of a char present in a string.*/
     public static int cantainChar (String str, String cha){
-         int cnt = 0;
+         int cnt = 0; // count number of char
          for(int i =0; i < str.length(); i++ ) {
              int n = str.indexOf(cha,i);
              if (n == i) {
@@ -1201,16 +1201,16 @@ public class Azul {
      }
     /** return amount of a,b,c,d,e in list in mosaic,storage,floor.*/
     public static int[] noMoreThan20InPlayer (String mosaic,String storage,String floor){
-        int[] intsPlayer = new int[5];
+        int[] intsPlayer = new int[5]; //list for amount of a,b,c,d,e.
         intsPlayer[0] = cantainChar(mosaic,"a") + cantainChar(floor,"a") + tileInStorage(storage,"a");
         intsPlayer[1] = cantainChar(mosaic,"b") + cantainChar(floor,"b") + tileInStorage(storage,"b");
         intsPlayer[2] = cantainChar(mosaic,"c") + cantainChar(floor,"c") + tileInStorage(storage,"c");
         intsPlayer[3] = cantainChar(mosaic,"d") + cantainChar(floor,"d") + tileInStorage(storage,"d");
         intsPlayer[4] = cantainChar(mosaic,"e") + cantainChar(floor,"e") + tileInStorage(storage,"e");
-        return intsPlayer;
+        return intsPlayer; //
     }
     public static int tileInStorage (String storage, String cha) {
-        int cnt = 0;
+        int cnt = 0; // count number of char in string
         for(int i = 1; i < storage.length(); i = i + 3){
             int n = storage.indexOf(cha,i);
             if (n-1 == i){
@@ -1224,8 +1224,9 @@ public class Azul {
     public static boolean containOneF (String cent, String mosA,String stoA,String flrA,String mosB,String stoB,String flrB){
         return((containFInCentre(cent) + containOneFInPlayer(mosA,stoA,flrA) + containOneFInPlayer(mosB,stoB,flrB)) < 2);
     }
+    /** return whether center contains 'f'.*/
     public static int containFInCentre (String centre) {
-        int fcnt = 0;
+        int fcnt = 0; // add 1 if there is 'f' in center
         for (int j = 0; j < centre.length(); j ++){
             int m = centre.indexOf("f",j);
             if (j == m ) {
@@ -1234,30 +1235,31 @@ public class Azul {
         }
         return fcnt;
     }
+    /** return whether player state contains 'f'.*/
     public  static  int containOneFInPlayer (String mosaic, String storage, String floor) {
-        int fcnt1 = 0;
+        int fcnt1 = 0; // add 1 if 'f' presents in mosaic.
         for (int j = 0; j < mosaic.length(); j ++){
             int m = mosaic.indexOf("f",j);
             if (j == m ) {
                 fcnt1 ++;
             }
         }
-        int fcnt2 = 0;
+        int fcnt2 = 0; // add 1 if 'f' presents in floor.
         for (int j = 0; j < floor.length(); j ++){
             int m = floor.indexOf("f",j);
             if (j == m ) {
                 fcnt2 ++;
             }
         }
-        int fcnt3 = tileInStorage(storage,"f");
+        int fcnt3 = tileInStorage(storage,"f"); // add 1 if 'f' presents in storage
         return ( fcnt1 + fcnt2 + fcnt3 );
     }
     /** [Storage]
      * 1. The maximum number of tiles stored in a row must not exceed (row_number + 1).*/
     public static boolean extraTileInSto (String storage){
         for (int i = 1; i < storage.length();i = i+3){
-            int row = storage.charAt(i) - '0';
-            int num = storage.charAt(i+2) - '0';
+            int row = storage.charAt(i) - '0'; // represent row
+            int num = storage.charAt(i+2) - '0'; // represent quantity
             if (row + 1 < num) {return false;}
         }
         return true;
@@ -1294,7 +1296,7 @@ public class Azul {
         NewMosaic mos = new NewMosaic();
         str.decode(storage);
         mos.decode(mosaic);
-        int cnt = 0;
+        int cnt = 0; //add 1 if there is a row in Storage has same color tile in mosaic.
         for (int i = 0; i < 5;i++) {
             TileType tileColor = str.rowColor(i);
             ArrayList<TileType> tileMosaicColor = mos.rowColorList(i);
@@ -1302,7 +1304,7 @@ public class Azul {
                 cnt++;
             }
         }
-        return cnt ==0;
+        return cnt ==0; // true only when all different color tile in a row between storage and mosaic.
     }
 
     /** [Floor]
@@ -1474,7 +1476,7 @@ public class Azul {
                 if (!s.isRowFull(row)) {
                     return false; // If this row is not full, return false;
                 }
-                // 2. TODO: The specified column does not already contain a tile of the same colour.
+                // 2. The specified column does not already contain a tile of the same colour.
                 String mosaic = playerState[1]; // The mosaic state is stored at the 2nd place.
                 NewMosaic m = new NewMosaic(mosaic);
                 TileType rowColor = s.rowColor(row); // get the color of the tiles in this row of storage.
@@ -1485,12 +1487,12 @@ public class Azul {
                         return false;
                     }
                 }
-                // 3. TODO: The specified location in the mosaic is empty.
+                // 3. The specified location in the mosaic is empty.
                 if (!m.isEmpty(row, col)) {
                     return false;
                 }
             } else {
-                // 4. TODO: If the specified column is 'F', no valid move exists from the specified row into the mosaic.
+                // 4. If the specified column is 'F', no valid move exists from the specified row into the mosaic.
                 // find whether there's a valid move from storage to mosaic
                 HashMap<String, String[]> splitPlayerState = splitPlayerState(gameState); // split the player state
                 String[] playerState = splitPlayerState.get(String.valueOf(player)); // get the player state of this player
