@@ -78,10 +78,10 @@ public class Storage {
         this.storageView.getChildren().clear();
         for (int i = 0; i < STORAGE_ROW_NUM; i++) {
             for (int j = 0; j < STORAGE_ROW_LENGTH[i]; j++) {
-                if (this.tiles[i][j] == null) {
-                    this.storageView.getChildren().add(new Tile(' ', (STORAGE_ROW_NUM - 1 - j) * Tile.TILE_WIDTH, i * Tile.TILE_WIDTH));
+                if (this.tiles[i][j] == (Tile) null) {
+                    this.storageView.getChildren().add(new Tile(' ', j * Tile.TILE_WIDTH, i * Tile.TILE_WIDTH));
                 } else {
-                    this.storageView.getChildren().add(new Tile(tiles[i][j].getTileType(), (STORAGE_ROW_NUM - 1 - j) * Tile.TILE_WIDTH, i * Tile.TILE_WIDTH));
+                    this.storageView.getChildren().add(new Tile(tiles[i][j].getTileType(), j * Tile.TILE_WIDTH, i * Tile.TILE_WIDTH));
                 }
             }
         }
@@ -317,6 +317,18 @@ public class Storage {
                 }
             }
         }
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder s = new StringBuilder("Storage: \n");
+        for (int i = 0; i < STORAGE_ROW_NUM; i++) {
+            for (int j = 0; j < STORAGE_ROW_LENGTH[i]; j++) {
+                s.append(tiles[i][j] + " ");
+            }
+            s.append("\n");
+        }
+        return s.toString();
     }
 
 
