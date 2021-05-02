@@ -60,7 +60,15 @@ public class Game extends Application {
             root.getChildren().add(players[i].getViews());
         }
     }
-
+    /** determine if the storage contains any rows that is full*/
+    private boolean isStorageContainFull (Storage storage){
+        String a = storage.getCode();
+        for(int i = 1;i < a.length();i= i+3){
+            if(storage.isRowFull(i))
+                return true;
+        }
+        return false;
+    }
 
     @Override
     public void start(Stage stage) throws Exception {
