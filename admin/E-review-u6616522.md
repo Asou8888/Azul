@@ -4,7 +4,7 @@ Reviewed by: <Yixin Ge>, <u6616522>
 
 Reviewing code written by: <Xiao Xu> <u7205634d>
 
-Component: <the component being reviewed>
+Component: <https://gitlab.cecs.anu.edu.au/u7205634/comp1110-ass2-tue12k/-/blob/master/src/comp1110/ass2/Azul.java#L1555>
 
 ### Comments 
 
