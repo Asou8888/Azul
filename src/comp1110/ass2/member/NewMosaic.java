@@ -10,6 +10,7 @@ import comp1110.ass2.gui.Game;
 import javafx.scene.Group;
 
 import java.util.ArrayList;
+import java.util.function.ToDoubleBiFunction;
 
 public class NewMosaic {
     private Tile[][] tiles;
@@ -245,9 +246,12 @@ public class NewMosaic {
             t.setOnMouseClicked(e -> {
                 // FIXME
                 t.setOpacity(0.6);
-                if (!Game.isClick) {
-                    Game.isClick = true;
-                    Game.from = t;}});
+                if (Game.isClick) { //if it is an second click
+                    Game.isClick =  false; //clear click
+                    Tile p = Game.from;//load the tile from Storage
+                    //TODO
+
+                }});
             tiles[row][col] = new Tile(colorChar); // put the tile in this position.
         }
     }
