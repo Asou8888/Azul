@@ -1474,7 +1474,7 @@ public class Azul {
                 if (!s.isRowFull(row)) {
                     return false; // If this row is not full, return false;
                 }
-                // 2. TODO: The specified column does not already contain a tile of the same colour.
+                // 2. The specified column does not already contain a tile of the same colour.
                 String mosaic = playerState[1]; // The mosaic state is stored at the 2nd place.
                 NewMosaic m = new NewMosaic(mosaic);
                 TileType rowColor = s.rowColor(row); // get the color of the tiles in this row of storage.
@@ -1485,12 +1485,12 @@ public class Azul {
                         return false;
                     }
                 }
-                // 3. TODO: The specified location in the mosaic is empty.
+                // 3. The specified location in the mosaic is empty.
                 if (!m.isEmpty(row, col)) {
                     return false;
                 }
             } else {
-                // 4. TODO: If the specified column is 'F', no valid move exists from the specified row into the mosaic.
+                // 4. If the specified column is 'F', no valid move exists from the specified row into the mosaic.
                 // find whether there's a valid move from storage to mosaic
                 HashMap<String, String[]> splitPlayerState = splitPlayerState(gameState); // split the player state
                 String[] playerState = splitPlayerState.get(String.valueOf(player)); // get the player state of this player
