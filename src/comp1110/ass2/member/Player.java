@@ -162,13 +162,10 @@ public class Player {
      */
     public Tile[] placeFirstPlayerTile(Tile[] tiles) {
         // TODO: test
-        ArrayList<Tile> newTiles = (ArrayList<Tile>) Arrays.asList(tiles);
-        for (Tile t: newTiles) {
-            if (t.getTileType() == TileType.FirstPlayer) {
-                // remove this tile, move it to floor.
-                floor.placeTile(new Tile[]{t});
-                newTiles.remove(t);
-                break;
+        ArrayList<Tile> newTiles = new ArrayList<>();
+        for (Tile t: tiles) {
+            if (t.getTileType() != TileType.FirstPlayer) {
+                newTiles.add(t);
             }
         }
         return (Tile[]) newTiles.toArray();
