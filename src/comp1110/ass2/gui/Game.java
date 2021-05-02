@@ -20,14 +20,34 @@ public class Game extends Application {
 
     /* game information  */
     private static final int PLAYER_NUM = 2;
+    private static final String[] PLAYER_CODE = new String[]{"A", "B", "C", "D"};
+    private static final String[] DEFAULT_PLAYER_NAME = new String[]{"Alice", "Bob", "John", "Cathy"};
 
     /* Members in the game */
     private Center center;
     private Factories factories;
     private NewMosaic mosaic;
     private Floor floor;
+    private Storage storage;
+    private Player[] players;
+
     private Group bagView = new Group();
     private Group playerView = new Group();
+
+    private void createBoard() {
+        // TODO: create the board.
+        // Player Area, Center, Factories, Bag information and Discard.
+    }
+
+    private void createPlayer() {
+        this.players = new Player[PLAYER_NUM];
+        for (int i = 0; i < PLAYER_NUM; i++) {
+            // TODO: Allow player to enter their name.
+            // create player according to their personal name and playercode.
+            this.players[i] = new Player(DEFAULT_PLAYER_NAME[i], PLAYER_CODE[i]);
+            // TODO: setLocation to each player's board.
+        }
+    }
 
 
     @Override
@@ -68,6 +88,11 @@ public class Game extends Application {
         this.floor.setLocation(100, 600);
         root.getChildren().add(this.floor.getFloorView());
 
+        // TODO: Storage
+        this.storage = new Storage();
+        this.storage.decode("S2a13e44a1");
+        this.storage.setLocation(300, 100);
+        root.getChildren().add(this.storage.getStorageView());
 
         // (add the player view)
 

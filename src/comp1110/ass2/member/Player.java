@@ -1,6 +1,8 @@
 package comp1110.ass2.member;
 
+import comp1110.ass2.Azul;
 import gittest.A;
+import javafx.scene.Group;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -18,17 +20,68 @@ public class Player {
     private final String playerName;
     private final String playerCode;
     public final Floor floor;
-    public final Mosaic mosaic;
+    public final NewMosaic mosaic;
     public final Storage storage;
     public int score;
+
+    /* state */
+    String[] playerState; // The split player state, decode from game state
+    String[] sharedState; // The split shared state, decode from game state.
+
+    /* Members of javafx */
+    private final Group views = new Group();
+    int xIndex;
+    int yIndex;
 
     public Player(String name, String playerCode) {
         this.playerName = name;
         this.playerCode = playerCode; // the code could be 'A' - 'D', assigned by Azul
         this.floor = new Floor();
-        this.mosaic = new Mosaic();
+        this.mosaic = new NewMosaic();
         this.storage = new Storage();
         this.score = 0;
+    }
+
+    /**
+     * create the view of Player
+     */
+    private void createView() {
+        // add the views into Player's group.
+        this.views.getChildren().add(this.floor.getFloorView());
+        this.views.getChildren().add(this.mosaic.getMosaicView());
+        this.views.getChildren().add(this.storage.getStorageView());
+        // TODO: apply location for each views.
+    }
+
+    public void updateView() {
+        this.views.getChildren().clear();
+        this.views.getChildren().add(this.floor.getFloorView());
+        this.views.getChildren().add(this.mosaic.getMosaicView());
+        this.views.getChildren().add(this.storage.getStorageView());
+        // No need to rearrange location.
+    }
+
+    public Group getViews() {
+        updateView();
+        return this.views;
+    }
+
+    /**
+     * The visitor of xIndex and yIndex.
+     * @return xIndex, yIndex
+     */
+    public int getxIndex() {
+        return xIndex;
+    }
+    public int getyIndex() {
+        return yIndex;
+    }
+
+    public void setLocation(int xIndex, int yIndex) {
+        this.xIndex = xIndex;
+        this.yIndex = yIndex;
+        this.views.setLayoutX(this.xIndex);
+        this.views.setLayoutY(this.yIndex);
     }
 
     /**
@@ -129,8 +182,17 @@ public class Player {
         // TODO: calculate the score of this player
     }
 
-    public Mosaic getMosaic(){
-        return mosaic;
+    public NewMosaic getMosaic(){
+        return this.mosaic;
+    }
+
+    /**
+     * Decode the state
+     */
+    public void decode(String[] gameState) {
+        // TODO: get the shared state and the player state according to game state.
+        this.sharedState = Azul.splitSharedState(gameState);
+        this.playerState = Azul.splitPlayerState(gameState).get(this.playerCode);
     }
 
 }
