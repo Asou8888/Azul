@@ -24,65 +24,11 @@ public class Discard {
     int dTiles;
     int eTiles;
 
-    /* Members of javafx  */
-    private Label discardLabel = new Label("Discard: ");
-    private final Label[] tileLabel = new Label[]{
-            new Label("Blue Tiles: "),
-            new Label("Green Tiles: "),
-            new Label("Orange Tiles: "),
-            new Label("Purple Tiles: "),
-            new Label("Red Tiles: ")
-    };
-    private final TextField[] discardRemainTiles = new TextField[5];
-    private HBox[] items = new HBox[5];
-    private final VBox discardView = new VBox();
-    int xIndex;
-    int yIndex;
-
     public Discard() {
-        createView();
         this.tiles = new Tile[100];
     }
     public Discard(Tile[] tiles){
-        createView();
         this.tiles = tiles;
-    }
-
-    private void createView() {
-        discardView.getChildren().add(discardLabel);
-        for (int i = 0; i < 5; i++) {
-            tileLabel[i].setPrefWidth(100);
-            discardRemainTiles[i] = new TextField();
-            discardRemainTiles[i].setDisable(true);
-            discardRemainTiles[i].setPrefWidth(50);
-            items[i] = new HBox();
-            items[i].getChildren().addAll(tileLabel[i], discardRemainTiles[i]);
-            discardView.getChildren().add(items[i]);
-        }
-    }
-
-    public void updateView() {
-        int[] tilesNum = new int[]{aTiles, bTiles, cTiles, dTiles, eTiles};
-        for (int i = 0; i < 5; i++) {
-            this.discardRemainTiles[i].setText(String.valueOf(tilesNum[i]));
-        }
-    }
-
-    public VBox getDiscardView() {
-        updateView();
-        return discardView;
-    }
-    public void setLocation(int xIndex, int yIndex) {
-        this.xIndex = xIndex;
-        this.yIndex = yIndex;
-        this.discardView.setLayoutX(this.xIndex);
-        this.discardView.setLayoutY(this.yIndex);
-    }
-    public int getxIndex() {
-        return xIndex;
-    }
-    public int getyIndex() {
-        return yIndex;
     }
 
     public String getCode() {
@@ -221,7 +167,25 @@ public class Discard {
         return this.tiles[0] == null;
     }
 
+    public int getaTiles() {
+        return aTiles;
+    }
 
+    public int getbTiles() {
+        return bTiles;
+    }
+
+    public int getcTiles() {
+        return cTiles;
+    }
+
+    public int getdTiles() {
+        return dTiles;
+    }
+
+    public int geteTiles() {
+        return eTiles;
+    }
 
     public static void main(String[] args) {
         String a = new String("D0409050713");

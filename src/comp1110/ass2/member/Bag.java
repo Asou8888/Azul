@@ -27,71 +27,17 @@ public class Bag {
     int dTiles = 0;
     int eTiles = 0;
 
-    /* Members of javafx */
-    private final Label bagLabel = new Label("Bag Remaining: ");
-    private final Label[] tileLabel = new Label[]{
-            new Label("Blue Tiles: "),
-            new Label("Green Tiles: "),
-            new Label("Orange Tiles: "),
-            new Label("Purple Tiles: "),
-            new Label("Red Tiles: ")
-    };
-    private final TextField[] bagRemainTiles = new TextField[5];
-    private HBox[] items = new HBox[5];
-    private final VBox bagView = new VBox();
-    int xIndex;
-    int yIndex;
 
 
     // added by Ruizheng Shen
     public Bag() {
         this.tiles = new Tile[100];
-        createView();
     }
 
     public Bag(Tile[] tiles) {
         this.tiles = tiles;
-        createView();
     }
 
-    /**
-     * Create view for bag
-     */
-    private void createView() {
-        bagView.getChildren().add(bagLabel);
-        for (int i = 0; i < 5; i++) {
-            tileLabel[i].setPrefWidth(100);
-            bagRemainTiles[i] = new TextField();
-            bagRemainTiles[i].setDisable(true);
-            bagRemainTiles[i].setPrefWidth(50);
-            items[i] = new HBox();
-            items[i].getChildren().addAll(tileLabel[i], bagRemainTiles[i]);
-            bagView.getChildren().add(items[i]);
-        }
-    }
-    public void updateView() {
-        int[] tilesNum = new int[]{aTiles, bTiles, cTiles, dTiles, eTiles};
-        for (int i = 0; i < 5; i++) {
-            this.bagRemainTiles[i].setText(String.valueOf(tilesNum[i]));
-        }
-    }
-
-    public VBox getBagView() {
-        updateView();
-        return bagView;
-    }
-    public void setLocation(int xIndex, int yIndex) {
-        this.xIndex = xIndex;
-        this.yIndex = yIndex;
-        this.bagView.setLayoutX(this.xIndex);
-        this.bagView.setLayoutY(this.yIndex);
-    }
-    public int getxIndex() {
-        return xIndex;
-    }
-    public int getyIndex() {
-        return yIndex;
-    }
 
     public String getCode() {
         return encode();
@@ -202,6 +148,26 @@ public class Bag {
             }
         }
         return 100;
+    }
+
+    public int getaTiles() {
+        return aTiles;
+    }
+
+    public int getbTiles() {
+        return bTiles;
+    }
+
+    public int getcTiles() {
+        return cTiles;
+    }
+
+    public int getdTiles() {
+        return dTiles;
+    }
+
+    public int geteTiles() {
+        return eTiles;
     }
 
     public static void main(String[] args) {
