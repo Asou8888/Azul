@@ -1893,14 +1893,13 @@ public class Azul {
             for (int j = 0; j < whichColorIsPicked.length; j++) {
                 for (int k = 0; k < whereToPlaceTiles.length; k++) {
                     StringBuilder draftMoveBuilder = new StringBuilder(whoseTurn);
-                    draftMoveBuilder.append(whereToPlaceTiles[i]).append(whichColorIsPicked[j]).append(whereToPlaceTiles[k]);
+                    draftMoveBuilder.append(whereToPickTiles[i]).append(whichColorIsPicked[j]).append(whereToPlaceTiles[k]);
                     if (isMoveValid(gameState, draftMoveBuilder.toString())) {
                         validDraftMoves.add(draftMoveBuilder.toString());
                     }
                 }
             }
         }
-        validDraftMoves.forEach(System.out::println);
         Random random = new Random();
         if (!validDraftMoves.isEmpty()) {
             return validDraftMoves.get(random.nextInt(validDraftMoves.size()));
@@ -1934,6 +1933,20 @@ public class Azul {
                 "A0MS0a11c22a33c44b5FB0MS0e11a22b33d44e5Ff"
         };
         System.out.println(isStateValid(test));
+        // Test case 1 for task 13
+        String[] test1 = new String[] {
+                "BFCbbbccdddddeeB1913161418D0000000000",
+                "A0MS0b11b23d1FbfB0MS0c11a13c1F"
+        };
+        System.out.println(generateAction(test1));
+        System.out.println(isMoveValid(test1, "BCb4"));
+
+        // Test case 2 for Task 13
+        String[] test2 = new String[] {
+                "AFCbbbB1913161418D0000000000",
+                "A0MS0b11b23d14c2FbfB0MS0c11a12d33c14e2Fdd"
+        };
+        System.out.println(isMoveValid(test2, "ACb0"));
     }
         /*
         String[] testSplit = new String[]{
