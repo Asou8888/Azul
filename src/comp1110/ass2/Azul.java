@@ -1881,14 +1881,18 @@ public class Azul {
      */
     public static String generateAction(String[] gameState) {
         // FIXME Task 13
+
         String whoseTurn = whoseTurn(gameState); // find whose turn.
         ArrayList<String> validDraftMoves = new ArrayList<>(); // store the valid draft moves.
         ArrayList<String> validTilesMoves = new ArrayList<>(); // store the valid tiles move.
-
-        // generate draft move.
+        Random random = new Random();
         String[] whereToPickTiles = new String[]{"0", "1", "2", "3", "4", "C"};
         String[] whichColorIsPicked = new String[]{"a", "b", "c", "d", "e"};
         String[] whereToPlaceTiles = new String[]{"0", "1", "2", "3", "4", "F"};
+        String[] whichRowInStorage = new String[]{"0", "1", "2", "3", "4"};
+        String[] whichColInMosaic = new String[]{"0", "1", "2", "3", "4", "F"};
+
+        // generate draft move.
         for (String whereToPickTile : whereToPickTiles) {
             for (String s : whichColorIsPicked) {
                 for (String whereToPlaceTile : whereToPlaceTiles) {
@@ -1901,14 +1905,8 @@ public class Azul {
                 }
             }
         }
-        Random random = new Random();
-        if (!validDraftMoves.isEmpty()) {
-            return validDraftMoves.get(random.nextInt(validDraftMoves.size()));
-        }
 
         // generate tiles move.
-        String[] whichRowInStorage = new String[]{"0", "1", "2", "3", "4"};
-        String[] whichColInMosaic = new String[]{"0", "1", "2", "3", "4", "F"};
         for (String value : whichRowInStorage) {
             for (String s : whichColInMosaic) {
                 StringBuilder tilesMoveBuilder = new StringBuilder(whoseTurn);
@@ -1918,7 +1916,6 @@ public class Azul {
                     return tilesMoveBuilder.toString();
                 }
             }
-            if (!validTilesMoves.isEmpty()) break;
         }
         return validTilesMoves.get(random.nextInt(validTilesMoves.size()));
         // FIXME Task 15 Implement a "smart" generateAction()
