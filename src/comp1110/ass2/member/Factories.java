@@ -215,6 +215,9 @@ public class Factories {
     public Factory getFactory(int index) {
         return factories[index];
     }
+    public int tileNum(char color, int num) {
+        return this.factories[num].tileNum(color);
+    }
 
     @Override
     public String toString() {

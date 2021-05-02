@@ -1374,7 +1374,7 @@ public class Azul {
             if (splitSharedState[0].charAt(0) != player) {
                 return false;
             }
-
+            int tileNum = 0; // record the number of tiles would be placed
             //  1. The specified factory/centre contains at least one tile of the specified colour.
             if (factoryOrCenter == 'C') {
                 // if it is centre.
@@ -1390,6 +1390,9 @@ public class Azul {
                 }
                 if (!isColorValid)
                     return false; // no specified tile is found.
+                Center c = new Center(); // the center
+                c.decode(centre); // decode the center
+                tileNum = c.tileNum(tileColor); // find the number of this color's tile.
             } else {
                 int num = factoryOrCenter - '0';
                 String factory = splitSharedState[1]; // The 2nd String is the factory state.
@@ -1400,6 +1403,7 @@ public class Azul {
                     // if the input number of factory is invalid / the factory does not have the tiles of this color.
                     return false;
                 }
+                tileNum = fs.tileNum(tileColor, num); // find the number of this color's tiles.
             }
 
             // 2. The storage row the tile is being placed in does not already contain a different colour.
@@ -1927,6 +1931,7 @@ public class Azul {
     }
 
     public static void main(String[] args) {
+        /*
         // Test case for task 9
         String[] test = new String[] {
                 "BFCB1412141614D0000000000",
@@ -1947,6 +1952,15 @@ public class Azul {
                 "A0MS0b11b23d14c2FbfB0MS0c11a12d33c14e2Fdd"
         };
         System.out.println(isMoveValid(test2, "ACb0"));
+
+
+         */
+        // test case 3 for Task 13
+        String[] test3 = new String[] {
+                "BF1bbce3bcdeCbbcddddB1913161418D0000000000",
+                "A0MS1b23d1FfB0MS0c11a1F"
+        };
+        System.out.println(isMoveValid(test3, "B3c0"));
     }
         /*
         String[] testSplit = new String[]{
