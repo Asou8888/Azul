@@ -9,7 +9,7 @@ import java.util.Set;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@org.junit.jupiter.api.Timeout(value = 1000, unit = MILLISECONDS)
+@org.junit.jupiter.api.Timeout(value = 2000, unit = MILLISECONDS)
 public class GenerateActionTest {
 
     private String errorPrefix(String[] inputState, String move) {
