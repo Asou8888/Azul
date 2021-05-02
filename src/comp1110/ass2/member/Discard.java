@@ -109,6 +109,18 @@ public class Discard {
 
     }
 
+    public void replaceTile(char color){
+        int num = 0;
+        for(int i = 0;i<tiles.length;i++){
+            if(tiles[i] != null){
+                num += 1;
+            }else {
+                break;
+            }
+        }
+        tiles[num-1] = new Tile(color);
+    }
+
     public boolean placeTiles(Tile[] tiles) {
         int cnt = lengthTile();
         if (cnt + tiles.length <= 100) {
@@ -152,6 +164,8 @@ public class Discard {
                 System.out.print(d.tiles[i].getCode());
             }
         }
+        d.replaceTile('a');
+        System.out.println(d.getCode());
 
     }
 }
