@@ -39,13 +39,17 @@ public class Game extends Application {
         // Player Area, Center, Factories, Bag information and Discard.
     }
 
-    private void createPlayer() {
+    private void createPlayer(Group root) {
         this.players = new Player[PLAYER_NUM];
         for (int i = 0; i < PLAYER_NUM; i++) {
             // TODO: Allow player to enter their name.
             // create player according to their personal name and playercode.
             this.players[i] = new Player(DEFAULT_PLAYER_NAME[i], PLAYER_CODE[i]);
             // TODO: setLocation to each player's board.
+            players[i].setLocation(600*i,300);
+            root.getChildren().add(players[i].getViews());
+
+
         }
     }
 
@@ -73,11 +77,15 @@ public class Game extends Application {
         this.factories = new Factories("F0abbe2ccdd");
         this.factories.setLocation(1, 20);
         Group[] fs = factories.getFactoriesView();
-        for (Group g: fs) {
+        for (Group g : fs) {
             root.getChildren().add(g);
         }
+        createPlayer(root);
+        stage.setScene(scene);
+        stage.show();
+    }}
 
-        // TODO: NewMosaic
+       /** // TODO: NewMosaic
         this.mosaic = new NewMosaic("Mb00a02a13e42");
         this.mosaic.setLocation(300, 300);
         root.getChildren().add(this.mosaic.getMosaicView());
@@ -106,3 +114,4 @@ public class Game extends Application {
         stage.show();
     }
 }
+*/

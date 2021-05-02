@@ -47,6 +47,9 @@ public class Player {
      */
     private void createView() {
         // add the views into Player's group.
+        storage.setLocation(20,0);
+        mosaic.setLocation(300,0);
+        floor.setLocation(100,300);
         this.views.getChildren().add(this.floor.getFloorView());
         this.views.getChildren().add(this.mosaic.getMosaicView());
         this.views.getChildren().add(this.storage.getStorageView());
@@ -54,6 +57,7 @@ public class Player {
     }
 
     public void updateView() {
+        createView();
         this.views.getChildren().clear();
         this.views.getChildren().add(this.floor.getFloorView());
         this.views.getChildren().add(this.mosaic.getMosaicView());
