@@ -70,7 +70,7 @@ public class Storage {
     private void createView() {
         for (int i = 0; i < STORAGE_ROW_NUM; i++) {
             for (int j = 0; j < STORAGE_ROW_LENGTH[i]; j++) {
-                this.storageView.getChildren().add(new Tile(' ', (STORAGE_ROW_NUM - 1 - j) * Tile.TILE_WIDTH, i * Tile.TILE_WIDTH));
+                this.storageView.getChildren().add(new Tile(' ', j * Tile.TILE_WIDTH, i * Tile.TILE_WIDTH));
             }
         }
     }
