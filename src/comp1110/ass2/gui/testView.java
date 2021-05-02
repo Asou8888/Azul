@@ -27,21 +27,6 @@ public class testView extends Application {
         mosaic.setLocation(500, 100);
         root.getChildren().add(mosaic.getMosaicView());
          */
-        Bag bag = new Bag();
-        bag.decode("B1915161614");
-        bag.setLocation(100, 100);
-        root.getChildren().add(bag.getBagView());
-
-        // remove the previous bagView, (to add the updated one)
-        root.getChildren().remove(bag.getBagView());
-        bag.decode("B0104012010");
-        root.getChildren().add(bag.getBagView());
-
-        Discard discard = new Discard();
-        discard.decode("D1915161614");
-        discard.setLocation(500, 100);
-        root.getChildren().add(discard.getDiscardView());
-
 
         primaryStage.setScene(scene);
         primaryStage.show();
