@@ -181,6 +181,10 @@ public class Floor {
         return num;
     }
 
+    public void replaceTile(char color){
+        tiles[6] = new Tile(color);
+    }
+
     public void placeTile(char color,int num){
         if(emptyNum() >= num){
             num = num;
