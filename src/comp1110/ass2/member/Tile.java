@@ -6,9 +6,10 @@ package comp1110.ass2.member;
  * @since 2021.3.27
  */
 
+import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import org.w3c.dom.Text;
+import javafx.scene.text.Text;
 
 import java.beans.EventHandler;
 

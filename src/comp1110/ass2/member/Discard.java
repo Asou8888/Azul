@@ -6,6 +6,11 @@ package comp1110.ass2.member;
  * @since 2021.3.27
  */
 
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+
 /**
  * Modified by Ruizheng Shen, 2021.4.19
  * Add a constructor.
@@ -13,13 +18,72 @@ package comp1110.ass2.member;
 
 public class Discard {
     private Tile[] tiles;
+    int aTiles;
+    int bTiles;
+    int cTiles;
+    int dTiles;
+    int eTiles;
+
+    /* Members of javafx  */
+    private Label discardLabel = new Label("Discard: ");
+    private final Label[] tileLabel = new Label[]{
+            new Label("Blue Tiles: "),
+            new Label("Green Tiles: "),
+            new Label("Orange Tiles: "),
+            new Label("Purple Tiles: "),
+            new Label("Red Tiles: ")
+    };
+    private final TextField[] discardRemainTiles = new TextField[5];
+    private HBox[] items = new HBox[5];
+    private final VBox discardView = new VBox();
+    int xIndex;
+    int yIndex;
 
     public Discard() {
+        createView();
         this.tiles = new Tile[100];
     }
-    public Discard(Tile[] tiles){this.tiles = tiles;}
+    public Discard(Tile[] tiles){
+        createView();
+        this.tiles = tiles;
+    }
 
+    private void createView() {
+        discardView.getChildren().add(discardLabel);
+        for (int i = 0; i < 5; i++) {
+            tileLabel[i].setPrefWidth(100);
+            discardRemainTiles[i] = new TextField();
+            discardRemainTiles[i].setDisable(true);
+            discardRemainTiles[i].setPrefWidth(50);
+            items[i] = new HBox();
+            items[i].getChildren().addAll(tileLabel[i], discardRemainTiles[i]);
+            discardView.getChildren().add(items[i]);
+        }
+    }
 
+    public void updateView() {
+        int[] tilesNum = new int[]{aTiles, bTiles, cTiles, dTiles, eTiles};
+        for (int i = 0; i < 5; i++) {
+            this.discardRemainTiles[i].setText(String.valueOf(tilesNum[i]));
+        }
+    }
+
+    public VBox getDiscardView() {
+        updateView();
+        return discardView;
+    }
+    public void setLocation(int xIndex, int yIndex) {
+        this.xIndex = xIndex;
+        this.yIndex = yIndex;
+        this.discardView.setLayoutX(this.xIndex);
+        this.discardView.setLayoutY(this.yIndex);
+    }
+    public int getxIndex() {
+        return xIndex;
+    }
+    public int getyIndex() {
+        return yIndex;
+    }
 
     public String getCode() {
         return encode();
@@ -72,10 +136,15 @@ public class Discard {
 
     public void decode(String discard) {
         int a = Integer.parseInt(discard.substring(1,3));
+        aTiles = a;
         int b = Integer.parseInt(discard.substring(3,5));
+        bTiles = b;
         int c = Integer.parseInt(discard.substring(5,7));
+        cTiles = c;
         int d = Integer.parseInt(discard.substring(7,9));
+        dTiles = d;
         int e = Integer.parseInt(discard.substring(9));
+        eTiles = e;
         Tile[] newTiles = new Tile[a+b+c+d+e];
         for (int i = 0; i < a;i++){
             newTiles[i] = new Tile('a');

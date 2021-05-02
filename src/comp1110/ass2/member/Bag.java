@@ -7,18 +7,91 @@ package comp1110.ass2.member;
  */
 
 
+import javafx.scene.Group;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+
 /**
  * Modified by Ruizheng Shen. 2021.4.19
  * Add a constructor.
  */
 public class Bag {
     private Tile[] tiles;
+    int aTiles = 0;
+    int bTiles = 0;
+    int cTiles = 0;
+    int dTiles = 0;
+    int eTiles = 0;
+
+    /* Members of javafx */
+    private final Label bagLabel = new Label("Bag Remaining: ");
+    private final Label[] tileLabel = new Label[]{
+            new Label("Blue Tiles: "),
+            new Label("Green Tiles: "),
+            new Label("Orange Tiles: "),
+            new Label("Purple Tiles: "),
+            new Label("Red Tiles: ")
+    };
+    private final TextField[] bagRemainTiles = new TextField[5];
+    private HBox[] items = new HBox[5];
+    private final VBox bagView = new VBox();
+    int xIndex;
+    int yIndex;
 
 
     // added by Ruizheng Shen
-    public Bag() { this.tiles =new Tile[100]; }
+    public Bag() {
+        this.tiles = new Tile[100];
+        createView();
+    }
 
-    public  Bag(Tile[] tiles){this.tiles = tiles;}
+    public Bag(Tile[] tiles) {
+        this.tiles = tiles;
+        createView();
+    }
+
+    /**
+     * Create view for bag
+     */
+    private void createView() {
+        bagView.getChildren().add(bagLabel);
+        for (int i = 0; i < 5; i++) {
+            tileLabel[i].setPrefWidth(100);
+            bagRemainTiles[i] = new TextField();
+            bagRemainTiles[i].setDisable(true);
+            bagRemainTiles[i].setPrefWidth(50);
+            items[i] = new HBox();
+            items[i].getChildren().addAll(tileLabel[i], bagRemainTiles[i]);
+            bagView.getChildren().add(items[i]);
+        }
+    }
+    public void updateView() {
+        int[] tilesNum = new int[]{aTiles, bTiles, cTiles, dTiles, eTiles};
+        for (int i = 0; i < 5; i++) {
+            this.bagRemainTiles[i].setText(String.valueOf(tilesNum[i]));
+        }
+    }
+
+    public VBox getBagView() {
+        updateView();
+        return bagView;
+    }
+    public void setLocation(int xIndex, int yIndex) {
+        this.xIndex = xIndex;
+        this.yIndex = yIndex;
+        this.bagView.setLayoutX(this.xIndex);
+        this.bagView.setLayoutY(this.yIndex);
+    }
+    public int getxIndex() {
+        return xIndex;
+    }
+    public int getyIndex() {
+        return yIndex;
+    }
 
     public String getCode() {
         return encode();
@@ -80,11 +153,16 @@ public class Bag {
 
     public void decode(String bag) {
         int a = Integer.parseInt(bag.substring(1, 3));
+        aTiles = a;
         int b = Integer.parseInt(bag.substring(3, 5));
+        bTiles = b;
         int c = Integer.parseInt(bag.substring(5, 7));
+        cTiles = c;
         int d = Integer.parseInt(bag.substring(7, 9));
+        dTiles = d;
         int e = Integer.parseInt(bag.substring(9));
-        Tile[] newTiles = new Tile[bag.length()];
+        eTiles = e;
+        Tile[] newTiles = new Tile[a + b + c + d + e];
         for (int i = 0; i < a; i++) {
             newTiles[i] = new Tile('a');
         }
@@ -139,10 +217,10 @@ public class Bag {
         System.out.println(b.getCode());
 
          */
-        String a = new String("B0301000001");
+        String a = new String("B1915161614");
         Bag d = new Bag();
         d.decode(a);
-        for (int i = 0; i< 100; i++) {
+        for (int i = 0; i < 100; i++) {
             if (d.tiles[i] != null) {
                 System.out.print(d.tiles[i].getCode());
             }
