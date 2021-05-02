@@ -1554,10 +1554,10 @@ public class Azul {
         // FIXME Task 11
         int A = gameState[1].indexOf("A");
         int B = gameState[1].indexOf("B");
-        if(move.length() == 3){
+        if(move.length() == 3){ //the move is tile move (with 3 character)
             return Tilingmove(gameState,move);
         }
-        else {
+        else {  //the move is tile move (with 4 character)
             return Draftingmove(gameState,move);
         }
     }
@@ -1585,16 +1585,17 @@ public class Azul {
 
         Storage s = new Storage();
         s.decode(storage);
-        newmosaic.move(s.charRowColor(row),row,column);
-        int plusscore = newmosaic.score(row,column);
+        newmosaic.move(s.charRowColor(row),row,column);  // move the tile from storage to mosaic
+        int plusscore = newmosaic.score(row,column);  // find the additional score
 
+        //change the string of discard with additional tiles
         if(s.charRowColor(row) == 'a'){
-            int num = Integer.parseInt(discard.substring(1,3));
-            String newscore = String.valueOf(num+row);
+            int num = Integer.parseInt(discard.substring(1,3));  //find the number of a tile
+            String newscore = String.valueOf(num+row);  //plus with new additional tile
             if(num + row < 10){
                 newscore = "0" + (num+row);
             }
-            discard = "D" + newscore + discard.substring(3);
+            discard = "D" + newscore + discard.substring(3);  //restring discard
         }
         if(s.charRowColor(row) == 'b'){
             int num = Integer.parseInt(discard.substring(3,5));
@@ -1629,15 +1630,17 @@ public class Azul {
             discard = "D" + discard.substring(1,9) + newscore+ discard.substring(11);
         }
 
-        s.emptyRow(row);
+        s.emptyRow(row);  //clear storage (the tiles have been moved into mosaic
 
         if(move.charAt(0)=='A'){
             int score = Integer.parseInt(playerState.substring(1,M));
             gameState[1] = "A"+String.valueOf(score+plusscore) + newmosaic.getCode() + s.getCode() + gameState[1].substring(F);
             String Aplayer = "A"+String.valueOf(score+plusscore) + newmosaic.getCode() + s.getCode() + gameState[1].substring(F,B);
             if(storageIsAvia(Aplayer)){
+                //if storage is still have tiles which can be move, round doesnt change
                 gameState[0] = gameState[0].substring(0,D) +discard;
             }else {
+                //change round if this is no tiles could move
                 gameState[0] = "B" + gameState[0].substring(1,D) +discard;
             }
         }else {
@@ -1645,8 +1648,10 @@ public class Azul {
             gameState[1] = gameState[1].substring(0,B) + "B" + String.valueOf(score+plusscore) + newmosaic.getCode() + s.getCode() + playerState.substring(F);
             String Bplayer = "B" + String.valueOf(score+plusscore) + newmosaic.getCode() + s.getCode() + playerState.substring(F);
             if(storageIsAvia(Bplayer)){
+                //if storage is still have tiles which can be move, round doesnt change
                 gameState[0] = gameState[0].substring(0,D) +discard;
             }else {
+                ////change round if this is no tiles could move
                 gameState[0] = "A" + gameState[0].substring(1,D) +discard;
             }
         }
@@ -1673,9 +1678,9 @@ public class Azul {
         int D = sharedState.indexOf("D");
         int S = playerState.indexOf("S");
         int F = playerState.indexOf("F");
-        String bag = a[3];
-        String center = a[2];
-        String discard = a[4];
+        String bag = a[3];       //the code of bag
+        String center = a[2];    //the code of center
+        String discard = a[4];   //the code of discard
         String storage = playerState.substring(S, F);
         String floor = playerState.substring(F);
         Discard discard1 = new Discard();
@@ -1693,11 +1698,11 @@ public class Azul {
             int numOfTiles = factories.getFactory(numOfFactory).tileNum(move.charAt(2));
             Factory factory1 = new Factory();
             factory1.decode(factoryCode);
-            String otherTiles = factory1.deleteTile(move.charAt(2));
+            String otherTiles = factory1.deleteTile(move.charAt(2));  // remove other tiles from factories
             Center center1 = new Center();
 
             center1.decode(center);
-            center1.addTile(otherTiles);
+            center1.addTile(otherTiles);  //add the otherTiles into center
 
             if (Character.isDigit(move.charAt(3))) {
                 /**
@@ -1705,21 +1710,21 @@ public class Azul {
                  */
                 int numOfStorageEmptySpace = storage1.emptySpace(move.charAt(3) - '0');
                 int numOfFloorEmptySpace = floor1.emptyNum();
-                storage1.move(move.charAt(2), (move.charAt(3) - '0'), numOfTiles);
-                if (numOfTiles > numOfStorageEmptySpace) {
+                storage1.move(move.charAt(2), (move.charAt(3) - '0'), numOfTiles);  //move tiles to storage
+                if (numOfTiles > numOfStorageEmptySpace) {  //if storage if full, drop others into floor
                     int moreTile = numOfTiles - numOfStorageEmptySpace;
                     floor1.placeTile(move.charAt(2), moreTile);
-                    if (moreTile > numOfFloorEmptySpace) {
+                    if (moreTile > numOfFloorEmptySpace) {  // if floor is full, drop others into discard
                         discard1.placeTiles(move.charAt(2), moreTile - numOfFloorEmptySpace);
                     }
                 }
 
                 if (gameState[0].charAt(0) == 'A') {
-                    factories.clear(move.charAt(1) - '0');
+                    factories.clear(move.charAt(1) - '0'); // clear the factories
                     newgameState[0] = "B" + factories.getCode() + sortChar(center1.getCode()) + bag + discard1.getCode();
                     newgameState[1] = playerState.substring(0, S) + storage1.getCode() + sortChar(floor1.getCode()) + gameState[1].substring(B);
                 } else {
-                    factories.clear(move.charAt(1) - '0');
+                    factories.clear(move.charAt(1) - '0');  //clear the factories
                     newgameState[0] = "A" + factories.getCode() + sortChar(center1.getCode()) + bag + discard1.getCode();
                     newgameState[1] = gameState[1].substring(0, B) + playerState.substring(0,S)+ storage1.getCode() + sortChar(floor1.getCode());
                 }
@@ -1731,16 +1736,17 @@ public class Azul {
                  */
                 int numOfFloorEmptySpace = floor1.emptyNum();
                 floor1.placeTile(move.charAt(2), numOfTiles);
-                if (numOfTiles > numOfFloorEmptySpace) {
+                if (numOfTiles > numOfFloorEmptySpace) { //if floor is full, drop the tiles to discard
                     int moreTile = numOfTiles - numOfFloorEmptySpace;
-                    discard1.placeTiles(move.charAt(2), moreTile);
+                    discard1.placeTiles(move.charAt(2), moreTile); //add other tile to discard
                 }
                 if (gameState[0].charAt(0) == 'A') {
-                    factories.clear(move.charAt(1) - '0');
+
+                    factories.clear(move.charAt(1) - '0'); // clear the factories
                     newgameState[0] = "B" + factories.getCode() + center1.getCode() + bag + discard1.getCode();
                     newgameState[1] = playerState.substring(0, S) + storage1.getCode() + sortChar(floor1.getCode()) + gameState[1].substring(B);
                 } else {
-                    factories.clear(move.charAt(1) - '0');
+                    factories.clear(move.charAt(1) - '0'); // clear the factories
                     newgameState[0] = "A" + factories.getCode() + center1.getCode() + bag + discard1.getCode();
                     newgameState[1] = gameState[1].substring(0, B) + playerState.substring(0, S) + storage1.getCode() + sortChar(floor1.getCode());
                 }
@@ -1760,25 +1766,26 @@ public class Azul {
                 storage1.move(move.charAt(2), (move.charAt(3) - '0'), numOfTiles);
 
                 String center2 = center1.deleteTile(move.charAt(2));
-                if(center2.contains("f")){
-                    center2 = center2.substring(0,center2.length()-1);
-                    floor1.placeTile('f', 1);
+                if(center2.contains("f")){ //if there is a first player in center
+                    center2 = center2.substring(0,center2.length()-1);  //drop the 'f' from center
+                    floor1.placeTile('f', 1); //add 'f' in floor
                 }
-                if (numOfTiles > numOfEmptyStorage) {
+                if (numOfTiles > numOfEmptyStorage) { //if storage is full, add other tiles to floor
                     int moreTile = numOfTiles - numOfEmptyStorage;
                     floor1.placeTile(move.charAt(2), moreTile);
 
-                    if (moreTile > numOfFloorEmptySpace) {
+                    if (moreTile > numOfFloorEmptySpace) { //if floor is full, add others to discard
                         discard1.placeTiles(move.charAt(2), moreTile - numOfFloorEmptySpace);
 
                     }
                 }
                 if (gameState[0].charAt(0) == 'A') {
                     if(factories.getCode().length() == 1 && center2.length() ==1){
+                        //if there is not tiles in factories or center, dont change round
                         newgameState[0] = "A" + factories.getCode() + sortChar(center2) + bag + discard1.getCode();
                         newgameState[1] = playerState.substring(0, S)+ storage1.getCode() + sortChar(floor1.getCode()) + gameState[1].substring(B);
                     }
-                    else {
+                    else { // if there is, change round
                         newgameState[0] = "B" + factories.getCode() + sortChar(center2) + bag + discard1.getCode();
                         newgameState[1] = playerState.substring(0, S)+ storage1.getCode() + sortChar(floor1.getCode()) + gameState[1].substring(B);
                     }
@@ -1786,10 +1793,12 @@ public class Azul {
 
                 } else {
                     if(factories.getCode().length() == 1 && center2.length() ==1){
+                        //if there is not tiles in factories or center, dont change round
                         newgameState[0] = "B" + factories.getCode() + sortChar(center2) + bag + discard1.getCode();
                         newgameState[1] = gameState[1].substring(0, B) + playerState.substring(0, S) + storage1.getCode() + sortChar(floor1.getCode());
                     }
                     else {
+                        //if there is, change round
                         newgameState[0] = "A" + factories.getCode() + sortChar(center2) + bag + discard1.getCode();
                         newgameState[1] = gameState[1].substring(0, B) + playerState.substring(0, S) + storage1.getCode() + sortChar(floor1.getCode());
                     }
@@ -1803,20 +1812,21 @@ public class Azul {
                  */
                 int numOfFloorEmptySpace = floor1.emptyNum();
                 floor1.placeTile(move.charAt(2), numOfTiles);
-                String center2 = center1.deleteTile(move.charAt(2));
-                if(center2.contains("f")){
-                    center2 = center1.getCode().substring(0,center2.length()-1);
-                    floor1.placeTile('f', 1);
-                    if (numOfTiles >= numOfFloorEmptySpace) {
+                String center2 = center1.deleteTile(move.charAt(2)); //delete other tiles from center
+                if(center2.contains("f")){ //if there is a first player in center
+                    center2 = center1.getCode().substring(0,center2.length()-1); //remove 'f' from center
+                    floor1.placeTile('f', 1); // add 'f' to floor
+                    if (numOfTiles >= numOfFloorEmptySpace) { //if floor is full
                         int moreTile = numOfTiles - numOfFloorEmptySpace;
-                        discard1.placeTiles(move.charAt(2), moreTile+1);
-                        String f = sortChar(floor1.getCode());
-                        discard1.replaceTile(f.charAt(f.length()-1));
+                        discard1.placeTiles(move.charAt(2), moreTile+1); //add other tiles to discard
+                        String f = sortChar(floor1.getCode()); //sort the string
+                        discard1.replaceTile(f.charAt(f.length()-1)); //change 'f' and the last tile in floor
                         floor1.replaceTile('f');
                     }
                 }
                 else {
                     if (numOfTiles > numOfFloorEmptySpace) {
+                        //if floor is full add to discard
                         int moreTile = numOfTiles - numOfFloorEmptySpace;
                         discard1.placeTiles(move.charAt(2), moreTile - numOfFloorEmptySpace);
                     }
