@@ -22,6 +22,9 @@ public class Game extends Application {
     private static final int PLAYER_NUM = 2;
     private static final String[] PLAYER_CODE = new String[]{"A", "B", "C", "D"};
     private static final String[] DEFAULT_PLAYER_NAME = new String[]{"Alice", "Bob", "John", "Cathy"};
+    // FIXME
+    public static boolean isClick = false;
+    public static Tile from;
 
     /* Members in the game */
     private Center center;

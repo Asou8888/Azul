@@ -1,5 +1,6 @@
 package comp1110.ass2.member;
 
+import comp1110.ass2.gui.Game;
 import gittest.A;
 import javafx.scene.Group;
 
@@ -187,6 +188,14 @@ public class Factory {
                 //TODO: check whether the code valid
                 Tile t = new Tile(thisFactory.charAt(i));
                 t.setBelong(TileBelonging.Factory);
+                t.setOnMouseClicked(e -> {
+                    // FIXME
+                    t.setOpacity(0.6);
+                    if (!Game.isClick) {
+                        Game.isClick = true;
+                        Game.from = t;
+                    }
+                });
                 this.tiles.add(t); // add tiles to this factory according to code
             }
         }
