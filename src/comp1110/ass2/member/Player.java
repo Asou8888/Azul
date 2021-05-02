@@ -168,7 +168,11 @@ public class Player {
                 newTiles.add(t);
             }
         }
-        return (Tile[]) newTiles.toArray();
+        Tile[] afterRemoving = new Tile[newTiles.size()];
+        for (int i = 0; i < afterRemoving.length; i++) {
+            afterRemoving[i] = newTiles.get(i);
+        }
+        return afterRemoving;
     }
     public String getPlayerCode() {
         return this.playerCode;
@@ -210,7 +214,7 @@ public class Player {
     }
 
     public static void main(String[] args) {
-
+        
     }
 
 }
