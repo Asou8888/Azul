@@ -1896,6 +1896,7 @@ public class Azul {
                     draftMoveBuilder.append(whereToPickTile).append(s).append(whereToPlaceTile);
                     if (isMoveValid(gameState, draftMoveBuilder.toString())) {
                         validDraftMoves.add(draftMoveBuilder.toString());
+                        return draftMoveBuilder.toString();
                     }
                 }
             }
@@ -1914,6 +1915,7 @@ public class Azul {
                 tilesMoveBuilder.append(value).append(s);
                 if (isMoveValid(gameState, tilesMoveBuilder.toString())) {
                     validTilesMoves.add(tilesMoveBuilder.toString());
+                    return tilesMoveBuilder.toString();
                 }
             }
             if (!validTilesMoves.isEmpty()) break;
