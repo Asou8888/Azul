@@ -26,6 +26,7 @@ public class Game extends Application {
     public static boolean isClick = false;
     public static Tile from;
 
+
     /* Members in the game */
     private Center center;
     private Factories factories;

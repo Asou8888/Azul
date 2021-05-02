@@ -6,6 +6,7 @@ package comp1110.ass2.member;
  * @version 2.0(improve on Mosaic)
  */
 
+import comp1110.ass2.gui.Game;
 import javafx.scene.Group;
 
 import java.util.ArrayList;
@@ -239,6 +240,14 @@ public class NewMosaic {
             char colorChar = mosaic.charAt(i); // the color of the tile;
             int row = mosaic.charAt(i + 1) - '0'; // the row of this tile
             int col = mosaic.charAt(i + 2) - '0'; // the column of this tile.
+            Tile t = new Tile(colorChar);
+            t.setBelong(TileBelonging.Mosaic);
+            t.setOnMouseClicked(e -> {
+                // FIXME
+                t.setOpacity(0.6);
+                if (!Game.isClick) {
+                    Game.isClick = true;
+                    Game.from = t;}});
             tiles[row][col] = new Tile(colorChar); // put the tile in this position.
         }
     }

@@ -1,5 +1,6 @@
 package comp1110.ass2.member;
 
+import comp1110.ass2.gui.Game;
 import javafx.scene.Group;
 
 /**
@@ -147,7 +148,12 @@ public class Floor {
             Tile[] newTiles = new Tile[floor.length()];
             for(int i = 1; i < floor.length();i++){
                 char tile  = floor.charAt(i);
-                newTiles[i-1] = new Tile(tile);
+                Tile t = new Tile(tile);
+                t.setBelong(TileBelonging.Floor);
+                t.setOnMouseClicked(e -> {
+                    t.setOpacity(1.0);
+                    });
+                newTiles[i-1] = t;
             }
             placeTile(newTiles);
         }

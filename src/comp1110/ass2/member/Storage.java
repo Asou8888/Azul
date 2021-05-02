@@ -1,5 +1,6 @@
 package comp1110.ass2.member;
 
+import comp1110.ass2.gui.Game;
 import javafx.scene.Group;
 
 import java.awt.*;
@@ -158,6 +159,15 @@ public class Storage {
             int num = storage.charAt(i + 2) - '0'; // (how many)translate character to int.
             Tile[] newTiles = new Tile[num];
             for (int j = 0; j < num; j++) {
+                Tile t = new Tile(colorChar);
+                t.setBelong(TileBelonging.Storage);
+                t.setOnMouseClicked(e -> {
+                    // FIXME
+                    t.setOpacity(0.6);
+                    if (!Game.isClick) {
+                        Game.isClick = true;
+                        Game.from = t;}
+                    });
                 newTiles[j] = new Tile(colorChar); // initialize the tile with colorChar.
             }
             placeTiles(newTiles, row);
