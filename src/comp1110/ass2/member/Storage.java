@@ -14,7 +14,9 @@ import java.awt.*;
 public class Storage {
     public static final int STORAGE_ROW_NUM = 5;
     public static final int[] STORAGE_ROW_LENGTH = new int[]{1, 2, 3, 4, 5};
-    /**Storage has 5 rows and it is a triangular array of tiles */
+    /**
+     * Storage has 5 rows and it is a triangular array of tiles
+     */
     private Tile[][] tiles = new Tile[][]{
             /* Storage:
              *          *
@@ -56,6 +58,7 @@ public class Storage {
             }
         }
     }
+
     public Storage(Tile[][] tiles) {
         createView();
         this.tiles = tiles;
@@ -71,26 +74,29 @@ public class Storage {
     private void createView() {
         for (int i = 0; i < STORAGE_ROW_NUM; i++) {
             for (int j = 0; j < STORAGE_ROW_LENGTH[i]; j++) {
-                this.storageView.getChildren().add(new Tile(' ', j * Tile.TILE_WIDTH, i * Tile.TILE_WIDTH));
+                this.storageView.getChildren().add(new Tile(' ', (j - STORAGE_ROW_LENGTH[i] + 1) * Tile.TILE_WIDTH, i * Tile.TILE_WIDTH));
             }
         }
     }
+
     public void updateStorageView() {
         this.storageView.getChildren().clear();
         for (int i = 0; i < STORAGE_ROW_NUM; i++) {
             for (int j = 0; j < STORAGE_ROW_LENGTH[i]; j++) {
                 if (this.tiles[i][j] == (Tile) null) {
-                    this.storageView.getChildren().add(new Tile(' ', j * Tile.TILE_WIDTH, i * Tile.TILE_WIDTH));
+                    this.storageView.getChildren().add(new Tile(' ', (j - STORAGE_ROW_LENGTH[i] + 1) * Tile.TILE_WIDTH, i * Tile.TILE_WIDTH));
                 } else {
-                    this.storageView.getChildren().add(new Tile(tiles[i][j].getTileType(), j * Tile.TILE_WIDTH, i * Tile.TILE_WIDTH));
+                    this.storageView.getChildren().add(new Tile(tiles[i][j].getTileType(), (j - STORAGE_ROW_LENGTH[i] + 1) * Tile.TILE_WIDTH, i * Tile.TILE_WIDTH));
                 }
             }
         }
     }
+
     public Group getStorageView() {
         updateStorageView();
         return this.storageView;
     }
+
     public void setLocation(int xIndex, int yIndex) {
         this.xIndex = xIndex;
         this.yIndex = yIndex;
@@ -101,6 +107,7 @@ public class Storage {
 
     /**
      * Return the code of the current state in Storage.
+     *
      * @return the String code of Storage.
      */
     public String getCode() {
@@ -110,15 +117,16 @@ public class Storage {
     /**
      * The Storage String is composed of 3-character substrings representing the tiles in the storage area. These are ordered
      * numerically by row number.
-     *
+     * <p>
      * The first character is "S"
-     *
+     * <p>
      * The remaining characters are in groups of three in the pattern: {row number}{tile}{number of tiles}
-     *
+     * <p>
      * row number 0 - 4.
      * tile a - e.
      * number of tiles stored in that row from 1 - 5.
      * The maximum number of tiles in a given row is equal to (row number + 1).
+     *
      * @return a String of code
      */
     private String encode() {
@@ -147,6 +155,7 @@ public class Storage {
     /**
      * decode the state String(storage) to the storage class
      * Author: Ruizheng Shen, Date: 2021.4.27
+     *
      * @param storage
      */
     public void decode(String storage) {
@@ -165,9 +174,17 @@ public class Storage {
                     // FIXME
                     t.setOpacity(0.6);
                     if (!Game.isClick) {
+                        // Tiles Move
                         Game.isClick = true;
-                        Game.from = t;}
-                    });
+                        Game.from = t;
+                        Game.rowInStorage = row; // TODO: check
+                    } else {
+                        // Draft Move
+                        Game.isClick = false;
+                        Game.to = t;
+                        Game.rowInStorage = row; // TODO: check
+                    }
+                });
                 newTiles[j] = new Tile(colorChar); // initialize the tile with colorChar.
             }
             placeTiles(newTiles, row);
@@ -177,8 +194,9 @@ public class Storage {
     /**
      * place the tiles in the storage.
      * Author: Ruizheng Shen, Date: 2021.4.27
+     *
      * @param tiles the tiles which will be placed in the storage
-     * @param row the row to place
+     * @param row   the row to place
      * @return whether this move is valid.
      */
     public boolean placeTiles(Tile[] tiles, int row) {
@@ -189,9 +207,10 @@ public class Storage {
         }
         return true;
     }
+
     public boolean isPlaceValid(Tile[] tiles, int row) {
         // check the tiles color
-        for (Tile t: tiles) {
+        for (Tile t : tiles) {
             if (!isRowColorSame(t, row)) return false;
         }
         // check the empty space in this row
@@ -205,6 +224,7 @@ public class Storage {
 
     /**
      * Determines if the tiles are filled fully in one row.
+     *
      * @return whether a row is filled by tiles fully.
      */
     public boolean isRowFull(int row) {
@@ -234,11 +254,12 @@ public class Storage {
     /**
      * Determines if the color of tiles got from factory is same
      * as the tiles in a row in Storage.
+     *
      * @param tile, row
      * @return whether the color of tiles from factory and currently
      * in a row in Storage are same.
      */
-    public boolean isRowColorSame(Tile tile, int row){
+    public boolean isRowColorSame(Tile tile, int row) {
         // If this row is empty and this tile is not a first player tile, then any color could be place here.
         if (isRowEmpty(row) && tile.getTileType() != TileType.FirstPlayer) return true;
         for (int i = 0; i < STORAGE_ROW_LENGTH[row]; i++) {
@@ -254,13 +275,14 @@ public class Storage {
         return false;
     }
 
-    public char rowColour(int row){
+    public char rowColour(int row) {
         char a = tiles[row][0].getCode().charAt(0);
         return a;
     }
 
     /**
      * Check whether this row is empty.
+     *
      * @param row
      * @return whether this row is empty.
      */
@@ -274,6 +296,7 @@ public class Storage {
     /**
      * Determines the color of tiles from factory is not same as any
      * one of colors in the same row in Mosaic.(use to check the validity of player move)
+     *
      * @param tilesFromFactory, colorList
      * @return whether the color is not same as any colors having in the same row in Mosaic.
      */
@@ -282,7 +305,7 @@ public class Storage {
         // row: the index of the row
         // colorList: the colors contained in this row in mosaic
         TileType tileColor = tilesFromFactory[0].getTileType();
-        for (TileType color: colorList) {
+        for (TileType color : colorList) {
             if (tileColor == color) return false;
         }
         return true;
@@ -290,33 +313,34 @@ public class Storage {
 
     /**
      * Determines if the rightmost space for tile in a row is empty.
+     *
      * @param row
      * @return whether the rightmost space for tile in a row is empty or not.
      */
-    public boolean isRightEmpty(int row){
+    public boolean isRightEmpty(int row) {
         // TODO: test
         // the rightmost position in a row, should be 'STORAGE_ROW_LENGTH[row] - 1'.
         return this.tiles[row][STORAGE_ROW_LENGTH[row] - 1] == null;
     }
 
-    public Tile[][] emptyRow (int row){
-        for(int i =0;i<=row;i++){
+    public Tile[][] emptyRow(int row) {
+        for (int i = 0; i <= row; i++) {
             tiles[row][i] = null;
         }
         return tiles;
     }
 
-    public int emptySpace(int row){
+    public int emptySpace(int row) {
         int num = 0;
-        for(int i = 0; i<=row;i++){
-            if(tiles[row][i] == null){
+        for (int i = 0; i <= row; i++) {
+            if (tiles[row][i] == null) {
                 num += 1;
             }
         }
         return num;
     }
 
-    public void move(char color,int row,int num) {
+    public void move(char color, int row, int num) {
         if (emptySpace(row) >= num) {
             num = num;
         } else {
@@ -347,8 +371,6 @@ public class Storage {
     }
 
 
-
-
     public static void main(String[] args) {
         Storage s = new Storage();
         s.decode("S0a11c22a33c44b5"); // decode the String and put them into the storage
@@ -365,7 +387,7 @@ public class Storage {
         }
         // test case, test placeTile() validity
         Storage s1 = new Storage();
-        Tile[] tiles = new Tile[] {
+        Tile[] tiles = new Tile[]{
                 new Tile('a'),
                 new Tile('a'),
         };

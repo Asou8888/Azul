@@ -25,6 +25,8 @@ public class Game extends Application {
     // FIXME
     public static boolean isClick = false;
     public static Tile from;
+    public static Tile to;
+    public static int rowInStorage; // the information get from the storage.
 
 
     /* Members in the game */
