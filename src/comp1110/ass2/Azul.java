@@ -1881,12 +1881,7 @@ public class Azul {
      */
     public static String generateAction(String[] gameState) {
         // FIXME Task 13
-        if (!isStateValid(gameState)) {
-            return ""; // If the given state is not valid, return an empty String.
-        }
         String whoseTurn = whoseTurn(gameState); // find whose turn.
-        String[] splitSharedState = splitSharedState(gameState);
-        String[] splitPlayerState = splitPlayerState(gameState).get(whoseTurn);
         ArrayList<String> validDraftMoves = new ArrayList<>(); // store the valid draft moves.
         ArrayList<String> validTilesMoves = new ArrayList<>(); // store the valid tiles move.
 
@@ -1894,11 +1889,11 @@ public class Azul {
         String[] whereToPickTiles = new String[]{"0", "1", "2", "3", "4", "C"};
         String[] whichColorIsPicked = new String[]{"a", "b", "c", "d", "e"};
         String[] whereToPlaceTiles = new String[]{"0", "1", "2", "3", "4", "F"};
-        for (int i = 0; i < whereToPickTiles.length; i++) {
-            for (int j = 0; j < whichColorIsPicked.length; j++) {
-                for (int k = 0; k < whereToPlaceTiles.length; k++) {
+        for (String whereToPickTile : whereToPickTiles) {
+            for (String s : whichColorIsPicked) {
+                for (String whereToPlaceTile : whereToPlaceTiles) {
                     StringBuilder draftMoveBuilder = new StringBuilder(whoseTurn);
-                    draftMoveBuilder.append(whereToPickTiles[i]).append(whichColorIsPicked[j]).append(whereToPlaceTiles[k]);
+                    draftMoveBuilder.append(whereToPickTile).append(s).append(whereToPlaceTile);
                     if (isMoveValid(gameState, draftMoveBuilder.toString())) {
                         validDraftMoves.add(draftMoveBuilder.toString());
                     }
@@ -1913,10 +1908,10 @@ public class Azul {
         // generate tiles move.
         String[] whichRowInStorage = new String[]{"0", "1", "2", "3", "4"};
         String[] whichColInMosaic = new String[]{"0", "1", "2", "3", "4", "F"};
-        for (int i = 0; i < whichRowInStorage.length; i++) {
-            for (int j = 0; j < whichColInMosaic.length; j++) {
+        for (String value : whichRowInStorage) {
+            for (String s : whichColInMosaic) {
                 StringBuilder tilesMoveBuilder = new StringBuilder(whoseTurn);
-                tilesMoveBuilder.append(whichRowInStorage[i]).append(whichColInMosaic[j]);
+                tilesMoveBuilder.append(value).append(s);
                 if (isMoveValid(gameState, tilesMoveBuilder.toString())) {
                     validTilesMoves.add(tilesMoveBuilder.toString());
                 }
