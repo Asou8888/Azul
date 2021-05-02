@@ -33,7 +33,6 @@ public class Game extends Application {
 
     private Group bagView = new Group();
     private Group playerView = new Group();
-    private Storage storage;
 
     private void createBoard() {
         // TODO: create the board.
