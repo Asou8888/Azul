@@ -1696,7 +1696,7 @@ public class Azul {
 
             if (Character.isDigit(move.charAt(3))) {
                 /**
-                 * 从factory移动到storage
+                 * factory to storage
                  */
                 int numOfStorageEmptySpace = storage1.emptySpace(move.charAt(3) - '0');
                 int numOfFloorEmptySpace = floor1.emptyNum();
@@ -1711,18 +1711,18 @@ public class Azul {
 
                 if (gameState[0].charAt(0) == 'A') {
                     factories.clear(move.charAt(1) - '0');
-                    newgameState[0] = "B" + factories.getCode() + center1.getCode() + bag + discard1.getCode();
-                    newgameState[1] = playerState.substring(0, S) + storage1.getCode() + floor1.getCode() + gameState[1].substring(B);
+                    newgameState[0] = "B" + factories.getCode() + sortChar(center1.getCode()) + bag + discard1.getCode();
+                    newgameState[1] = playerState.substring(0, S) + storage1.getCode() + sortChar(floor1.getCode()) + gameState[1].substring(B);
                 } else {
                     factories.clear(move.charAt(1) - '0');
-                    newgameState[0] = "A" + factories.getCode() + center1.getCode() + bag + discard1.getCode();
-                    newgameState[1] = gameState[1].substring(0, B) + playerState.substring(0,S)+ storage1.getCode() + floor1.getCode();
+                    newgameState[0] = "A" + factories.getCode() + sortChar(center1.getCode()) + bag + discard1.getCode();
+                    newgameState[1] = gameState[1].substring(0, B) + playerState.substring(0,S)+ storage1.getCode() + sortChar(floor1.getCode());
                 }
 
 
             } else {
                 /**
-                 * 从factory移动到floor
+                 * factory to floor
                  */
                 int numOfFloorEmptySpace = floor1.emptyNum();
                 floor1.placeTile(move.charAt(2), numOfTiles);
@@ -1733,11 +1733,11 @@ public class Azul {
                 if (gameState[0].charAt(0) == 'A') {
                     factories.clear(move.charAt(1) - '0');
                     newgameState[0] = "B" + factories.getCode() + center1.getCode() + bag + discard1.getCode();
-                    newgameState[1] = playerState.substring(0, S) + storage1.getCode() + floor1.getCode() + gameState[1].substring(B);
+                    newgameState[1] = playerState.substring(0, S) + storage1.getCode() + sortChar(floor1.getCode()) + gameState[1].substring(B);
                 } else {
                     factories.clear(move.charAt(1) - '0');
                     newgameState[0] = "A" + factories.getCode() + center1.getCode() + bag + discard1.getCode();
-                    newgameState[1] = gameState[1].substring(0, B) + playerState.substring(0, S) + storage1.getCode() + floor1.getCode();
+                    newgameState[1] = gameState[1].substring(0, B) + playerState.substring(0, S) + storage1.getCode() + sortChar(floor1.getCode());
                 }
 
             }
@@ -1748,7 +1748,7 @@ public class Azul {
             int numOfTiles = center1.tileNum(move.charAt(2));
             if (Character.isDigit(move.charAt(3))) {
                 /**
-                 * 从center移动到storage
+                 * center to storage
                  */
                 int numOfEmptyStorage = storage1.emptySpace(move.charAt(3) - '0');
                 int numOfFloorEmptySpace = floor1.emptyNum();
@@ -1756,7 +1756,7 @@ public class Azul {
 
                 String center2 = center1.deleteTile(move.charAt(2));
                 if(center2.contains("f")){
-                    center2 = center1.getCode().substring(0,center2.length()-1);
+                    center2 = center2.substring(0,center2.length()-1);
                     floor1.placeTile('f', 1);
                 }
                 if (numOfTiles > numOfEmptyStorage) {
@@ -1769,18 +1769,32 @@ public class Azul {
                     }
                 }
                 if (gameState[0].charAt(0) == 'A') {
+                    if(factories.getCode().length() == 1 && center2.length() ==1){
+                        newgameState[0] = "A" + factories.getCode() + sortChar(center2) + bag + discard1.getCode();
+                        newgameState[1] = playerState.substring(0, S)+ storage1.getCode() + sortChar(floor1.getCode()) + gameState[1].substring(B);
+                    }
+                    else {
+                        newgameState[0] = "B" + factories.getCode() + sortChar(center2) + bag + discard1.getCode();
+                        newgameState[1] = playerState.substring(0, S)+ storage1.getCode() + sortChar(floor1.getCode()) + gameState[1].substring(B);
+                    }
 
-                    newgameState[0] = "B" + factories.getCode() + center2 + bag + discard1.getCode();
-                    newgameState[1] = playerState.substring(0, S)+ storage1.getCode() + floor1.getCode() + gameState[1].substring(B);
+
                 } else {
-                    newgameState[0] = "A" + factories.getCode() + center2 + bag + discard1.getCode();
-                    newgameState[1] = gameState[1].substring(0, B) + playerState.substring(0, S) + storage1.getCode() + floor1.getCode();
+                    if(factories.getCode().length() == 1 && center2.length() ==1){
+                        newgameState[0] = "B" + factories.getCode() + sortChar(center2) + bag + discard1.getCode();
+                        newgameState[1] = gameState[1].substring(0, B) + playerState.substring(0, S) + storage1.getCode() + sortChar(floor1.getCode());
+                    }
+                    else {
+                        newgameState[0] = "A" + factories.getCode() + sortChar(center2) + bag + discard1.getCode();
+                        newgameState[1] = gameState[1].substring(0, B) + playerState.substring(0, S) + storage1.getCode() + sortChar(floor1.getCode());
+                    }
+
                 }
 
 
             } else {
                 /**
-                 * 从center移动到floor
+                 * center to floor
                  */
                 int numOfFloorEmptySpace = floor1.emptyNum();
                 floor1.placeTile(move.charAt(2), numOfTiles);
@@ -1788,24 +1802,68 @@ public class Azul {
                 if(center2.contains("f")){
                     center2 = center1.getCode().substring(0,center2.length()-1);
                     floor1.placeTile('f', 1);
+                    if (numOfTiles >= numOfFloorEmptySpace) {
+                        int moreTile = numOfTiles - numOfFloorEmptySpace;
+                        discard1.placeTiles(move.charAt(2), moreTile+1);
+                        String f = sortChar(floor1.getCode());
+                        discard1.replaceTile(f.charAt(f.length()-1));
+                        floor1.replaceTile('f');
+                    }
                 }
-                if (numOfTiles > numOfFloorEmptySpace) {
-                    int moreTile = numOfTiles - numOfFloorEmptySpace;
-                    discard1.placeTiles(move.charAt(2), moreTile - numOfFloorEmptySpace);
+                else {
+                    if (numOfTiles > numOfFloorEmptySpace) {
+                        int moreTile = numOfTiles - numOfFloorEmptySpace;
+                        discard1.placeTiles(move.charAt(2), moreTile - numOfFloorEmptySpace);
+                    }
                 }
+
 
                 if (gameState[0].charAt(0) == 'A') {
+                    if(factories.getCode().length() == 1 && center2.length() ==1){
+                        newgameState[0] = "A" + factories.getCode() + center2 + bag + discard1.getCode();
+                        newgameState[1] = playerState.substring(0, S) + storage1.getCode() + sortChar(floor1.getCode()) + gameState[1].substring(B);
+                    }
+                    else {
+                        newgameState[0] = "B" + factories.getCode() + center2 + bag + discard1.getCode();
+                        newgameState[1] = playerState.substring(0, S) + storage1.getCode() + sortChar(floor1.getCode()) + gameState[1].substring(B);
+                    }
 
-                    newgameState[0] = "B" + factories.getCode() + center2 + bag + discard1.getCode();
-                    newgameState[1] = playerState.substring(0, S) + storage1.getCode() + floor1.getCode() + gameState[1].substring(B);
                 } else {
-                    newgameState[0] = "A" + factories.getCode() + center2 + bag + discard1.getCode();
-                    newgameState[1] = gameState[1].substring(0, B) + playerState.substring(0, S) + storage1.getCode() + floor1.getCode();
+                    if(factories.getCode().length() == 1 && center2.length() ==1){
+                        newgameState[0] = "B" + factories.getCode() + center2 + bag + discard1.getCode();
+                        newgameState[1] = gameState[1].substring(0, B) + playerState.substring(0, S) + storage1.getCode() + sortChar(floor1.getCode());
+                    }
+                    else {
+                        newgameState[0] = "A" + factories.getCode() + center2 + bag + discard1.getCode();
+                        newgameState[1] = gameState[1].substring(0, B) + playerState.substring(0, S) + storage1.getCode() + sortChar(floor1.getCode());
+                    }
+
                 }
 
             }
         }
         return newgameState;
+    }
+
+    private static String sortChar(String str) {
+
+        char[] chs = stringToArray(str);
+
+        sort(chs);
+
+        return toString(chs);
+    }
+
+    private static String toString(char[] chs) {
+        return new String(chs);
+    }
+
+
+    private static void sort(char[] chs) {
+        Arrays.sort(chs);
+    }
+    private static char[] stringToArray(String string) {
+        return string.toCharArray();
     }
 
 
