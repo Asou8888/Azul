@@ -28,6 +28,7 @@ public class Game extends Application {
     private Floor floor;
     private Group bagView = new Group();
     private Group playerView = new Group();
+    private Storage storage;
 
 
     @Override
@@ -59,7 +60,7 @@ public class Game extends Application {
 
         // TODO: NewMosaic
         this.mosaic = new NewMosaic("Mb00a02a13e42");
-        this.mosaic.setLocation(400, 300);
+        this.mosaic.setLocation(300, 300);
         root.getChildren().add(this.mosaic.getMosaicView());
 
         // TODO: Floor
@@ -70,6 +71,15 @@ public class Game extends Application {
 
 
         // (add the player view)
+
+        // add Storage
+        this.storage = new Storage();
+        this.storage.decode("S0a11b22c33d44e5");
+        this.storage.setLocation(10,300);
+        root.getChildren().add(this.storage.getStorageView());
+
+
+
 
 
         // player board
