@@ -1374,7 +1374,6 @@ public class Azul {
             if (splitSharedState[0].charAt(0) != player) {
                 return false;
             }
-            int tileNum = 0; // record the number of tiles would be placed
             //  1. The specified factory/centre contains at least one tile of the specified colour.
             if (factoryOrCenter == 'C') {
                 // if it is centre.
@@ -1392,7 +1391,6 @@ public class Azul {
                     return false; // no specified tile is found.
                 Center c = new Center(); // the center
                 c.decode(centre); // decode the center
-                tileNum = c.tileNum(tileColor); // find the number of this color's tile.
             } else {
                 int num = factoryOrCenter - '0';
                 String factory = splitSharedState[1]; // The 2nd String is the factory state.
@@ -1403,7 +1401,6 @@ public class Azul {
                     // if the input number of factory is invalid / the factory does not have the tiles of this color.
                     return false;
                 }
-                tileNum = fs.tileNum(tileColor, num); // find the number of this color's tiles.
             }
 
             // 2. The storage row the tile is being placed in does not already contain a different colour.
@@ -1421,7 +1418,11 @@ public class Azul {
                     // does not have the same color
                     return false;
                 } else {
-                    // has the same color or this row in storage is empty
+                    // has the same color or this row in storage is empty, then check whether there's enough space to place tiles.
+                    if (s.isRowFull(row)) {
+                        // the row should not be full.
+                        return false;
+                    }
                     // TODO: up to here.
                     // 3. The corresponding mosaic row does not already contain a tile of that colour.
                     String mosaic = playerState[1]; // The mosaic state is stored in the 2nd element.
@@ -1957,10 +1958,10 @@ public class Azul {
          */
         // test case 3 for Task 13
         String[] test3 = new String[] {
-                "BF1bbce3bcdeCbbcddddB1913161418D0000000000",
-                "A0MS1b23d1FfB0MS0c11a1F"
+                "BF4aeeeCaacB1109101008D0005000200",
+                "A7Mc03b04b12e13b21a24S0d11a12e13d44c4FdfB0Md01c02d20S0b11a22e23c34e5Faabb"
         };
-        System.out.println(isMoveValid(test3, "B3c0"));
+        System.out.println(isMoveValid(test3, "B4a1"));
     }
         /*
         String[] testSplit = new String[]{
