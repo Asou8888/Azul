@@ -4,7 +4,7 @@ Reviewed by: Ruizheng Shen, u6814863
 
 Reviewing code written by: Yixin Ge, u6616522
 
-Component: Azul.isStateValid method.
+Component: [Azul.isStateValid](https://gitlab.cecs.anu.edu.au/u7205634/comp1110-ass2-tue12k/-/blob/master/src/comp1110/ass2/Azul.java#L1147) method.
 
 ### Comments 
 
