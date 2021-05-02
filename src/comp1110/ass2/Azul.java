@@ -1825,11 +1825,11 @@ public class Azul {
 
                 if (gameState[0].charAt(0) == 'A') {
                     if(factories.getCode().length() == 1 && center2.length() ==1){
-                        newgameState[0] = "A" + factories.getCode() + center2 + bag + discard1.getCode();
+                        newgameState[0] = "A" + factories.getCode() + sortChar(center2) + bag + discard1.getCode();
                         newgameState[1] = playerState.substring(0, S) + storage1.getCode() + sortChar(floor1.getCode()) + gameState[1].substring(B);
                     }
                     else {
-                        newgameState[0] = "B" + factories.getCode() + center2 + bag + discard1.getCode();
+                        newgameState[0] = "B" + factories.getCode() + sortChar(center2) + bag + discard1.getCode();
                         newgameState[1] = playerState.substring(0, S) + storage1.getCode() + sortChar(floor1.getCode()) + gameState[1].substring(B);
                     }
 
