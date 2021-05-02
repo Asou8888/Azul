@@ -244,6 +244,11 @@ public class Storage {
         return false;
     }
 
+    public char rowColour(int row){
+        char a = tiles[row][0].getCode().charAt(0);
+        return a;
+    }
+
     /**
      * Check whether this row is empty.
      * @param row

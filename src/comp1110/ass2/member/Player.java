@@ -124,11 +124,19 @@ public class Player {
         tiles = placeFirstPlayerTile(tiles);
         // move tiles to storage
         if (storage.placeTiles(tiles, row)) {
+            String tile = tiles[0].getCode();
+            storage.move(tile.charAt(0),row,tiles.length);
+            if(storage.emptySpace(row) < tile.length()){
+                int moreTiles = tiles.length - storage.emptySpace(row);
+                floor.placeTile(tile.charAt(0),moreTiles);
+            }
+            return true;
             // the move success;
         } else {
             // the move failed;
+            return false;
         }
-        return false;
+
     }
 
     /**
@@ -140,6 +148,11 @@ public class Player {
      */
     public boolean tileMove(int row, int col) {
         // TODO: implements the tileMove method.
+        if(storage.isRowFull(row)){
+            storage.emptyRow(row);
+            mosaic.move(storage.rowColour(row),row,col);
+            return true;
+        }
         return false;
     }
 
@@ -197,6 +210,10 @@ public class Player {
         // TODO: get the shared state and the player state according to game state.
         this.sharedState = Azul.splitSharedState(gameState);
         this.playerState = Azul.splitPlayerState(gameState).get(this.playerCode);
+    }
+
+    public static void main(String[] args) {
+
     }
 
 }
