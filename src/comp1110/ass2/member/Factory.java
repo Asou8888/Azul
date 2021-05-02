@@ -185,7 +185,9 @@ public class Factory {
         if (thisFactory != null) {
             for (int i = 0; i < thisFactory.length(); i++) {
                 //TODO: check whether the code valid
-                this.tiles.add(new Tile(thisFactory.charAt(i))); // add tiles to this factory according to code
+                Tile t = new Tile(thisFactory.charAt(i));
+                t.setBelong(TileBelonging.Factory);
+                this.tiles.add(t); // add tiles to this factory according to code
             }
         }
     }

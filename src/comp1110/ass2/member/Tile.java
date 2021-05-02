@@ -6,12 +6,11 @@ package comp1110.ass2.member;
  * @since 2021.3.27
  */
 
-import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
 
-import java.beans.EventHandler;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Modified by Ruizheng Shen in 2021.4.18
@@ -36,6 +35,7 @@ public class Tile extends Rectangle {
 
     private final TileType tileType; // the color of this tile.
     private char colorChar; // the code for this tile.(considering using a map from color name to code.)
+    private TileBelonging belong = TileBelonging.None; // Default to None
 
     // TODO:For javafx
     public static final int TILE_WIDTH = 48; // set the size of tile in the play board.
@@ -266,6 +266,13 @@ public class Tile extends Rectangle {
             this.setOpacity(0.6);
             // TODO: other action while clicking mouse.
         });
+    }
+
+    public void setBelong(TileBelonging belong) {
+        this.belong = belong;
+    }
+    public TileBelonging belongsTo() {
+        return this.belong;
     }
 
     @Override
