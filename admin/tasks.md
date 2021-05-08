@@ -47,6 +47,16 @@ Everyone: Weekly meeting - 27 April 13:00AM GMT+8
 
 ## Week 9
 
+Rest Time
+
 ## Week 10
+
+Document and Junit Test cases:
+
+Ruizheng Shen: NewMosaic, Storage, Azul - 10 May GMT+8
+
+Yixin Ge: Floor, Discard, Bag - 10 May GMT+8
+
+Xiao Xu: Center, Factories, Factory - 10 May GMT+8
 
 ## Week 11
