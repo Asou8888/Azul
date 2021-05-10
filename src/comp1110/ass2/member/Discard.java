@@ -80,6 +80,10 @@ public class Discard {
         return cntS;
     }
 
+    /**
+     * Given the String Start with "D" and decode it into list of tiles.
+     * @param discard
+     */
     public void decode(String discard) {
         int a = Integer.parseInt(discard.substring(1,3));
         aTiles = a;
@@ -124,6 +128,11 @@ public class Discard {
 
     }
 
+    /**
+     * replace a tile in last valid position in the discard.
+     * @param color
+     */
+    //TODO
     public void replaceTile(char color){
         int num = 0;
         for(int i = 0;i<tiles.length;i++){
@@ -136,6 +145,10 @@ public class Discard {
         tiles[num-1] = new Tile(color);
     }
 
+    /**
+     * Determine if the amount of tiles can be fitted in discard.
+     * @param tiles
+     */
     public boolean placeTiles(Tile[] tiles) {
         int cnt = lengthTile();
         if (cnt + tiles.length <= 100) {

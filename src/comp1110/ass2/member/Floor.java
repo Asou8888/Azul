@@ -133,6 +133,10 @@ public class Floor {
         return scr;
     }
 
+    /**
+     * Determine the floor contains full amount of tiles, which should exactly have 7 tiles.
+     * @return the state of floor if it is fulfilled.
+     */
     public boolean isFloorFull() {
         for (int i = 0; i < FLOOR_WIDTH; i++){ // the maximum length of floor is 7
             if (tiles[i] == null){ // in the range, if there is a null
@@ -143,9 +147,13 @@ public class Floor {
 
     }
 
+    /**
+     * given a string which is represented floor state and decode it into the list of tiles.
+     * @param floor
+     */
     public void decode (String floor){
         if (floor.charAt(0) == 'F' && floor.length() <= FLOOR_WIDTH+1){
-            Tile[] newTiles = new Tile[floor.length()];
+            Tile[] newTiles = new Tile[floor.length()-1];
             for(int i = 1; i < floor.length();i++){
                 char tile  = floor.charAt(i);
                 Tile t = new Tile(tile);
@@ -159,6 +167,10 @@ public class Floor {
         }
     }
 
+    /**
+     * Determine whether the tiles has enough space to place into floor
+     * @param tiles
+     */
     public boolean placeTile(Tile[] tiles) {
         int cnt = lengthTile();
         if (cnt + tiles.length <= 7) {
@@ -168,6 +180,9 @@ public class Floor {
         return false;
     }
 
+    /**
+     * @return the length of tiles in floor without null.
+     */
     public int lengthTile(){
         for (int i = 0; i < FLOOR_WIDTH; i ++){
             if (this.tiles[i] == null){
@@ -177,6 +192,9 @@ public class Floor {
         return FLOOR_WIDTH;
     }
 
+    /**
+     * @return the amount of empty space in floor.
+     */
     public int emptyNum(){
         int num = 0;
         for(int i = 0;i<FLOOR_WIDTH;i++){
@@ -187,11 +205,22 @@ public class Floor {
         return num;
     }
 
+    /**
+     * change the tile of the last position in floor via changing its color.
+     * @param color
+     */
     public void replaceTile(char color){
         tiles[6] = new Tile(color);
     }
 
+    /**
+     * place tiles into floor within the limit of maximum position of floor.
+     * if there is fulfilled, then the last position will be replaced by the color given.
+     * @param color
+     * @param num
+     */
     public void placeTile(char color,int num){
+        if (emptyNum() == 0) replaceTile(color);
         if(emptyNum() >= num){
             num = num;
         }else {
