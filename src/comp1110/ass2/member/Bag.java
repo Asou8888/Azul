@@ -84,6 +84,7 @@ public class Bag {
         int len = tiles.length;
         Tile type1 = new Tile(type);
         for (int i = 0; i < len; i++) {
+            if (tiles[i] == null) break;
             if (type1.getCode().equals(tiles[i].getCode())) {
                 cnt++;
             }
