@@ -272,11 +272,7 @@ public class Storage {
         for (int i = 0; i < STORAGE_ROW_LENGTH[row]; i++) {
             // check the tiles' color in this row.
             if (this.tiles[row][i] != null) {
-                if (this.tiles[row][i].getTileType() == tile.getTileType()) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return this.tiles[row][i].getTileType() == tile.getTileType();
             }
         }
         return false;
