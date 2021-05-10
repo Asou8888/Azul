@@ -178,8 +178,10 @@ public class NewMosaic {
     }
 
     public int getBonusScore() {
+        // TODO
         return -1;
     }
+
     public int score(int row,int column) {
         int rowscore = 0;
         int colscore = 0;
@@ -289,7 +291,6 @@ public class NewMosaic {
         m.move('a',0,1);
         System.out.println(tiles[0][1].getCode());
     }
-
 
 
 }
