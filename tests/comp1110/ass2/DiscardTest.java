@@ -1,9 +1,7 @@
 package comp1110.ass2;
 
 import comp1110.ass2.member.Discard;
-import comp1110.ass2.member.Player;
 import comp1110.ass2.member.Tile;
-import comp1110.ass2.member.TileType;
 import org.junit.jupiter.api.Test;
 
 
