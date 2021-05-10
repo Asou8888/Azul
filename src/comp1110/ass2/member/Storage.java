@@ -11,6 +11,13 @@ import java.awt.*;
  * @since 2021.3.27
  */
 
+/**
+ * Modified by Ruizheng Shen.
+ * @author Ruizheng Shen
+ * @version 2.0
+ * @since 2021.4.26
+ */
+
 public class Storage {
     public static final int STORAGE_ROW_NUM = 5;
     public static final int[] STORAGE_ROW_LENGTH = new int[]{1, 2, 3, 4, 5};

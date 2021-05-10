@@ -7,6 +7,19 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**  Following Methods need to be tested.
+ *      1. getCode(), encode()
+ *      2. decode()
+ *      3. placeTiles(), isPlaceValid()
+ *      4. isRowFull()
+ *      5. rowColor()
+ *      6. isRowColorSame()
+ *      7. isRowEmpty()
+ *      8. emptyRow()
+ *      9. emptySpace()
+ *      10. move()
+ */
+
 public class StorageTest {
     @Test
     public void testStorage() {
