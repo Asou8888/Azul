@@ -8,10 +8,8 @@ package comp1110.ass2;
 import comp1110.ass2.member.NewMosaic;
 import comp1110.ass2.member.Tile;
 import comp1110.ass2.member.TileType;
-import gittest.A;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
