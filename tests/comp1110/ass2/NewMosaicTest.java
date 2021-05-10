@@ -23,6 +23,8 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class NewMosaicTest {
 
+    private static final int MOSAIC_WIDTH = 5;
+
     /*    Creators of test cases.
      *     1. normal cases.
      *     2. empty cases.
@@ -93,6 +95,7 @@ public class NewMosaicTest {
         };
         return expected;
     }
+
     private TileType[][] expectNormalColColor() {
         // TODO
         TileType[][] expected = new TileType[][]{
@@ -105,12 +108,12 @@ public class NewMosaicTest {
         return expected;
     }
 
+
     /**
      * Create Empty test cases for NewMosaic.
      * @return NewMosaic Array
      */
     private NewMosaic[] createEmptyCases() {
-        // TODO
         NewMosaic[] cases = new NewMosaic[]{
                 new NewMosaic(new Tile[][]{
                         new Tile[]{null, null, null, null, null},
@@ -134,7 +137,7 @@ public class NewMosaicTest {
      * @return NewMosaic Array
      */
     private NewMosaic[] createFullCases() {
-        // TODO
+        // TODO: Modify full cases
         NewMosaic[] cases = new NewMosaic[2];
         cases[0] = new NewMosaic(new Tile[][]{
                 new Tile[]{new Tile(TileType.Blue), new Tile(TileType.Green), new Tile(TileType.Orange), new Tile(TileType.Purple), new Tile(TileType.Red)},
@@ -201,18 +204,94 @@ public class NewMosaicTest {
     @Test
     public void testRowFull() {
         // TODO
-        System.out.println("Test isRowFull.");
+        System.out.println("Test isRowFull().");
         // not full
-
+        System.out.println("Test normal cases......");
+        NewMosaic[] testcases = createNormalCases();
+        for (int i = 0; i < testcases.length; i++) {
+            for (int j = 0; j < MOSAIC_WIDTH; j++) {
+                // test each row
+                System.out.println("    Test case " + i + " row " + j);
+                System.out.println("    Expect false, Actual " + testcases[i].isRowFull(j));
+                assertFalse(testcases[i].isRowFull(j));
+            }
+        }
         // empty
+        testcases = createEmptyCases();
+        System.out.println("Test empty cases......");
+        for (NewMosaic testcase : testcases) {
+            for (int j = 0; j < MOSAIC_WIDTH; j++) {
+                // test each row
+                System.out.println("    Expect false, Actual " + testcase.isRowFull(j));
+                assertFalse(testcase.isRowFull(j));
+            }
+        }
         // full
-        // TODO
+        testcases = createFullCases();
+        System.out.println("Test Full cases......");
+        for (NewMosaic testcase : testcases) {
+            for (int j = 0; j < MOSAIC_WIDTH; j++) {
+                // test each row
+                System.out.println("    Expect true, Actual " + testcase.isRowFull(j));
+                assertTrue(testcase.isRowFull(j));
+            }
+        }
     }
 
     @Test
     public void testScore() {
         // TODO
         System.out.println("Test score.");
+        // normal test cases
+        NewMosaic[] testcases = createNormalCases(); // create test cases
+        // No adjacent case
+        System.out.println("Test no adjacent cases......");
+        System.out.println("    Testing case 0, position (2, 1)");
+        assertEquals(1, testcases[0].score(2, 1));
+        System.out.println("    Testing case 1, position (4, 4)");
+        assertEquals(1, testcases[1].score(4, 4));
+        System.out.println("    Testing case 2, position (1, 3)");
+        assertEquals(1, testcases[2].score(1, 3));
+        System.out.println("    Testing case 3, position (1, 0)");
+        assertEquals(1, testcases[3].score(1, 0));
+        System.out.println("    Testing case 4, position (1, 2)");
+        assertEquals(1, testcases[4].score(1, 2));
+        // row adjacent case
+        System.out.println("Test row adjacent cases......");
+        System.out.println("    Testing case 0, position (2, 4)");
+        assertEquals(2, testcases[0].score(2, 4));
+        System.out.println("    Testing case 1, position (1, 3)");
+        assertEquals(3, testcases[1].score(1, 2));
+        System.out.println("    Testing case 2, position (3, 1)");
+        assertEquals(2, testcases[2].score(3, 1));
+        System.out.println("    Testing case 3, position (0, 2)");
+        assertEquals(1, testcases[3].score(0, 2));
+        System.out.println("    Testing case 4, position (1, 2)");
+        assertEquals(1, testcases[4].score(1, 2));
+        // column adjacent case
+        System.out.println("Test column adjacent cases......");
+        System.out.println("    Testing case 0, position (0, 3)");
+        assertEquals(3, testcases[0].score(0, 3));
+        System.out.println("    Testing case 1, position (0, 1)");
+        assertEquals(3, testcases[1].score(0, 1));
+        System.out.println("    Testing case 2, position (0, 0)");
+        assertEquals(4, testcases[2].score(0, 0));
+        System.out.println("    Testing case 3, position (2, 4)");
+        assertEquals(1, testcases[3].score(2, 4));
+        System.out.println("    Testing case 4, position (4, 1)");
+        assertEquals(3, testcases[4].score(4, 1));
+        // combined cases
+        System.out.println("Test combined cases......");
+        System.out.println("    Testing case 0, position (2, 3)");
+        assertEquals(5, testcases[0].score(2, 3));
+        System.out.println("    Testing case 1, position (0, 1)");
+        assertEquals(6, testcases[1].score(1, 1));
+        System.out.println("    Testing case 2, position (3, 0)");
+        assertEquals(6, testcases[2].score(3, 0));
+        System.out.println("    Testing case 3, position (4, 0)");
+        assertEquals(1, testcases[3].score(4, 0));
+        System.out.println("    Testing case 4, position (1, 2)");
+        assertEquals(2, testcases[4].score(0, 0));
     }
 
     @Test
@@ -239,7 +318,7 @@ public class NewMosaicTest {
         System.out.println("Test Empty cases.....");
         testcases = createEmptyCases();
         for (NewMosaic testcase : testcases) {
-            for (int j = 0; j < 5; j++) {
+            for (int j = 0; j < MOSAIC_WIDTH; j++) {
                 System.out.println("    Test row " + j);
                 System.out.println("        Expect Length: 0");
                 System.out.println("        Actual Length: " + testcase.rowColorList(j).size());
@@ -272,13 +351,18 @@ public class NewMosaicTest {
         System.out.println("Test Empty cases.....");
         testcases = createEmptyCases();
         for (NewMosaic testcase : testcases) {
-            for (int j = 0; j < 5; j++) {
+            for (int j = 0; j < MOSAIC_WIDTH; j++) {
                 System.out.println("    Test column " + j);
                 System.out.println("        Expect Length: 0");
                 System.out.println("        Actual Length: " + testcase.colColorList(j).size());
                 assertEquals(0, testcase.colColorList(j).size());
             }
         }
+    }
+
+    @Test
+    public void testMove() {
+        // TODO
     }
 
 

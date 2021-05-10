@@ -42,7 +42,7 @@ public class NewMosaic {
         this.isVariant = isVariant;
         if (!isVariant) {
             // input the beginner pattern;
-            this.pattern = new TileType[][] {
+            this.pattern = new TileType[][]{
                     new TileType[]{TileType.Blue, TileType.Green, TileType.Orange, TileType.Purple, TileType.Red},
                     new TileType[]{TileType.Red, TileType.Blue, TileType.Green, TileType.Orange, TileType.Purple},
                     new TileType[]{TileType.Purple, TileType.Red, TileType.Blue, TileType.Green, TileType.Orange},
@@ -62,6 +62,7 @@ public class NewMosaic {
             }
         }
     }
+
     public NewMosaic(Tile[][] tiles) {
         this.isVariant = true;
         createView();
@@ -84,6 +85,7 @@ public class NewMosaic {
             }
         }
     }
+
     public void setLocation(int xIndex, int yIndex) {
         // TODO
         this.xIndex = xIndex;
@@ -91,6 +93,7 @@ public class NewMosaic {
         this.mosaicView.setLayoutX(this.xIndex);
         this.mosaicView.setLayoutY(this.yIndex);
     }
+
     public void updateMosaicView() {
         // TODO
         this.mosaicView.getChildren().clear();
@@ -104,6 +107,7 @@ public class NewMosaic {
             }
         }
     }
+
     public Group getMosaicView() {
         // TODO
         updateMosaicView();
@@ -116,6 +120,7 @@ public class NewMosaic {
     public int getxIndex() {
         return xIndex;
     }
+
     public int getyIndex() {
         return yIndex;
     }
@@ -124,6 +129,7 @@ public class NewMosaic {
     public String getCode() {
         return encode();
     }
+
     private String encode() {
         StringBuilder code = new StringBuilder("M");
         for (int i = 0; i < MOSAIC_WIDTH; i++) {
@@ -165,6 +171,7 @@ public class NewMosaic {
         }
         return true;
     }
+
     public boolean isEmpty(int row, int col) {
         return tiles[row][col] == null;
     }
@@ -182,56 +189,52 @@ public class NewMosaic {
         return -1;
     }
 
-    public int score(int row,int column) {
+    public int score(int row, int column) {
         int rowscore = 0;
         int colscore = 0;
-        for(int i = row;i < MOSAIC_WIDTH;i++){
-            if(tiles[i][column] == null){
+        for (int i = row; i < MOSAIC_WIDTH; i++) {
+            if (tiles[i][column] == null) {
                 break;
-            }
-            else {
+            } else {
                 rowscore += 1;
             }
         }
-        for(int i = row;i >=0 ;i--){
-            if(tiles[i][column] == null){
+        for (int i = row; i >= 0; i--) {
+            if (tiles[i][column] == null) {
                 break;
-            }
-            else {
+            } else {
                 rowscore += 1;
             }
         }
-        if(rowscore == 2){
+        if (rowscore == 2) {
             rowscore = 0;
-        }else {
-            rowscore = rowscore-1;
+        } else {
+            rowscore = rowscore - 1;
         }
-        for(int i = column;i < MOSAIC_WIDTH;i++){
-            if(tiles[row][i] == null){
+        for (int i = column; i < MOSAIC_WIDTH; i++) {
+            if (tiles[row][i] == null) {
                 break;
-            }
-            else {
-                colscore +=1;
+            } else {
+                colscore += 1;
             }
         }
-        for(int i = column;i >=0;i--){
-            if(tiles[row][i] == null){
+        for (int i = column; i >= 0; i--) {
+            if (tiles[row][i] == null) {
                 break;
-            }
-            else {
-                colscore +=1;
+            } else {
+                colscore += 1;
             }
         }
-        if(colscore == 2){
+        if (colscore == 2) {
             colscore = 0;
-        }else {
-            colscore = colscore-1;
+        } else {
+            colscore = colscore - 1;
         }
 
-        if(rowscore+colscore == 0){
+        if (rowscore + colscore == 0) {
             return 1;
-        }else {
-            return rowscore +colscore;
+        } else {
+            return rowscore + colscore;
         }
 
     }
@@ -249,16 +252,17 @@ public class NewMosaic {
                 // FIXME
                 t.setOpacity(0.6);
                 if (Game.isClick) { //if it is an second click
-                    Game.isClick =  false; //clear click
+                    Game.isClick = false; //clear click
                     Tile p = Game.from;//load the tile from Storage
                     //TODO
 
-                }});
+                }
+            });
             tiles[row][col] = new Tile(colorChar); // put the tile in this position.
         }
     }
 
-    public Tile[][] move(char color,int row,int column){
+    public Tile[][] move(char color, int row, int column) {
         Tile a = new Tile(color);
         tiles[row][column] = a;
         return tiles;
@@ -278,19 +282,18 @@ public class NewMosaic {
 
 
     public static void main(String[] args) {
-        Tile[][] tiles = new Tile[][] {
-                new Tile[]{null, null, null, new Tile(TileType.Purple),null},
-                new Tile[]{null, null, null, new Tile(TileType.Green),null},
-                new Tile[]{null, new Tile(TileType.Orange),null, new Tile(TileType.Red), new Tile(TileType.Green)},
-                new Tile[]{null,null,null,null,null},
-                new Tile[]{null,null,null,null,null}
+        Tile[][] tiles = new Tile[][]{
+                new Tile[]{null, null, null, new Tile(TileType.Purple), null},
+                new Tile[]{null, null, null, new Tile(TileType.Green), null},
+                new Tile[]{null, new Tile(TileType.Orange), null, new Tile(TileType.Red), new Tile(TileType.Green)},
+                new Tile[]{null, null, null, null, null},
+                new Tile[]{null, null, null, null, null}
         };
         NewMosaic m = new NewMosaic(tiles);
 
-        System.out.println(m.score(2,3));
-        m.move('a',0,1);
+        System.out.println(m.score(2, 3));
+        m.move('a', 0, 1);
         System.out.println(tiles[0][1].getCode());
     }
-
 
 }
