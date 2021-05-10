@@ -59,4 +59,6 @@ Yixin Ge: Floor, Discard, Bag - 10 May GMT+8
 
 Xiao Xu: Center, Factories, Factory - 10 May GMT+8
 
+Group Meeting - 11 May 14:30 GMT+8
+
 ## Week 11
