@@ -16,11 +16,12 @@ public class NewMosaic {
     private Tile[][] tiles;
     private TileType[][] pattern; // the beginner mosaic
     private static final int MOSAIC_WIDTH = 5;
-    private boolean isVariant; // whether the mosaic is variant, if not, the mosaic will be the beginner mosaic.
+    private static final int BIGGEST_NUM_OF_COLOR_TILE = 5; // all numbers of color tiles should not be over 5.
+    private final boolean isVariant; // whether the mosaic is variant, if not, the mosaic will be the beginner mosaic.
 
 
     /* Members of javafx */
-    private Group mosaicView = new Group();
+    private final Group mosaicView = new Group();
     int xIndex;
     int yIndex;
 
@@ -184,9 +185,60 @@ public class NewMosaic {
         return true;
     }
 
+    public boolean isColumnFull(int col) {
+        // TODO test
+        for (int i = 0; i < MOSAIC_WIDTH; i++) {
+            if (tiles[i][col] == null)
+                return false;
+        }
+        return true;
+    }
+
+    /**
+     * Calculate the bonus score in mosaic at the end of the game
+     * @return bonus score
+     */
     public int getBonusScore() {
-        // TODO
-        return -1;
+        // TODO test
+        int bonusScore = 0;
+        // calculate row score
+        for (int i = 0; i < MOSAIC_WIDTH; i++) {
+            if (isRowFull(i)) {
+                bonusScore += 2;
+            }
+            if (isColumnFull(i)) {
+                bonusScore += 7;
+            }
+        }
+        int[] colorNum = calculateColor();
+        for (int i: colorNum) {
+            if (colorNum[i] == BIGGEST_NUM_OF_COLOR_TILE) {
+                bonusScore += 10;
+            }
+        }
+        // calculate the column score
+        return bonusScore;
+    }
+
+    /**
+     * Calculate the number of the colors in the mosaic
+     * @return the number of the colors tiles
+     */
+    private int[] calculateColor() {
+        // TODO test
+        int[] cnt = new int[]{0, 0, 0, 0, 0}; // 0th for blue, 1st for green, 2nd for orange, 3rd for purple, 4th for red.
+        for (int i = 0; i < MOSAIC_WIDTH; i++) {
+            for (int j = 0; j < MOSAIC_WIDTH; j++) {
+                switch (tiles[i][j].getTileType()) {
+                    case Blue -> cnt[0]++;
+                    case Green -> cnt[1]++;
+                    case Orange -> cnt[2]++;
+                    case Purple -> cnt[3]++;
+                    case Red -> cnt[4]++;
+                }
+            }
+        }
+        return cnt;
     }
 
     public int score(int row, int column) {

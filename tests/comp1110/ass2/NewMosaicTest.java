@@ -237,6 +237,42 @@ public class NewMosaicTest {
     }
 
     @Test
+    public void testColumnFull() {
+        // TODO
+        System.out.println("Test isColumnFull().");
+        // not full
+        System.out.println("Test normal cases......");
+        NewMosaic[] testcases = createNormalCases();
+        for (int i = 0; i < testcases.length; i++) {
+            System.out.println("    Test case " + i);
+            for (int j = 0; j < MOSAIC_WIDTH; j++) {
+                System.out.println("        Column " + j + " expected not full.");
+                assertFalse(testcases[i].isColumnFull(j));
+            }
+        }
+        // empty
+        System.out.println("Test empty cases......");
+        testcases = createEmptyCases();
+        for (int i = 0; i < testcases.length; i++) {
+            System.out.println("    Test case " + i);
+            for (int j = 0; j < MOSAIC_WIDTH; j++) {
+                System.out.println("        Column " + j + " expected not full.");
+                assertFalse(testcases[i].isColumnFull(j));
+            }
+        }
+        // full
+        System.out.println("Test full cases......");
+        testcases = createFullCases();
+        for (int i = 0; i < testcases.length; i++) {
+            System.out.println("    Test case " + i);
+            for (int j = 0; j < MOSAIC_WIDTH; j++) {
+                System.out.println("        Column " + j + " expected full.");
+                assertTrue(testcases[i].isColumnFull(j));
+            }
+        }
+    }
+
+    @Test
     public void testScore() {
         // TODO
         System.out.println("Test score.");
