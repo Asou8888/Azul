@@ -1822,7 +1822,7 @@ public class Azul {
                         int moreTile = numOfTiles - numOfFloorEmptySpace;
                         discard1.placeTiles(move.charAt(2), moreTile+1); //add other tiles to discard
                         String f = sortChar(floor1.getCode()); //sort the string
-                        discard1.replaceTile(f.charAt(f.length()-1)); //change 'f' and the last tile in floor
+                        discard1.replaceTile(f.charAt(f.length()-2)); //change 'f' and the last tile in floor
                         floor1.replaceTile('f');
                     }
                 }
