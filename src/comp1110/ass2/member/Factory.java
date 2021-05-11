@@ -169,7 +169,33 @@ public class Factory {
         this.tiles.forEach(t -> {
             code.append(t.getCode());
         });
-        return code.toString();
+        return sortChar(code.toString());
+    }
+
+    /**
+     * add by Xiao Xu
+     * @param str
+     * @return
+     */
+    private static String sortChar(String str) {
+
+        char[] chs = stringToArray(str);
+
+        sort(chs);
+
+        return toString(chs);
+    }
+
+    private static String toString(char[] chs) {
+        return new String(chs);
+    }
+
+
+    private static void sort(char[] chs) {
+        Arrays.sort(chs);
+    }
+    private static char[] stringToArray(String string) {
+        return string.toCharArray();
     }
 
     /**

@@ -6,6 +6,7 @@ package comp1110.ass2.member;
  * @since 2021.3.27
  */
 
+import comp1110.ass2.gui.Game;
 import gittest.A;
 import gittest.C;
 import javafx.scene.Group;
@@ -118,13 +119,21 @@ public class Center {
             }
         }
         if (hasFirstPlayer) center.append("f");
-        return center.toString();
+        return sortChar(center.toString());
     }
 
     public void decode(String center) {
         int num = center.length();
         for (int n = 1; n < num; n++) {
             Tile a = new Tile(center.charAt(n));
+            Tile t = new Tile(center.charAt(n));
+            t.setBelong(TileBelonging.Center);
+            t.setOnMouseClicked(e -> {
+                t.setOpacity(0.6);
+                if (!Game.isClick) {
+                    Game.isClick = true;
+                    Game.from = t;}
+            });
             this.tiles.add(a);
         }
     }
@@ -173,6 +182,10 @@ public class Center {
             }
         }
         return newcenter;
+    }
+
+    public TileBelonging belongsTo() {
+        return TileBelonging.Center;
     }
 
 
@@ -274,6 +287,27 @@ public class Center {
                 }
             }
         }
+    }
+
+    private static String sortChar(String str) {
+
+        char[] chs = stringToArray(str);
+
+        sort(chs);
+
+        return toString(chs);
+    }
+
+    private static String toString(char[] chs) {
+        return new String(chs);
+    }
+
+
+    private static void sort(char[] chs) {
+        Arrays.sort(chs);
+    }
+    private static char[] stringToArray(String string) {
+        return string.toCharArray();
     }
 
     public static void main(String[] args) {
