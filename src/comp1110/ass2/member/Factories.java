@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * @since 2021.4.29
  */
 public class Factories {
-    private static int factoryNum;
+    public static int factoryNum;
     private Factory[] factories;
 
     /* Members for javafx */
@@ -189,11 +189,44 @@ public class Factories {
     }
 
     /**
+     * draft tiles from factory according to color.
+     * @param color the color which player wants to draft.
+     * @param num draft from factory[num].
+     * @return tiles
+     */
+    public Tile[] draftTile(int num, TileType color) {
+        // TODO test
+        return factories[num].draftTile(color);
+    }
+
+    /**
      * clear factory[num]
      * @param num
      */
     public void clear(int num) {
         this.factories[num].clear();
+    }
+
+    /**
+     * Determine whether all of these factories are empty.
+     * @return whether all of these factories are empty.
+     */
+    public boolean isEmpty() {
+        for (Factory f: this.factories) {
+            if (!f.isEmpty()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Given an index, determine whether Factory[index] is empty.
+     * @param index the index of the factory
+     * @return whether Factory[index] is empty.
+     */
+    public boolean isEmpty(int index) {
+        return this.factories[index].isEmpty();
     }
 
     public void setLocation(int x, int y) {
@@ -223,7 +256,7 @@ public class Factories {
     public String toString() {
         StringBuilder s = new StringBuilder("Factories: \n");
         for (int i = 0; i < factoryNum; i++) {
-            s.append("factory " + i + ": ").append(this.factories[i]).append("\n");
+            s.append("factory ").append(i).append(": ").append(this.factories[i]).append("\n");
         }
         return s.toString();
     }

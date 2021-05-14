@@ -13,6 +13,7 @@ import javafx.scene.Group;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 
 /**
  * Modified by Ruizheng Shen, 2021.4.19
@@ -61,6 +62,11 @@ public class Center {
                 }
             }
         }
+    }
+
+    public Center(String center) {
+        this.tiles = new ArrayList<>();
+        decode(center);
     }
 
     /**
@@ -205,6 +211,18 @@ public class Center {
             Tile a = new Tile(tile.charAt(i));
             tiles.add(a);
         }
+    }
+
+    /**
+     * List out the colors in the center(using HashSet to avoid color duplicated).
+     * @return colors
+     */
+    public HashSet<TileType> getColors() {
+        HashSet<TileType> colors = new HashSet<>();
+        for (Tile t: tiles) {
+            colors.add(t.getTileType());
+        }
+        return colors;
     }
 
     /**

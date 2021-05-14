@@ -74,6 +74,11 @@ public class Storage {
         this.tiles = tiles;
     }
 
+    public Storage(String storage) {
+        // TODO test
+        decode(storage);
+    }
+
     /**
      * Constructor with no parameters.
      */
@@ -206,7 +211,14 @@ public class Storage {
         return true;
     }
 
+    /**
+     * determine whether the placing in this row is valid.
+     * @param tiles the tiles to be placed
+     * @param row the row to place in
+     * @return whether the placing in this row is valid.
+     */
     public boolean isPlaceValid(Tile[] tiles, int row) {
+        // TODO get check with NewMosaic
         // check the tiles color
         for (Tile t : tiles) {
             if (!isRowColorSame(t, row)) return false;
@@ -259,7 +271,8 @@ public class Storage {
      */
     public boolean isRowColorSame(Tile tile, int row) {
         // If this row is empty and this tile is not a first player tile, then any color could be place here.
-        if (isRowEmpty(row) && tile.getTileType() != TileType.FirstPlayer) return true;
+        if (isRowEmpty(row) && tile.getTileType() != TileType.FirstPlayer)
+            return true;
         for (int i = 0; i < STORAGE_ROW_LENGTH[row]; i++) {
             // check the tiles' color in this row.
             if (this.tiles[row][i] != null) {
@@ -273,6 +286,7 @@ public class Storage {
         char a = tiles[row][0].getCode().charAt(0);
         return a;
     }
+
 
     /**
      * Check whether this row is empty.

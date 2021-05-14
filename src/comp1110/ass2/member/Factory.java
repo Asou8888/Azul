@@ -116,12 +116,44 @@ public class Factory {
 
     public int tileNum(char color){
         int num = 0;
-        for(int i = 0;i<tiles.size();i++){
+        for (int i = 0; i<tiles.size(); i++){
             if(tiles.get(i).getCode().equals(String.valueOf(color))){
                 num += 1;
             }
         }
         return num;
+    }
+
+    /**
+     * Updated by Ruizheng Shen
+     * @author Ruizheng Shen
+     * @param color the color of tiles.
+     * @return the number of this color of tiles.
+     */
+    public int tileNum(TileType color) {
+        int cnt = 0;
+        for (Tile t: this.tiles) {
+            if (t.getTileType() == color) {
+                cnt++;
+            }
+        }
+        return cnt;
+    }
+
+    /**
+     * Draft tiles from factory according to color.
+     * @param color the color which player chooses.
+     * @return the tiles of this color
+     */
+    public Tile[] draftTile(TileType color) {
+        // TODO test
+        int num = tileNum(color); // find the number of tiles of this color.
+        if (num == 0) return null;
+        Tile[] tiles = new Tile[num];
+        for (int i = 0; i < tiles.length; i++) {
+            tiles[i] = new Tile(color);
+        }
+        return tiles;
     }
 
 

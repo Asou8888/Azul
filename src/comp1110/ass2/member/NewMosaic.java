@@ -15,7 +15,7 @@ import java.util.function.ToDoubleBiFunction;
 public class NewMosaic {
     private Tile[][] tiles;
     private TileType[][] pattern; // the beginner mosaic
-    private static final int MOSAIC_WIDTH = 5;
+    public static final int MOSAIC_WIDTH = 5;
     private static final int BIGGEST_NUM_OF_COLOR_TILE = 5; // all numbers of color tiles should not be over 5.
     private final boolean isVariant; // whether the mosaic is variant, if not, the mosaic will be the beginner mosaic.
 
@@ -163,6 +163,7 @@ public class NewMosaic {
         return colors;
     }
 
+
     public boolean isEmpty() {
         for (int i = 0; i < MOSAIC_WIDTH; i++) {
             for (int j = 0; j < MOSAIC_WIDTH; j++) {
@@ -192,6 +193,52 @@ public class NewMosaic {
                 return false;
         }
         return true;
+    }
+
+    /**
+     * Determine whether a placing tiles in a position is valid.
+     * @param tile the tile need to be placed.
+     * @param row the row in mosaic
+     * @param col the column in mosaic
+     * @return whether a placing tiles in a position is valid.
+     */
+    public boolean isPlaceValid(Tile tile, int row, int col) {
+        // TODO test
+        if (!isEmpty(row, col)) {
+            return false;
+        } else {
+            ArrayList<TileType> rowColors = rowColorList(row);
+            ArrayList<TileType> colColors = colColorList(col);
+            // check whether there's color conflict in the same row
+            for (TileType color: rowColors) {
+                if (tile.getTileType() == color) {
+                    return false;
+                }
+            }
+            // check whether there's color conflict in the same column.
+            for (TileType color: colColors) {
+                if (tile.getTileType() == color) {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+
+    /**
+     * determine whether this color exists in this row
+     * @param row the row
+     * @param color the color of tile
+     * @return whether this color exists in this row
+     */
+    public boolean isColorExisted(int row, TileType color) {
+        ArrayList<TileType> colors = rowColorList(row);
+        for (TileType c: colors) {
+            if (color == c) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

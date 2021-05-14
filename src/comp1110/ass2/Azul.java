@@ -4,9 +4,12 @@ import comp1110.ass2.member.*;
 import gittest.A;
 import gittest.B;
 import gittest.C;
+import javafx.geometry.Pos;
 
+import java.awt.*;
 import java.lang.reflect.Array;
 import java.util.*;
+import java.util.List;
 
 public class Azul {
     // Add some static variables.
@@ -1893,49 +1896,155 @@ public class Azul {
      */
     public static String generateAction(String[] gameState) {
         // FIXME Task 13
+        String[] sharedState = splitSharedState(gameState); // split the shared state
+        HashMap<String, String[]> playerStateMap = splitPlayerState(gameState); // split the player state
+        String player = whoseTurn(gameState); // get whose turn.
+        String[] playerState = playerStateMap.get(player); // get this player's state.
+        Random rand = new Random();
 
-        String whoseTurn = whoseTurn(gameState); // find whose turn.
-        ArrayList<String> validDraftMoves = new ArrayList<>(); // store the valid draft moves.
-        ArrayList<String> validTilesMoves = new ArrayList<>(); // store the valid tiles move.
-        Random random = new Random();
-        String[] whereToPickTiles = new String[]{"0", "1", "2", "3", "4", "C"};
-        String[] whichColorIsPicked = new String[]{"a", "b", "c", "d", "e"};
-        String[] whereToPlaceTiles = new String[]{"0", "1", "2", "3", "4", "F"};
-        String[] whichRowInStorage = new String[]{"0", "1", "2", "3", "4"};
-        String[] whichColInMosaic = new String[]{"0", "1", "2", "3", "4", "F"};
-
-        // generate draft move.
-        for (String whereToPickTile : whereToPickTiles) {
-            for (String s : whichColorIsPicked) {
-                for (String whereToPlaceTile : whereToPlaceTiles) {
-                    StringBuilder draftMoveBuilder = new StringBuilder(whoseTurn);
-                    draftMoveBuilder.append(whereToPickTile).append(s).append(whereToPlaceTile);
-                    if (isMoveValid(gameState, draftMoveBuilder.toString())) {
-                        validDraftMoves.add(draftMoveBuilder.toString());
-                        return draftMoveBuilder.toString();
+        /*  find out if factories and center are empty  */
+        //  check whether all factories are empty
+        String factories = sharedState[1]; // the factories state is in the 2nd String.
+        Factories fac = new Factories(factories); // decode factories.
+        //  check whether center is empty.
+        String center = sharedState[2]; // the center state is in the 3rd String.
+        Center cen = new Center(center); // decode center.
+        // if factories and center are empty, make tile move.
+        if (fac.isEmpty() && cen.isEmpty()) {
+            /*  find out possible tileMove  */
+            // find the full row in storage.
+            String storage = playerState[2]; // storage state is placed in the 3rd place.
+            Storage s = new Storage(storage); // decode storage.
+            ArrayList<String> possibleTileMoves = new ArrayList<>();
+            for (int i = 0; i < Storage.STORAGE_ROW_NUM; i++) {
+                // check each row in storage, if a row is full, find possible place in mosaic to place tiles.
+                if (s.isRowFull(i)) {
+                    String mosaic = playerState[1]; // mosaic state is placed in the 2nd place.
+                    NewMosaic mos = new NewMosaic(mosaic); // decode mosaic
+                    boolean doFindAPlaceInMosaic = false;
+                    for (int j = 0; j < NewMosaic.MOSAIC_WIDTH; j++) {
+                        if (mos.isPlaceValid(new Tile(s.rowColor(i)), i, j)) {
+                            String newTileMove = player + i + j; // encode tile move.
+                            possibleTileMoves.add(newTileMove); // add the new tile move to possible tile move list.
+                            doFindAPlaceInMosaic = true;
+                        }
+                    }
+                    if (!doFindAPlaceInMosaic) {
+                        // if there's no valid tile move from this row in storage, then move those tiles to the floor.
+                        String newTileMove = player + i + "F";
+                        possibleTileMoves.add(newTileMove);
+                    } else {
+                        // if do find one, make the tileMoves for this row.
+                        return possibleTileMoves.get(rand.nextInt(possibleTileMoves.size()));
                     }
                 }
             }
-        }
-
-        // generate tiles move.
-        for (String value : whichRowInStorage) {
-            for (String s : whichColInMosaic) {
-                StringBuilder tilesMoveBuilder = new StringBuilder(whoseTurn);
-                tilesMoveBuilder.append(value).append(s);
-                if (isMoveValid(gameState, tilesMoveBuilder.toString())) {
-                    validTilesMoves.add(tilesMoveBuilder.toString());
-                    return tilesMoveBuilder.toString();
+            return possibleTileMoves.get(rand.nextInt(possibleTileMoves.size())); // randomly choose a move from valid moves.
+        } else {
+            /*  find out possible draft move  */
+            String storage = playerState[2];
+            String mosaic = playerState[1];
+            Storage s = new Storage(storage);
+            NewMosaic mos = new NewMosaic(mosaic);
+            ArrayList<String> possibleDraftMove = new ArrayList<>();
+            // find possible draft moves from factories.
+            for (int i = 0; i < Factories.factoryNum; i++) {
+                // skip those empty factories.
+                if (!fac.isEmpty(i)) {
+                    // i-th factory is not empty.
+                    ArrayList<TileType> colors = fac.getColors(i); // get the colors from factory[i]
+                    for (TileType color: colors) {
+                        // for each color in this factory, find possible draftMove
+                        boolean hasValidMoveToStorage = false;
+                        for (int j = 0; j < Storage.STORAGE_ROW_NUM; j++) {
+                            // check each row in storage
+                            if (!s.isRowEmpty(j)) {
+                                // if j-th row in storage is not empty, find if there's a color conflict.
+                                if (!s.isRowFull(j) && s.rowColor(j) == color) {
+                                    // no color conflict in storage, then check if there's a color conflict in mosaic.
+                                    if (!mos.isColorExisted(j, color)) {
+                                        // no color conflict in mosaic, then this move is valid.
+                                        String newDraftMove = player + i + Tile.tileType2colorChar(color) + j;
+                                        hasValidMoveToStorage = true;
+                                        possibleDraftMove.add(newDraftMove);
+                                    }
+                                }
+                            } else {
+                                // if j-th row in storage is empty, then just check the mosaic.
+                                if (!mos.isColorExisted(j, color)) {
+                                    // no color conflict in mosaic, then this move is valid.
+                                    String newDraftMove = player + i + Tile.tileType2colorChar(color) + j;
+                                    hasValidMoveToStorage = true;
+                                    possibleDraftMove.add(newDraftMove);
+                                }
+                            }
+                        }
+                        if (!hasValidMoveToStorage) {
+                            // if no valid move to storage, then move the tiles to floor.
+                            String newDraftMove = player + i + Tile.tileType2colorChar(color) + "F";
+                            possibleDraftMove.add(newDraftMove);
+                        }
+                    }
                 }
             }
+
+            // find possible draft moves from center.
+            HashSet<TileType> colors = cen.getColors(); // list out the colors in the center.
+            for (TileType color: colors) {
+                if (color == TileType.FirstPlayer) {
+                    // Only the move to floor is valid.
+                    String newDraftMove = player + "C" + Tile.tileType2colorChar(color) + "F";
+                    possibleDraftMove.add(newDraftMove);
+                } else {
+                    // for each color except first player, find valid moves.
+                    boolean hasValidMoveToStorage = false;
+                    for (int j = 0; j < Storage.STORAGE_ROW_NUM; j++) {
+                        // check each row in storage
+                        if (!s.isRowEmpty(j)) {
+                            // if j-th row in storage is not empty, find if there's a color conflict.
+                            if (!s.isRowFull(j) && s.rowColor(j) == color) {
+                                // no color conflict in storage, then check if there's a color conflict in mosaic.
+                                if (!mos.isColorExisted(j, color)) {
+                                    // no color conflict in mosaic, then this move is valid.
+                                    String newDraftMove = player + "C" + Tile.tileType2colorChar(color) + j;
+                                    hasValidMoveToStorage = true;
+                                    possibleDraftMove.add(newDraftMove);
+                                }
+                            }
+                        } else {
+                            // if j-th row in storage is empty, then just check the mosaic.
+                            if (!mos.isColorExisted(j, color)) {
+                                // no color conflict in mosaic, then this move is valid.
+                                String newDraftMove = player + "C" + Tile.tileType2colorChar(color) + j;
+                                hasValidMoveToStorage = true;
+                                possibleDraftMove.add(newDraftMove);
+                            }
+                        }
+                    }
+                    if (!hasValidMoveToStorage) {
+                        // if no valid move to storage, then move the tiles to floor.
+                        String newDraftMove = player + "C" + Tile.tileType2colorChar(color) + "F";
+                        possibleDraftMove.add(newDraftMove);
+                    }
+                }
+            }
+            if (possibleDraftMove.size() > 1) {
+                String move = possibleDraftMove.get(rand.nextInt(possibleDraftMove.size()));
+                while (move.equals("ACfF") || move.equals("BCfF")) {
+                    // nobody would act like this while there are other options. So, repick the move.
+                    move = possibleDraftMove.get(rand.nextInt(possibleDraftMove.size()));
+                }
+                return move;
+            }
+            return possibleDraftMove.get(rand.nextInt(possibleDraftMove.size()));
         }
-        return validTilesMoves.get(random.nextInt(validTilesMoves.size()));
         // FIXME Task 15 Implement a "smart" generateAction()
     }
     public static String whoseTurn(String[] gameState) {
         // Assuming that the input gameState is valid.
         return gameState[0].substring(0, 1); // return the first character(String) of shared state.
     }
+
 
     public static void main(String[] args) {
         /*

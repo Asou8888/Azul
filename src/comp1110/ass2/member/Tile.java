@@ -219,6 +219,34 @@ public class Tile extends Rectangle {
     }
 
     /**
+     *
+     * @param color TileType color
+     * @return String the code of the color
+     */
+    public static String tileType2colorChar(TileType color) {
+        switch (color) {
+            case Blue -> {
+                return "a";
+            }
+            case Green -> {
+                return "b";
+            }
+            case Orange -> {
+                return "c";
+            }
+            case Purple -> {
+                return "d";
+            }
+            case Red -> {
+                return "e";
+            }
+            default -> {
+                return "f";
+            }
+        }
+    }
+
+    /**
      * check whether this is an empty tile(if it is empty, then this tile will be white in the board.)
      * @return whether this tile is empty.
      */
