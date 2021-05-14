@@ -38,6 +38,7 @@ public class Game extends Application {
 
     /*  nodes  */
     private final Group root = new Group();
+    private final Group board = new Group();
     private final Group gTiles = new Group();
     private final Group controls = new Group();
 
@@ -68,7 +69,9 @@ public class Game extends Application {
         dropshadow.setColor(Color.color(0, 0, 0, 0.4));
     }
 
-    /*  Audio set up  */
+    /*  [Reference: https://gitlab.cecs.anu.edu.au/comp1110/dinosaurs/-/blob/master/src/comp1110/ass1/gui/Game.java#L388]
+     *  Audio set up
+     */
     private static final String URI_BASE = "assets/";
     private static final String LOOP_URI = Game.class.getResource(URI_BASE + "Song for a Poet(Acoustic) 1644.wav").toString();
     private AudioClip loop;
@@ -76,6 +79,98 @@ public class Game extends Application {
     /*  Game Variable  */
     private boolean loopPlaying = false;
 
+    /**
+     * Set up the sound loop.
+     */
+    private void setUpSoundLoop() {
+        try {
+            loop = new AudioClip(LOOP_URI);
+            loop.setCycleCount(AudioClip.INDEFINITE);
+        } catch (Exception e) {
+            System.err.println(":-( something bad happened (" + LOOP_URI + "): " + e);
+        }
+    }
+
+    /**
+     * Turn the sound loop on or off.
+     */
+    private void toggleSoundLoop() {
+        if (loopPlaying) {
+            loop.stop();
+        } else {
+            loop.play();
+        }
+        loopPlaying = !loopPlaying;
+    }
+
+    private void makeBoard() {
+        board.getChildren().clear();
+        // TODO: add something to background.
+        board.toBack();
+    }
+
+    /**
+     * Set up the tiles
+     */
+    private void makeTiles() {
+        // TODO
+    }
+
+    /**
+     * Add storage, mosaic, floor, center, factories, discard, bag to board.
+     */
+    private void addObjectToBoard() {
+        // TODO
+    }
+
+    /**
+     * Check game completion and update states.
+     */
+    private void checkCompletion() {
+        // TODO
+    }
+
+    /**
+     * Put all of the tiles back in their home position.
+     */
+    private void resetPieces() {
+        // TODO
+    }
+
+    /**
+     * Create controls that allow the game restarted.
+     */
+    private void makeControls() {
+        // TODO
+    }
+
+    /**
+     * Create the message to be displayed when the player completes the puzzle.
+     */
+    private void makeCompletion() {
+        // TODO
+    }
+
+    /**
+     * Show the completion message.
+     */
+    private void showCompletion() {
+        // TODO
+    }
+
+    /**
+     * Hide the completion message.
+     */
+    private void hideCompletion() {
+        // TODO
+    }
+
+    /**
+     * Start a new game, reset everything.
+     */
+    private void newGame() {
+        // TODO
+    }
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -84,6 +179,19 @@ public class Game extends Application {
         stage.setTitle("Azul");
         // [Original Code] Group root = new Group();
         Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
+
+        root.getChildren().add(gTiles);
+        root.getChildren().add(board);
+        root.getChildren().add(controls);
+
+        // setUpHandlers(scene);
+        setUpSoundLoop();
+        makeBoard();
+        makeControls();
+        makeCompletion();
+
+        newGame();
+
         stage.setScene(scene);
         stage.show();
     }
