@@ -262,10 +262,12 @@ public class Tile extends Rectangle {
         this.setOnMouseExited(e -> {
             this.setOpacity(1.0);
         });
+
         this.setOnMouseClicked(e -> {
             this.setOpacity(0.6);
             // TODO: other action while clicking mouse.
         });
+
     }
 
     public void setBelong(TileBelonging belong) {

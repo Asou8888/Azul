@@ -1,7 +1,10 @@
 package comp1110.ass2.member;
 
 import comp1110.ass2.gui.Game;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Paint;
 
 import java.awt.*;
 
@@ -177,22 +180,10 @@ public class Storage {
             for (int j = 0; j < num; j++) {
                 Tile t = new Tile(colorChar);
                 t.setBelong(TileBelonging.Storage);
-                t.setOnMouseClicked(e -> {
-                    // FIXME
-                    t.setOpacity(0.6);
-                    if (!Game.isClick) {
-                        // Tiles Move
-                        Game.isClick = true;
-                        Game.from = t;
-                        Game.rowInStorage = row; // TODO: check
-                    } else {
-                        // Draft Move
-                        Game.isClick = false;
-                        Game.to = t;
-                        Game.rowInStorage = row; // TODO: check
-                    }
-                });
-                newTiles[j] = new Tile(colorChar); // initialize the tile with colorChar.
+                t.setOnMouseClicked(mouseEvent -> t.setOpacity(0)
+                );
+                // newTiles[j] = new Tile(colorChar); // initialize the tile with colorChar.
+                newTiles[j] = t;
             }
             placeTiles(newTiles, row);
         }
@@ -344,11 +335,7 @@ public class Storage {
     }
 
     public void move(char color, int row, int num) {
-        if (emptySpace(row) >= num) {
-            num = num;
-        } else {
-            num = emptySpace(row);
-        }
+        num = Math.min(emptySpace(row), num);
         int numOfTile = 0;
         for (int i = 0; i <= row; i++) {
             if (tiles[row][i] == null) {

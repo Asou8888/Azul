@@ -159,7 +159,7 @@ public class Floor {
                 Tile t = new Tile(tile);
                 t.setBelong(TileBelonging.Floor);
                 t.setOnMouseClicked(e -> {
-                    t.setOpacity(1.0);
+                    t.setOpacity(0);
                     });
                 newTiles[i-1] = t;
             }

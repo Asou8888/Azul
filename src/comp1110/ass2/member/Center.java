@@ -125,16 +125,17 @@ public class Center {
     public void decode(String center) {
         int num = center.length();
         for (int n = 1; n < num; n++) {
-            Tile a = new Tile(center.charAt(n));
             Tile t = new Tile(center.charAt(n));
             t.setBelong(TileBelonging.Center);
             t.setOnMouseClicked(e -> {
+                // TODO
                 t.setOpacity(0.6);
                 if (!Game.isClick) {
                     Game.isClick = true;
-                    Game.from = t;}
+                    Game.from = t;
+                }
             });
-            this.tiles.add(a);
+            this.tiles.add(t);
         }
     }
 
