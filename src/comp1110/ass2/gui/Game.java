@@ -9,6 +9,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -72,13 +74,9 @@ public class Game extends Application {
     /*  [Reference: https://gitlab.cecs.anu.edu.au/comp1110/dinosaurs/-/blob/master/src/comp1110/ass1/gui/Game.java#L388]
      *  Audio set up
      */
-
-    /* FIXME: audio
     private static final String URI_BASE = "../assets/";
     private static final String LOOP_URI = Game.class.getResource(URI_BASE + "Song for a Poet(Acoustic) 1644.wav").toString();
     private AudioClip loop;
-
-     */
 
     /*  Game Variable  */
     private boolean loopPlaying = false;
@@ -86,7 +84,6 @@ public class Game extends Application {
     /**
      * Set up the sound loop.
      */
-    /* FIXME
     private void setUpSoundLoop() {
         try {
             loop = new AudioClip(LOOP_URI);
@@ -95,11 +92,10 @@ public class Game extends Application {
             System.err.println(":-( something bad happened (" + LOOP_URI + "): " + e);
         }
     }
-     */
+
     /**
      * Turn the sound loop on or off.
      */
-    /* FIXME
     private void toggleSoundLoop() {
         if (loopPlaying) {
             loop.stop();
@@ -109,14 +105,163 @@ public class Game extends Application {
         loopPlaying = !loopPlaying;
     }
 
-     */
-
     private void makeBoard() {
         board.getChildren().clear();
         // TODO: add something to background.
         board.toBack();
     }
 
+    class GTile extends ImageView {
+        private char colorChar; // the colour of the tile
+        int positionX; // the X position of tile on board
+        int positionY; // the Y position of tile on board
+        int tileID; // graphical representations of tiles
+
+        /**
+         * Construct a particular playing tile
+         *
+         * @param tile The letter representing the tile to be created.
+         */
+        GTile(char tile) {
+            if (tile > 'f' || tile < 'a') {
+                throw new IllegalArgumentException("Bad tile: \"" + tile + "\"");
+            }
+            this.tileID = tile - 'a';
+            setFitHeight(TILE_SIZE);
+            setFitWidth(TILE_SIZE);
+            setEffect(dropshadow);
+
+        }
+
+
+        /**
+         * A constructor used to build the objective tile.
+         *
+         * @param tileID The tile to be displayed (one of 100 objectives)
+         * @param x    The x position of the tile
+         * @param y    The y position of the tile
+         */
+        GTile(int tileID, int x, int y) {
+            if (!(tileID <= 100 && tileID >= 1)) {
+                throw new IllegalArgumentException("Bad tile: \"" + tileID + "\"");
+            }
+
+            String t = String.format("%02d", tileID); //formatted as at least 2 decimal integers eg. 07
+            setImage(new Image(Game.class.getResource(URI_BASE + t + ".png").toString()));
+            this.tileID = tileID;
+            setFitHeight(TILE_SIZE); //set height TODO may change the value
+            setFitWidth(TILE_SIZE); // set width
+            setEffect(dropshadow);
+
+            setLayoutX(x);
+            setLayoutY(y);
+        }
+    }
+    class DraggableTile extends GTile {
+        int homeX; // last x position of the tile on board
+        int homeY; // last y position of the tile on board
+        double mouseX; // the last x position when dragging the tile on board
+        double mouseY; // the last y position then dragging the tile on board
+
+        /**
+         * Construct a draggable tile
+         *
+         * @param tile The tile identifier ('a' - 'f')
+         */
+        DraggableTile(char tile) {
+            super(tile);
+            setLayoutX(homeX); // Set the x-axis coordinate of the starting point
+            setLayoutY(homeY); //Set the y-axis coordinate of the starting point
+            setOnMousePressed(event -> {      // mouse press indicates begin of drag
+                mouseX = event.getSceneX();
+                mouseY = event.getSceneY();
+            });
+            setOnMouseDragged(event -> {      // mouse is being dragged
+                hideCompletion();
+                toFront();
+                double movementX = event.getSceneX() - mouseX;
+                double movementY = event.getSceneY() - mouseY;
+                setLayoutX(getLayoutX() + movementX);
+                setLayoutY(getLayoutY() + movementY);
+                mouseX = event.getSceneX();
+                mouseY = event.getSceneY();
+                event.consume();
+            });
+            setOnMouseReleased(event -> {     // drag is complete
+                snapToGrid();
+            });
+        }
+
+        /**
+         * Snap the tile to the nearest grid position (if it is over the grid)
+         */
+        private void snapToGrid() {
+            if (onBoard() && (!alreadyOccupied()) && isValidMember() && isValidMove()) {
+                //TODO
+                setPosition();
+            } else {
+                snapToHome();
+            }
+            updateGameState();
+        }
+
+        /**
+         * @return true if the tile is on the board
+         */
+        private boolean onBoard() {
+            //TODO
+            return false;
+        }
+        /**
+         * a function to check whether the current destination cell
+         * is already occupied by another tile
+         *
+         * @return true if the destination cell for the current tile
+         * is already occupied, and false otherwise
+         */
+        private boolean alreadyOccupied() {
+            //TODO
+            return false;
+        }
+
+        /**
+         * a function to check whether the tile in current member destination is valid from last member
+         * @return true if it is valid to move the tile from last to current member
+         */
+        private boolean isValidMember(){
+            //TODO
+            return false;
+        }
+
+        /**
+         * @return if it is valid to move a specific current destination cell from last destination cell.
+         */
+        private boolean isValidMove(){
+            //TODO
+            return false;
+        }
+
+        /**
+         * set the tile position by current position when mouse release.
+         */
+        private void setPosition() {
+            // TODO
+        }
+
+        /**
+         * set the tile back to last valid position before mouse pressing.
+         */
+        private void snapToHome(){
+            //TODO
+        }
+
+        /**
+         * the game state should be updated each time when there is a possible tile moving.
+         */
+        private void updateGameState() {
+            //TODO
+        }
+    }
     /**
      * Set up the tiles
      */
@@ -193,7 +338,7 @@ public class Game extends Application {
         root.getChildren().add(controls);
 
         // setUpHandlers(scene);
-        // FIXME setUpSoundLoop();
+        setUpSoundLoop();
         makeBoard();
         makeControls();
         makeCompletion();
