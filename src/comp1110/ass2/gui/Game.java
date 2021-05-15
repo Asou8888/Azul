@@ -72,9 +72,13 @@ public class Game extends Application {
     /*  [Reference: https://gitlab.cecs.anu.edu.au/comp1110/dinosaurs/-/blob/master/src/comp1110/ass1/gui/Game.java#L388]
      *  Audio set up
      */
-    private static final String URI_BASE = "assets/";
+
+    /* FIXME: audio
+    private static final String URI_BASE = "../assets/";
     private static final String LOOP_URI = Game.class.getResource(URI_BASE + "Song for a Poet(Acoustic) 1644.wav").toString();
     private AudioClip loop;
+
+     */
 
     /*  Game Variable  */
     private boolean loopPlaying = false;
@@ -82,6 +86,7 @@ public class Game extends Application {
     /**
      * Set up the sound loop.
      */
+    /* FIXME
     private void setUpSoundLoop() {
         try {
             loop = new AudioClip(LOOP_URI);
@@ -90,10 +95,11 @@ public class Game extends Application {
             System.err.println(":-( something bad happened (" + LOOP_URI + "): " + e);
         }
     }
-
+     */
     /**
      * Turn the sound loop on or off.
      */
+    /* FIXME
     private void toggleSoundLoop() {
         if (loopPlaying) {
             loop.stop();
@@ -102,6 +108,8 @@ public class Game extends Application {
         }
         loopPlaying = !loopPlaying;
     }
+
+     */
 
     private void makeBoard() {
         board.getChildren().clear();
@@ -185,7 +193,7 @@ public class Game extends Application {
         root.getChildren().add(controls);
 
         // setUpHandlers(scene);
-        setUpSoundLoop();
+        // FIXME setUpSoundLoop();
         makeBoard();
         makeControls();
         makeCompletion();
