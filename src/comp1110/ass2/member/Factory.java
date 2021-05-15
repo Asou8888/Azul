@@ -21,7 +21,7 @@ public class Factory {
     /**
      * Factory is made of 4 tiles.
      */
-    private static final int MAX_FACTORY_TILES_NUM = 4;
+    public static final int MAX_FACTORY_TILES_NUM = 4;
     private ArrayList<Tile> tiles;
 
     /* Members for javafx */

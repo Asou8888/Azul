@@ -13,7 +13,7 @@ import javafx.scene.Group;
  */
 public class Floor {
     private Tile[] tiles;
-    private static final int FLOOR_WIDTH = 7;
+    public static final int FLOOR_WIDTH = 7;
     public static final int[] lostPoint = {-1, -1, -2, -2, -2, -3, -3};
 
     /* Members of Floor */

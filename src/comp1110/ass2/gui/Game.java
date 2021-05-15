@@ -44,14 +44,26 @@ public class Game extends Application {
     private final Group gTiles = new Group();
     private final Group controls = new Group();
 
-    private final Group storages = new Group(); // view for storages(A & B)
-    private final Group mosaics = new Group(); // view for mosaics
-    private final Group floor = new Group(); // view for floor
+    private final Group[] storages = new Group[PLAYER_NUM]; // view for storages(A & B)
+    private final Group[] mosaics = new Group[PLAYER_NUM]; // view for mosaics
+    private final Group[] floor = new Group[PLAYER_NUM]; // view for floor
 
-    private final Group factories = new Group(); // view for factories(0 to 4)
+    private final Group[] factories = new Group[5]; // view for factories(0 to 4)
     private final Group center = new Group(); // view for center
     private final Group discard = new Group(); // view for discard
     private final Group bag = new Group(); // view for bag
+
+    private static final int AMOSAIC_X_LAYOUT = 310; // XIndex of mosaic of player A ,player B +600
+    private static final int AMOSAIC_Y_LAYOUT = 260; // YIndex of mosaic/storage of A and B player
+    private static final int ASTORAGE_X_LAYOUT = 180; // XIndex of storage of A, B +600
+    private static final int AFLOOR_X_LAYOUT = 120; //XIndex of floor of A, B+600
+    private static final int AFLOOR_Y_LAYOUT = 580; //YIndex of floor of A and B
+    private static final int CENTER_X_LAYOUT = 500; //XIndex of center
+    private static final int CENTER_Y_LAYOUT = 120; //YIndex of center
+    private static final int FACTORIES_Y_LAYOUT = 20; //YIndex of Factories
+
+
+
 
     /*  game state  */
     private static String[] gameState; // current game state
@@ -115,13 +127,14 @@ public class Game extends Application {
 
      */
 
+
     private void makeBoard() {
         board.getChildren().clear();
         // TODO: add something to background.
         board.toBack();
     }
 
-    class GTile extends ImageView {
+    class GTile extends Rectangle {
         private char colorChar; // the colour of the tile
         int positionX; // the X position of tile on board
         int positionY; // the Y position of tile on board
@@ -137,9 +150,10 @@ public class Game extends Application {
                 throw new IllegalArgumentException("Bad tile: \"" + tile + "\"");
             }
             this.tileID = tile - 'a';
-            setFitHeight(TILE_SIZE);
-            setFitWidth(TILE_SIZE);
+            setHeight(TILE_SIZE);
+            setWidth(TILE_SIZE);
             setEffect(dropshadow);
+            setFill(Color.GREY.brighter());
 
         }
 
@@ -159,8 +173,8 @@ public class Game extends Application {
             String t = String.format("%02d", tileID); //formatted as at least 2 decimal integers eg. 07
             // setImage(new Image(Game.class.getResource(URI_BASE + t + ".png").toString()));
             this.tileID = tileID;
-            setFitHeight(TILE_SIZE); //set height TODO may change the value
-            setFitWidth(TILE_SIZE); // set width
+            setHeight(TILE_SIZE); //set height TODO may change the value
+            setWidth(TILE_SIZE); // set width
             setEffect(dropshadow);
 
             setLayoutX(x);
@@ -279,12 +293,112 @@ public class Game extends Application {
         // TODO
     }
 
-    /**
-     * Add storage, mosaic, floor, center, factories, discard, bag to board.
-     */
-    private void addObjectToBoard() {
-        // TODO
+
+   //add Mosaic to root
+    private void addMosaicToRoot(){
+        /**
+         * written by Xiao Xu
+         */
+        for(int m = 0;m<PLAYER_NUM;m++){
+            this.mosaics[m] = new Group();
+            for (int i = 0; i < NewMosaic.MOSAIC_WIDTH; i++) {
+                for (int j = 0; j < NewMosaic.MOSAIC_WIDTH; j++) {
+                    GTile r = new GTile('a');
+                    r.setLayoutX(i*TILE_SIZE);
+                    r.setLayoutY(j*TILE_SIZE);
+                    mosaics[m].getChildren().add(r);
+                }
+            }
+        }
+        //set location of mosaics
+        mosaics[0].setLayoutX(AMOSAIC_X_LAYOUT);
+        mosaics[0].setLayoutY(AMOSAIC_Y_LAYOUT);
+
+        mosaics[1].setLayoutX(AMOSAIC_X_LAYOUT+600);
+        mosaics[1].setLayoutY(AMOSAIC_Y_LAYOUT);
+
     }
+
+    //add storage to root
+    private void addStorageToRoot(){
+        for(int m = 0;m<PLAYER_NUM;m++) {
+            this.storages[m] = new Group();
+            for (int i = 0; i < Storage.STORAGE_ROW_NUM; i++) {
+                for (int j = 0; j <= i; j++) {
+                    GTile r = new GTile('a');
+                    r.setLayoutX((j - i + 1) * TILE_SIZE);
+                    r.setLayoutY(i * TILE_SIZE);
+                    storages[m].getChildren().add(r);
+                }
+            }
+        }
+        //set location of storages
+        storages[0].setLayoutX(ASTORAGE_X_LAYOUT);
+        storages[0].setLayoutY(AMOSAIC_Y_LAYOUT);
+
+        storages[1].setLayoutX(ASTORAGE_X_LAYOUT+600);
+        storages[1].setLayoutY(AMOSAIC_Y_LAYOUT);
+
+    }
+
+    //add floor to root
+    private void addFloorToRoot(){
+        for(int m = 0; m<PLAYER_NUM;m++){
+            this.floor[m] = new Group();
+            for(int i = 0;i < Floor.FLOOR_WIDTH;i++){
+                GTile r = new GTile('a');
+                r.setLayoutX(i*TILE_SIZE);
+                r.setLayoutY(0);
+                floor[m].getChildren().add(r);
+            }
+        }
+
+        //set location
+        floor[0].setLayoutX(AFLOOR_X_LAYOUT);
+        floor[0].setLayoutY(AFLOOR_Y_LAYOUT);
+
+        floor[1].setLayoutX(AFLOOR_X_LAYOUT+600);
+        floor[1].setLayoutY(AFLOOR_Y_LAYOUT);
+    }
+
+    //add center to root
+    private void addCenterToRoot(){
+        for (int i = 0; i < Center.CENTER_HEIGHT; i++) {
+            for (int j = 0; j < Center.CENTER_WIDTH; j++) {
+                GTile r = new GTile('a');
+                r.setLayoutX(j*TILE_SIZE);
+                r.setLayoutY(i*TILE_SIZE);
+                center.getChildren().add(r);
+            }
+        }
+        //set location
+        center.setLayoutX(CENTER_X_LAYOUT);
+        center.setLayoutY(CENTER_Y_LAYOUT);
+    }
+
+    //add factories to root
+    private void addFactoriesToRoot(){
+        for(int m = 0;m<5;m++){
+            this.factories[m] = new Group();
+            for (int i = 0; i < Factory.MAX_FACTORY_TILES_NUM / 2; i++) {
+                for (int j = 0; j < Factory.MAX_FACTORY_TILES_NUM / 2; j++) {
+                    GTile r = new GTile('a');
+                    r.setLayoutX(j*TILE_SIZE);
+                    r.setLayoutY(i*TILE_SIZE);
+                    factories[m].getChildren().add(r);
+                }
+            }
+            //set location
+            factories[m].setLayoutX(2.5*m*TILE_SIZE);
+            factories[m].setLayoutY(FACTORIES_Y_LAYOUT);
+
+        }
+
+    }
+
+
+
+
 
     /**
      * Check game completion and update states.
@@ -341,11 +455,41 @@ public class Game extends Application {
         //  FIXME Task 14: Implement a computer opponent so that a human can play your game against the computer.
         stage.setTitle("Azul");
         // [Original Code] Group root = new Group();
+
+        //add playerState
+        addMosaicToRoot();
+        addStorageToRoot();
+        addFloorToRoot();
+
+        //add sharedState
+        addCenterToRoot();
+        addFactoriesToRoot();
+
         Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
 
+
         root.getChildren().add(gTiles);
-        root.getChildren().add(board);
+        // add playerState
+        for(Group m:mosaics){
+            root.getChildren().add(m);
+        }
+        for(Group s:storages){
+            root.getChildren().add(s);
+        }
+        for(Group f:floor){
+            root.getChildren().add(f);
+        }
+
+        //add sharedState
+        root.getChildren().add(center);
+
+        for(Group f:factories){
+            root.getChildren().add(f);
+        }
+
+
         root.getChildren().add(controls);
+        //root.getChildren().add(new GTile('a'));
 
         // setUpHandlers(scene);
         // setUpSoundLoop();
