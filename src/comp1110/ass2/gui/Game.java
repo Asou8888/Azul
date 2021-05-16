@@ -73,8 +73,6 @@ public class Game extends Application {
     private String[] gameState; // current game state
     private static final String startSharedState = "AFCfB2020202020D0000000000"; // shared state at the start of the game
     private static final String startPlayerState = "A0MSFB0MSF"; // player state at the start of the game
-    private String[] sharedState; // current shared state. {Turn}{Factory}{Centre}{Bag}{Discard}
-    private HashMap<String, String[]> playerState; // current player state. {Player}{Score}{Mosaic}{Storage}{Floor}
 
     /*  [Reference: https://gitlab.cecs.anu.edu.au/comp1110/dinosaurs/-/blob/master/src/comp1110/ass1/gui/Game.java#L87]
      *  Define a drop shadow effect that we will apply to the tile
@@ -466,17 +464,8 @@ public class Game extends Application {
         this.gameState = new String[]{
                 startSharedState, startPlayerState
         };
-        updateStates();
     }
 
-    /**
-     * TODO should be called everytime gameState update.
-     * Update the shared state and player state
-     */
-    private void updateStates() {
-        this.sharedState = Azul.splitSharedState(this.gameState); // update shared state
-        this.playerState = Azul.splitPlayerState(this.gameState); // update player state
-    }
 
     /**
      * update the factory view, according to the Characters input
@@ -492,9 +481,12 @@ public class Game extends Application {
      * refill the factory according to current game State.
      */
     private void refillFactories() {
+        System.out.println("Before Refill Factory: {" + gameState[0] + ", " + gameState[1] + "}");
         this.gameState = Azul.refillFactories(this.gameState); // refill factory, get the game state after refilling, then display it on the board.
-        updateStates();
-        String factory = this.sharedState[1]; // get the factory state
+        System.out.println("After Refill Factory: {" + gameState[0] + ", " + gameState[1] + "}");
+        String[] sharedState = Azul.splitSharedState(this.gameState);
+        String factory = sharedState[1];
+        System.out.println("Factory: " + factory);
         int factoryIndex = -1;
         ArrayList<Character> tiles = new ArrayList<>();
         for (int i = 0; i < factory.length(); i++) {
@@ -506,8 +498,8 @@ public class Game extends Application {
             } else {
                 if (Character.isDigit(factory.charAt(i))) {
                     // if read another digit, then reset the factoryIndex.
-                    factoryIndex = -1;
                     updateFactory(tiles, factoryIndex); // TODO: update the factory view.
+                    factoryIndex = -1;
                     tiles.clear(); // clear the tiles arrayList, after updating the factory view.
                 } else {
                     tiles.add(factory.charAt(i));
