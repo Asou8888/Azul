@@ -145,7 +145,7 @@ public class Factories {
      * @param factory
      * @return split factory state
      */
-    String[] splitFactoryState(String factory) {
+    public String[] splitFactoryState(String factory) {
         // Assume that the factory state is valid.
         int start = -1;
         String[] split = new String[factoryNum];

@@ -393,23 +393,38 @@ public class Game extends Application {
 
     //add factories to root
     private void addFactoriesToRoot(){
+        String[] sharedState = Azul.splitSharedState(this.gameState);
+        String factory = sharedState[1];
+        int i = 0;
+        int j = 0;
         for(int m = 0;m<5;m++){
             this.factories[m] = new Group();
-            for (int i = 0; i < Factory.MAX_FACTORY_TILES_NUM / 2; i++) {
-                for (int j = 0; j < Factory.MAX_FACTORY_TILES_NUM / 2; j++) {
-                    GTile r = new GTile('a');
-                    r.setLayoutX(j*TILE_SIZE);
-                    r.setLayoutY(i*TILE_SIZE);
-                    factories[m].getChildren().add(r);
+            for(int n = 0;n<4;n++){
+                Factories f = new Factories(factory);
+                String[] fac = f.splitFactoryState(factory);
+                DraggableTile d = new DraggableTile(fac[m].charAt(n));
+                d.setLayoutX(j*TILE_SIZE);
+                d.setLayoutY(i*TILE_SIZE);
+                factories[m].getChildren().add(d);
+                i++;
+                if(i >= Factory.MAX_FACTORY_TILES_NUM/2){
+                    i = 0;
+                    j++;
                 }
+                if(j >= Factory.MAX_FACTORY_TILES_NUM/2){
+                    j = 0;
+                }
+
             }
             //set location
             factories[m].setLayoutX(2.5*m*TILE_SIZE);
             factories[m].setLayoutY(FACTORIES_Y_LAYOUT);
-
         }
 
+
     }
+
+
 
 
 
@@ -481,28 +496,30 @@ public class Game extends Application {
      * refill the factory according to current game State.
      */
     private void refillFactories() {
-        System.out.println("Before Refill Factory: {" + gameState[0] + ", " + gameState[1] + "}");
-        this.gameState = Azul.refillFactories(this.gameState); // refill factory, get the game state after refilling, then display it on the board.
-        System.out.println("After Refill Factory: {" + gameState[0] + ", " + gameState[1] + "}");
-        String[] sharedState = Azul.splitSharedState(this.gameState);
-        String factory = sharedState[1];
-        System.out.println("Factory: " + factory);
-        int factoryIndex = -1;
-        ArrayList<Character> tiles = new ArrayList<>();
-        for (int i = 0; i < factory.length(); i++) {
-            if (factoryIndex < 0) {
-                if (Character.isDigit(factory.charAt(i))) {
-                    // if this character is a digit(and smaller than 1), then the following would be tiles.
-                    factoryIndex = factory.charAt(i) - '0';
-                }
-            } else {
-                if (Character.isDigit(factory.charAt(i))) {
-                    // if read another digit, then reset the factoryIndex.
-                    updateFactory(tiles, factoryIndex); // TODO: update the factory view.
-                    factoryIndex = -1;
-                    tiles.clear(); // clear the tiles arrayList, after updating the factory view.
+        if(gameState != null) {
+            System.out.println("Before Refill Factory: {" + gameState[0] + ", " + gameState[1] + "}");
+            this.gameState = Azul.refillFactories(this.gameState); // refill factory, get the game state after refilling, then display it on the board.
+            System.out.println("After Refill Factory: {" + gameState[0] + ", " + gameState[1] + "}");
+            String[] sharedState = Azul.splitSharedState(this.gameState);
+            String factory = sharedState[1];
+            System.out.println("Factory: " + factory);
+            int factoryIndex = -1;
+            ArrayList<Character> tiles = new ArrayList<>();
+            for (int i = 0; i < factory.length(); i++) {
+                if (factoryIndex < 0) {
+                    if (Character.isDigit(factory.charAt(i))) {
+                        // if this character is a digit(and smaller than 1), then the following would be tiles.
+                        factoryIndex = factory.charAt(i) - '0';
+                    }
                 } else {
-                    tiles.add(factory.charAt(i));
+                    if (Character.isDigit(factory.charAt(i))) {
+                        // if read another digit, then reset the factoryIndex.
+                        //updateFactory(tiles, factoryIndex); // TODO: update the factory view.
+                        factoryIndex = -1;
+                        tiles.clear(); // clear the tiles arrayList, after updating the factory view.
+                    } else {
+                        tiles.add(factory.charAt(i));
+                    }
                 }
             }
         }
@@ -524,6 +541,7 @@ public class Game extends Application {
         //  FIXME Task 14: Implement a computer opponent so that a human can play your game against the computer.
         stage.setTitle("Azul");
         // [Original Code] Group root = new Group();
+        newGame();
 
         //add playerState
         addMosaicToRoot();
