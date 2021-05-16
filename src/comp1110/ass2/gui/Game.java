@@ -30,6 +30,7 @@ public class Game extends Application {
 
     /*  game information  */
     private static final int PLAYER_NUM = 2;
+    private static final int FACTORY_NUM = 5;
     private static final String[] PLAYER_CODE = new String[]{"A", "B", "C", "D"};
     private static final String[] DEFAULT_PLAYER_NAME = new String[]{"Alice", "Bob", "John", "Cathy"};
     // FIXME
@@ -48,7 +49,7 @@ public class Game extends Application {
     private final Group[] mosaics = new Group[PLAYER_NUM]; // view for mosaics
     private final Group[] floor = new Group[PLAYER_NUM]; // view for floor
 
-    private final Group[] factories = new Group[5]; // view for factories(0 to 4)
+    private final Group[] factories = new Group[FACTORY_NUM]; // view for factories(0 to 4)
     private final Group center = new Group(); // view for center
     private final Group discard = new Group(); // view for discard
     private final Group bag = new Group(); // view for bag
