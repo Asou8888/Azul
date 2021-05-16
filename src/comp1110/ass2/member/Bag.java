@@ -7,20 +7,12 @@ package comp1110.ass2.member;
  */
 
 
-import javafx.scene.Group;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-
 /**
  * Modified by Ruizheng Shen. 2021.4.19
  * Add a constructor.
  */
 public class Bag {
-    private Tile[] tiles;
+    private final Tile[] tiles;
     int aTiles = 0;
     int bTiles = 0;
     int cTiles = 0;

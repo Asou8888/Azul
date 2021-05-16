@@ -2,6 +2,7 @@ package comp1110.ass2.gui;
 
 import comp1110.ass2.Azul;
 import comp1110.ass2.member.*;
+import gittest.A;
 import gittest.C;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -17,6 +18,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Game extends Application {
     /*  board layout */
@@ -33,6 +35,8 @@ public class Game extends Application {
     private static final int FACTORY_NUM = 5;
     private static final String[] PLAYER_CODE = new String[]{"A", "B", "C", "D"};
     private static final String[] DEFAULT_PLAYER_NAME = new String[]{"Alice", "Bob", "John", "Cathy"};
+    private static final int COLOR_TILES_NUM = 20; // the number of tiles of each color.
+    private static final int FIRST_PLAYER_TILE_NUM = 1; // the number of 'first player' tile.
     // FIXME
     public static boolean isClick = false;
     public static Tile from;
@@ -41,7 +45,6 @@ public class Game extends Application {
 
     /*  nodes  */
     private final Group root = new Group();
-    private final Group board = new Group();
     private final Group gTiles = new Group();
     private final Group controls = new Group();
 
@@ -67,10 +70,11 @@ public class Game extends Application {
 
 
     /*  game state  */
-    private static String[] gameState; // current game state
-
-    /*  Azul game control methods */
-    Azul azulGame;
+    private String[] gameState; // current game state
+    private static final String startSharedState = "AFCfB2020202020D0000000000"; // shared state at the start of the game
+    private static final String startPlayerState = "A0MSFB0MSF"; // player state at the start of the game
+    private String[] sharedState; // current shared state. {Turn}{Factory}{Centre}{Bag}{Discard}
+    private HashMap<String, String[]> playerState; // current player state. {Player}{Score}{Mosaic}{Storage}{Floor}
 
     /*  [Reference: https://gitlab.cecs.anu.edu.au/comp1110/dinosaurs/-/blob/master/src/comp1110/ass1/gui/Game.java#L87]
      *  Define a drop shadow effect that we will apply to the tile
@@ -128,12 +132,6 @@ public class Game extends Application {
 
      */
 
-
-    private void makeBoard() {
-        board.getChildren().clear();
-        // TODO: add something to background.
-        board.toBack();
-    }
 
     class GTile extends Rectangle {
         private char colorChar; // the colour of the tile
@@ -197,6 +195,15 @@ public class Game extends Application {
             super(tile);
             setLayoutX(homeX); // Set the x-axis coordinate of the starting point
             setLayoutY(homeY); //Set the y-axis coordinate of the starting point
+            // set Color to draggable tile.
+            switch (tile) {
+                case 'a' -> setFill(Color.BLUE); // blue tile
+                case 'b' -> setFill(Color.GREEN); // green tile
+                case 'c' -> setFill(Color.ORANGE); // orange tile
+                case 'd' -> setFill(Color.PURPLE); // purple tile
+                case 'e' -> setFill(Color.RED); // red tile
+                case 'f' -> setFill(Color.LIGHTGRAY); // first player tile
+            }
             setOnMousePressed(event -> {      // mouse press indicates begin of drag
                 mouseX = event.getSceneX();
                 mouseY = event.getSceneY();
@@ -291,7 +298,16 @@ public class Game extends Application {
      * Set up the tiles
      */
     private void makeTiles() {
-        // TODO
+        // TODO test
+        this.gTiles.getChildren().clear(); // clear all the previous tiles.
+        this.gTiles.getChildren().add(new DraggableTile('f')); // add 'first player' tile.
+        for (int i = 0; i < COLOR_TILES_NUM; i++) {
+            this.gTiles.getChildren().add(new DraggableTile('a')); // add 'a' tiles.
+            this.gTiles.getChildren().add(new DraggableTile('b')); // add 'b' tiles.
+            this.gTiles.getChildren().add(new DraggableTile('c')); // add 'c' tiles.
+            this.gTiles.getChildren().add(new DraggableTile('d')); // add 'd' tiles.
+            this.gTiles.getChildren().add(new DraggableTile('e')); // add 'e' tiles.
+        }
     }
 
 
@@ -444,10 +460,70 @@ public class Game extends Application {
     }
 
     /**
+     * Reset the game state.
+     */
+    private void resetGameState() {
+        this.gameState = new String[]{
+                startSharedState, startPlayerState
+        };
+        updateStates();
+    }
+
+    /**
+     * TODO should be called everytime gameState update.
+     * Update the shared state and player state
+     */
+    private void updateStates() {
+        this.sharedState = Azul.splitSharedState(this.gameState); // update shared state
+        this.playerState = Azul.splitPlayerState(this.gameState); // update player state
+    }
+
+    /**
+     * update the factory view, according to the Characters input
+     * @param tiles an arrayList of Char, each char represent a draggable tile.
+     * @param index the index of factory to be updated.
+     */
+    private void updateFactory(ArrayList<Character> tiles, int index) {
+        // TODO
+        this.factories[index].getChildren().clear();
+    }
+
+    /**
+     * refill the factory according to current game State.
+     */
+    private void refillFactories() {
+        this.gameState = Azul.refillFactories(this.gameState); // refill factory, get the game state after refilling, then display it on the board.
+        updateStates();
+        String factory = this.sharedState[1]; // get the factory state
+        int factoryIndex = -1;
+        ArrayList<Character> tiles = new ArrayList<>();
+        for (int i = 0; i < factory.length(); i++) {
+            if (factoryIndex < 0) {
+                if (Character.isDigit(factory.charAt(i))) {
+                    // if this character is a digit(and smaller than 1), then the following would be tiles.
+                    factoryIndex = factory.charAt(i) - '0';
+                }
+            } else {
+                if (Character.isDigit(factory.charAt(i))) {
+                    // if read another digit, then reset the factoryIndex.
+                    factoryIndex = -1;
+                    updateFactory(tiles, factoryIndex); // TODO: update the factory view.
+                    tiles.clear(); // clear the tiles arrayList, after updating the factory view.
+                } else {
+                    tiles.add(factory.charAt(i));
+                }
+            }
+        }
+    }
+
+
+    /**
      * Start a new game, reset everything.
      */
     private void newGame() {
         // TODO
+        resetGameState(); // reset the game state.
+        refillFactories(); // refill the factories.
     }
 
     @Override
@@ -490,11 +566,9 @@ public class Game extends Application {
 
 
         root.getChildren().add(controls);
-        //root.getChildren().add(new GTile('a'));
 
         // setUpHandlers(scene);
         // setUpSoundLoop();
-        makeBoard();
         makeControls();
         makeCompletion();
 
