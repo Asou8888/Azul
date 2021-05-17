@@ -57,13 +57,14 @@ public class Game extends Application {
     private final Group discard = new Group(); // view for discard
     private final Group bag = new Group(); // view for bag
 
-    private static final int AMOSAIC_X_LAYOUT = 310; // XIndex of mosaic of player A ,player B +600
-    private static final int AMOSAIC_Y_LAYOUT = 260; // YIndex of mosaic/storage of A and B player
-    private static final int ASTORAGE_X_LAYOUT = 180; // XIndex of storage of A, B +600
+    private static final int AMOSAIC_X_LAYOUT = 280; // XIndex of mosaic of player A ,player B +600
+    private static final int AMOSAIC_Y_LAYOUT = 227; // YIndex of mosaic/storage of A and B player
+    private static final int ASTORAGE_X_LAYOUT = 150; // XIndex of storage of A, B +600
     private static final int AFLOOR_X_LAYOUT = 120; //XIndex of floor of A, B+600
-    private static final int AFLOOR_Y_LAYOUT = 580; //YIndex of floor of A and B
-    private static final int CENTER_X_LAYOUT = 500; //XIndex of center
-    private static final int CENTER_Y_LAYOUT = 120; //YIndex of center
+    private static final int AFLOOR_Y_LAYOUT = 550; //YIndex of floor of A and B
+    private static final int CENTER_X_LAYOUT = 550; //XIndex of center
+    private static final int CENTER_Y_LAYOUT = 180; //YIndex of center
+    private static final int FACTORIES_X_LAYOUT = 310;
     private static final int FACTORIES_Y_LAYOUT = 20; //YIndex of Factories
 
 
@@ -331,7 +332,7 @@ public class Game extends Application {
         mosaics[0].setLayoutX(AMOSAIC_X_LAYOUT);
         mosaics[0].setLayoutY(AMOSAIC_Y_LAYOUT);
 
-        mosaics[1].setLayoutX(AMOSAIC_X_LAYOUT+600);
+        mosaics[1].setLayoutX(AMOSAIC_X_LAYOUT+660);
         mosaics[1].setLayoutY(AMOSAIC_Y_LAYOUT);
 
     }
@@ -353,7 +354,7 @@ public class Game extends Application {
         storages[0].setLayoutX(ASTORAGE_X_LAYOUT);
         storages[0].setLayoutY(AMOSAIC_Y_LAYOUT);
 
-        storages[1].setLayoutX(ASTORAGE_X_LAYOUT+600);
+        storages[1].setLayoutX(ASTORAGE_X_LAYOUT+660);
         storages[1].setLayoutY(AMOSAIC_Y_LAYOUT);
 
     }
@@ -406,7 +407,7 @@ public class Game extends Application {
                 }
             }
             //set location
-            factories[m].setLayoutX(2.5*m*TILE_SIZE);
+            factories[m].setLayoutX(2.5*m*TILE_SIZE+FACTORIES_X_LAYOUT);
             factories[m].setLayoutY(FACTORIES_Y_LAYOUT);
 
         }
