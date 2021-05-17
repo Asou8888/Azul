@@ -17,6 +17,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -84,6 +85,17 @@ public class Game extends Application {
     private static final int FACTORIES_X_LAYOUT = 310;
     private static final int FACTORIES_Y_LAYOUT = 20; //YIndex of Factories
 
+    private static final int NUMBER_OF_TILETYPE = 5;
+    private final Label[] bagLable = new Label[NUMBER_OF_TILETYPE]; // included in player board.
+    private final TextField[] bagField = new TextField[NUMBER_OF_TILETYPE]; // included in player board.
+    private static final int BAG_TEXT_FIELD_X_LAYOUT = 120;
+    private static final int BAG_TEXT_FIELD_Y_LAYOUT = 97;
+    private static final int BAG_TEXT_FIELD_HEIGHT = 20;
+    private static final int BAG_TEXT_FIELD_WEIGHT = 40;
+    private static final int BAG_LABEL_X_LAYOUT = 20;
+    private static final int BAG_LABEL_Y_LAYOUT = 100;
+    private static final int BAG_X_LAYOUT = 20;
+    private static final int BAG_Y_LAYOUT = 70;
 
 
 
@@ -380,6 +392,10 @@ public class Game extends Application {
         mosaics[1].setLayoutX(AMOSAIC_X_LAYOUT+660);
         mosaics[1].setLayoutY(AMOSAIC_Y_LAYOUT);
 
+        for(Group m:mosaics){
+            root.getChildren().add(m);
+        }
+
     }
 
     //add storage to root
@@ -402,6 +418,10 @@ public class Game extends Application {
         storages[1].setLayoutX(ASTORAGE_X_LAYOUT+660);
         storages[1].setLayoutY(AMOSAIC_Y_LAYOUT);
 
+        for(Group s:storages){
+            root.getChildren().add(s);
+        }
+
     }
 
     //add floor to root
@@ -422,6 +442,10 @@ public class Game extends Application {
 
         floor[1].setLayoutX(AFLOOR_X_LAYOUT+600);
         floor[1].setLayoutY(AFLOOR_Y_LAYOUT);
+
+        for(Group f:floor){
+            root.getChildren().add(f);
+        }
     }
 
     //add center to root
@@ -437,6 +461,8 @@ public class Game extends Application {
         //set location
         center.setLayoutX(CENTER_X_LAYOUT);
         center.setLayoutY(CENTER_Y_LAYOUT);
+
+        root.getChildren().add(center);
     }
 
     //add factories to root
@@ -456,6 +482,41 @@ public class Game extends Application {
             factories[m].setLayoutY(FACTORIES_Y_LAYOUT);
 
         }
+
+        for(Group f:factories){
+            root.getChildren().add(f);
+        }
+
+    }
+    private void addBagToRoot(){
+        bagLable[0] = new Label("Tile a (Blue): ");
+        bagLable[1] = new Label("Tile b (Green): ");
+        bagLable[2] = new Label("Tile c (Orange): ");
+        bagLable[3] = new Label("Tile d (Purple): ");
+        bagLable[4] = new Label("Tile e (Red): ");
+
+        TextField[] t = new TextField[NUMBER_OF_TILETYPE];
+        for(int i = 0; i < NUMBER_OF_TILETYPE;i++){
+            bagField[i] = new TextField("20");
+            bag.getChildren().add(bagField[i]);
+            bagField[i].setDisable(true);
+            bagField[i].setLayoutX(BAG_TEXT_FIELD_X_LAYOUT);
+            bagField[i].setLayoutY(BAG_TEXT_FIELD_Y_LAYOUT+30*i);
+            bagField[i].setPrefHeight(BAG_TEXT_FIELD_HEIGHT);
+            bagField[i].setPrefWidth(BAG_TEXT_FIELD_WEIGHT);
+        }
+
+        for(int i = 0;i < NUMBER_OF_TILETYPE;i++){
+            bag.getChildren().add(bagLable[i]);
+            bagLable[i].setLayoutX(BAG_LABEL_X_LAYOUT);
+            bagLable[i].setLayoutY(BAG_LABEL_Y_LAYOUT+30*i);
+        }
+        Label b = new Label("Bag");
+
+        b.setLayoutX(BAG_X_LAYOUT);
+        b.setLayoutY(BAG_Y_LAYOUT);
+        root.getChildren().add(b);
+        root.getChildren().add(bag);
 
     }
 
@@ -589,6 +650,8 @@ public class Game extends Application {
                 cnt++;
             }
         }
+
+
     }
 
     /**
@@ -658,6 +721,14 @@ public class Game extends Application {
         }
     }
 
+    private void updateBagView(){
+        String bagString = Azul.splitSharedState(gameState)[3];
+        for(int i = 0; i<NUMBER_OF_TILETYPE;i++){
+            bagField[i].setText(bagString.substring(2*i+1,2*i+3));
+        }
+
+    }
+
     /**
      * refill the factory according to current game State.
      */
@@ -709,28 +780,13 @@ public class Game extends Application {
         //add sharedState
         addCenterToRoot();
         addFactoriesToRoot();
+        addBagToRoot();
 
         Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
 
 
         root.getChildren().add(gTiles);
-        // add playerState
-        for(Group m:mosaics){
-            root.getChildren().add(m);
-        }
-        for(Group s:storages){
-            root.getChildren().add(s);
-        }
-        for(Group f:floor){
-            root.getChildren().add(f);
-        }
 
-        //add sharedState
-        root.getChildren().add(center);
-
-        for(Group f:factories){
-            root.getChildren().add(f);
-        }
 
 
         root.getChildren().add(controls);
@@ -742,10 +798,15 @@ public class Game extends Application {
 
         newGame();
         //test
-        //gameState[0] = "AFCB1616181614D0000000000";
-        //gameState[1] = "A1Ma00e04c11d22b33S1b22c13a34a1FbeeeeB0MS0c11b12e13d4Ff";
-        //updateFloorView();
-        //updateMosaicView();
+        /**
+        gameState[0] = "AFCB1616181614D0000000000";
+        gameState[1] = "A1Ma00e04c11d22b33S1b22c13a34a1FbeeeeB0MS0c11b12e13d4Ff";
+        updateScoresView();
+        updateStorageView();
+        updateFloorView();
+        updateMosaicView();
+        updateBagView();
+         **/
 
         stage.setScene(scene);
         stage.show();
