@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class Game extends Application {
     /*  board layout */
@@ -526,6 +527,44 @@ public class Game extends Application {
         }
     }
 
+    private void updateFloorView() {
+        HashMap<String,String[]> map = Azul.splitPlayerState(gameState);
+        char player = gameState[0].charAt(0);
+        String floorString = map.get(String.valueOf(player))[3];
+        GTile[] tiles = new GTile[Floor.FLOOR_WIDTH];
+        int cnt = 0;
+        for (int i = 1; i < floorString.length(); i++) {
+            // first character of factory would be a digit, so skip it.
+            tiles[cnt] = new DraggableTile(floorString.charAt(i)); // create a draggable tile for each character.
+            cnt++;
+        }
+        for(int i = 0;i < floorString.length()-1;i++){
+            tiles[i].setLayoutX(i*TILE_SIZE);
+            tiles[i].setLayoutY(0);
+            if(player =='A') floor[0].getChildren().add(tiles[i]);
+            else floor[1].getChildren().add(tiles[i]);
+        }
+    }
+
+    private void updateMosaicView() {
+        HashMap<String,String[]> map = Azul.splitPlayerState(gameState);
+        char player = gameState[0].charAt(0);
+        String mosaicString = map.get(String.valueOf(player))[1];
+        GTile[] tiles = new GTile[NewMosaic.MOSAIC_WIDTH];
+        int cnt = 0;
+        for (int i = 1; i < mosaicString.length(); i = i + 3) {
+            tiles[cnt] = new DraggableTile(mosaicString.charAt(i));
+            int row = mosaicString.charAt(i+1) -'0';
+            int column = mosaicString.charAt(i+2) -'0';
+            tiles[cnt].setLayoutX((column)*TILE_SIZE);
+            tiles[cnt].setLayoutY(row*TILE_SIZE);
+            if(player =='A') mosaics[0].getChildren().add(tiles[cnt]);
+            else mosaics[1].getChildren().add(tiles[cnt]);
+            cnt++;
+        }
+
+    }
+
     /**
      * refill the factory according to current game State.
      */
@@ -542,6 +581,8 @@ public class Game extends Application {
             updateFactoryView(eachFactoryState[i], i); // update i-th factory view.
         }
     }
+
+
 
 
     /**
@@ -601,6 +642,11 @@ public class Game extends Application {
         makeCompletion();
 
         newGame();
+        //test
+        //gameState[0] = "AFCB1616181614D0000000000";
+        //gameState[1] = "A1Ma00e04c11d22b33S1b22c13a34a1FbeeeeB0MS0c11b12e13d4Ff";
+        //updateFloorView();
+        //updateMosaicView();
 
         stage.setScene(scene);
         stage.show();
