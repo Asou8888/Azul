@@ -9,6 +9,8 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -16,6 +18,7 @@ import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -59,6 +62,22 @@ public class Game extends Application {
     private final Group center = new Group(); // view for center
     private final Group discard = new Group(); // view for discard
     private final Group bag = new Group(); // view for bag
+
+    private final Group[] playerBoard = new Group[PLAYER_NUM]; // view for player board
+    private final Label[] playerLabel = new Label[PLAYER_NUM]; // included in player board.
+    private final TextField[] scoreField = new TextField[PLAYER_NUM]; // included in player board.
+
+    /*  parameters for player board  */
+    private static final int PLAYER_LABEL_HEIGHT = 30; // the height of player label
+    private static final int SCORE_FIELD_HEIGHT = 30; // the hieght of scoreField.
+    private static final int PLAYER_LABEL_WIDTH = 60; // the width of player label.
+    private static final int SCORE_FIELD_WIDTH = 60; // the width of scoreField.
+    private static final int[] PLAYER_BOARD_LAYOUT_X = {40, 1020, 40, 1020}; // the layoutX of player board.
+    private static final int[] PLAYER_BOARD_LAYOUT_Y = {10, 10, 50, 50}; // the layoutY of player board.
+    private static final int PLAYER_LABEL_LAYOUT_X = 0; // the layoutX of player labels.
+    private static final int SCORE_FIELD_LAYOUT_X = 80; // the layoutX of scoreField.
+    private static final int PLAYER_LABEL_LAYOUT_Y = 0; // the layoutY of player labels.
+    private static final int SCORE_FIELD_LAYOUT_Y = 0; // the layoutY of scoreField.
 
     private static final int AMOSAIC_X_LAYOUT = 280; // XIndex of mosaic of player A ,player B +600
     private static final int AMOSAIC_Y_LAYOUT = 227; // YIndex of mosaic/storage of A and B player
@@ -314,7 +333,28 @@ public class Game extends Application {
         }
     }
 
-
+    private void addPlayerBoardToRoot() {
+        // TODO refactor the code, define layout using playerBoard.
+        for (int i = 0; i < PLAYER_NUM; i++) {
+            this.playerBoard[i] = new Group();
+            this.playerLabel[i] = new Label("Player " + PLAYER_CODE[i] + ": ");
+            this.playerLabel[i].setPrefHeight(PLAYER_LABEL_HEIGHT);
+            this.playerLabel[i].setPrefWidth(PLAYER_LABEL_WIDTH);
+            this.playerLabel[i].setLayoutX(PLAYER_LABEL_LAYOUT_X);
+            this.playerLabel[i].setLayoutY(PLAYER_LABEL_LAYOUT_Y);
+            this.scoreField[i] = new TextField("0");
+            this.scoreField[i].setPrefHeight(SCORE_FIELD_HEIGHT);
+            this.scoreField[i].setPrefWidth(SCORE_FIELD_WIDTH);
+            this.scoreField[i].setLayoutX(SCORE_FIELD_LAYOUT_X);
+            this.scoreField[i].setLayoutY(SCORE_FIELD_LAYOUT_Y);
+            this.scoreField[i].setDisable(true);
+            this.playerBoard[i].getChildren().add(this.playerLabel[i]);
+            this.playerBoard[i].getChildren().add(this.scoreField[i]);
+            this.playerBoard[i].setLayoutX(PLAYER_BOARD_LAYOUT_X[i]);
+            this.playerBoard[i].setLayoutY(PLAYER_BOARD_LAYOUT_Y[i]);
+            root.getChildren().add(this.playerBoard[i]);
+        }
+    }
     //add Mosaic to root
     private void addMosaicToRoot(){
         /**
@@ -473,6 +513,18 @@ public class Game extends Application {
     }
 
     /**
+     * update scores of every players.
+     */
+    private void updateScoresView() {
+        String[] scores = new String[PLAYER_NUM];
+        for (int i = 0; i < scores.length; i++) {
+            scores[i] = Azul.splitPlayerState(gameState).get(PLAYER_CODE[i])[0];
+            System.out.println("Player " + PLAYER_CODE[i] + ", scores " + scores[i]);
+            this.scoreField[i].setText(scores[i]);
+        }
+    }
+
+    /**
      * update the storage view, according to the current game state.
      */
     private void updateStorageView() {
@@ -585,7 +637,6 @@ public class Game extends Application {
             else mosaics[1].getChildren().add(tiles[cnt]);
             cnt++;
         }
-
     }
 
     /**
@@ -617,6 +668,7 @@ public class Game extends Application {
         refillFactories(); // refill the factories.
         updateCenterView(); // update the center view.
         updateStorageView(); // update the storage view.
+        updateScoresView(); // update the score view.
     }
 
     @Override
@@ -625,6 +677,10 @@ public class Game extends Application {
         //  FIXME Task 14: Implement a computer opponent so that a human can play your game against the computer.
         stage.setTitle("Azul");
         // [Original Code] Group root = new Group();
+
+        // add player board to root
+        addPlayerBoardToRoot();
+
 
         //add playerState
         addMosaicToRoot();
