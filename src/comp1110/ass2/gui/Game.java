@@ -5,6 +5,7 @@ import comp1110.ass2.member.*;
 import gittest.A;
 import gittest.C;
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -14,13 +15,16 @@ import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
 import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -63,21 +67,26 @@ public class Game extends Application {
     private final Group discard = new Group(); // view for discard
     private final Group bag = new Group(); // view for bag
 
-    private final Group[] playerBoard = new Group[PLAYER_NUM]; // view for player board
+    private final Pane[] playerBoard = new Pane[PLAYER_NUM]; // view for player board
     private final Label[] playerLabel = new Label[PLAYER_NUM]; // included in player board.
     private final TextField[] scoreField = new TextField[PLAYER_NUM]; // included in player board.
+    private final Rectangle[] borderForPlayerBoard = new Rectangle[PLAYER_NUM]; // the border of player board.
 
     /*  parameters for player board  */
     private static final int PLAYER_LABEL_HEIGHT = 30; // the height of player label
     private static final int SCORE_FIELD_HEIGHT = 30; // the hieght of scoreField.
     private static final int PLAYER_LABEL_WIDTH = 60; // the width of player label.
     private static final int SCORE_FIELD_WIDTH = 60; // the width of scoreField.
+    private static final int BORDER_HEIGHT = 30; // the height of border
+    private static final int BORDER_WIDTH = 140; // the width of border
     private static final int[] PLAYER_BOARD_LAYOUT_X = {40, 1020, 40, 1020}; // the layoutX of player board.
     private static final int[] PLAYER_BOARD_LAYOUT_Y = {10, 10, 50, 50}; // the layoutY of player board.
     private static final int PLAYER_LABEL_LAYOUT_X = 0; // the layoutX of player labels.
     private static final int SCORE_FIELD_LAYOUT_X = 80; // the layoutX of scoreField.
     private static final int PLAYER_LABEL_LAYOUT_Y = 0; // the layoutY of player labels.
     private static final int SCORE_FIELD_LAYOUT_Y = 0; // the layoutY of scoreField.
+    private static final int BORDER_LAYOUT_X = 0; // the layoutX of border.
+    private static final int BORDER_LAYOUT_Y = 0; // the layoutY of border.
 
     private static final int AMOSAIC_X_LAYOUT = 280; // XIndex of mosaic of player A ,player B +600
     private static final int AMOSAIC_Y_LAYOUT = 227; // YIndex of mosaic/storage of A and B player
@@ -336,20 +345,27 @@ public class Game extends Application {
     private void addPlayerBoardToRoot() {
         // TODO refactor the code, define layout using playerBoard.
         for (int i = 0; i < PLAYER_NUM; i++) {
-            this.playerBoard[i] = new Group();
+            this.playerBoard[i] = new Pane();
+            /*  set up player label  */
             this.playerLabel[i] = new Label("Player " + PLAYER_CODE[i] + ": ");
             this.playerLabel[i].setPrefHeight(PLAYER_LABEL_HEIGHT);
             this.playerLabel[i].setPrefWidth(PLAYER_LABEL_WIDTH);
             this.playerLabel[i].setLayoutX(PLAYER_LABEL_LAYOUT_X);
             this.playerLabel[i].setLayoutY(PLAYER_LABEL_LAYOUT_Y);
+
+            /*  set up player scoreField  */
             this.scoreField[i] = new TextField("0");
             this.scoreField[i].setPrefHeight(SCORE_FIELD_HEIGHT);
             this.scoreField[i].setPrefWidth(SCORE_FIELD_WIDTH);
             this.scoreField[i].setLayoutX(SCORE_FIELD_LAYOUT_X);
             this.scoreField[i].setLayoutY(SCORE_FIELD_LAYOUT_Y);
             this.scoreField[i].setDisable(true);
+
+            /*  set up player board  */
             this.playerBoard[i].getChildren().add(this.playerLabel[i]);
             this.playerBoard[i].getChildren().add(this.scoreField[i]);
+
+            this.playerBoard[i].setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
             this.playerBoard[i].setLayoutX(PLAYER_BOARD_LAYOUT_X[i]);
             this.playerBoard[i].setLayoutY(PLAYER_BOARD_LAYOUT_Y[i]);
             root.getChildren().add(this.playerBoard[i]);
@@ -517,10 +533,27 @@ public class Game extends Application {
      */
     private void updateScoresView() {
         String[] scores = new String[PLAYER_NUM];
+        String whoseTurn = Azul.whoseTurn(gameState); // decide whose turn.
+        int index = whoseTurn.charAt(0) - 'A';
+        for (int i = 0; i < PLAYER_NUM; i++) {
+            if (i != index) {
+                this.playerBoard[i].setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
+                this.scoreField[i].setScaleX(1.0);
+                this.scoreField[i].setScaleY(1.0);
+                this.playerLabel[i].setScaleX(1.0);
+                this.playerLabel[i].setScaleY(1.0);
+            } else {
+                this.playerBoard[i].setBackground(new Background(new BackgroundFill(Color.RED, new CornerRadii(5), new Insets(-3))));
+                this.scoreField[i].setScaleX(0.8);
+                this.scoreField[i].setScaleY(0.8);
+                this.playerLabel[i].setScaleX(0.8);
+                this.playerLabel[i].setScaleY(0.8);
+            }
+        }
         for (int i = 0; i < scores.length; i++) {
-            scores[i] = Azul.splitPlayerState(gameState).get(PLAYER_CODE[i])[0];
+            scores[i] = Azul.splitPlayerState(gameState).get(PLAYER_CODE[i])[0]; // get the scores of players from game state.
             System.out.println("Player " + PLAYER_CODE[i] + ", scores " + scores[i]);
-            this.scoreField[i].setText(scores[i]);
+            this.scoreField[i].setText(scores[i]); // set the score to the textField.
         }
     }
 
