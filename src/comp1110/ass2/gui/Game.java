@@ -37,6 +37,7 @@ public class Game extends Application {
     private static final String[] DEFAULT_PLAYER_NAME = new String[]{"Alice", "Bob", "John", "Cathy"};
     private static final int COLOR_TILES_NUM = 20; // the number of tiles of each color.
     private static final int FIRST_PLAYER_TILE_NUM = 1; // the number of 'first player' tile.
+    private static final int CENTER_TILES_NUM = 16; // the maximum number of tiles in center.(View)
     // FIXME
     public static boolean isClick = false;
     public static Tile from;
@@ -201,7 +202,7 @@ public class Game extends Application {
                 case 'c' -> setFill(Color.ORANGE); // orange tile
                 case 'd' -> setFill(Color.PURPLE); // purple tile
                 case 'e' -> setFill(Color.RED); // red tile
-                case 'f' -> setFill(Color.LIGHTGRAY); // first player tile
+                case 'f' -> setFill(Color.BLACK); // first player tile
             }
             setOnMousePressed(event -> {      // mouse press indicates begin of drag
                 setOpacity(0.6);
@@ -469,6 +470,31 @@ public class Game extends Application {
         };
     }
 
+    /**
+     * update the center view, according to the current game state.
+     */
+    private void updateCenterView() {
+        // TODO
+        int cnt = 0; // the counter of draggable tiles.
+        String center = Azul.splitSharedState(this.gameState)[2]; // split game state.
+        System.out.println("Current Center: " + center); // print out center string in terminal.
+        Center c = new Center(center);
+        ArrayList<Tile> tileInCenter = c.getTiles();
+        GTile[] tiles = new GTile[c.getCurrentNum()];
+        for (Tile t: tileInCenter) {
+            tiles[cnt] = new DraggableTile(t.getCode().charAt(0)); // get the colorChar from tile.
+            cnt++; // update the counter.
+        }
+        cnt = 0; // reset counter
+        for (int i = 0; i < Center.CENTER_HEIGHT && cnt < c.getCurrentNum(); i++) {
+            for (int j = 0; j < Center.CENTER_WIDTH && cnt < c.getCurrentNum(); j++) {
+                tiles[cnt].setLayoutX(j * TILE_SIZE);
+                tiles[cnt].setLayoutY(i * TILE_SIZE);
+                this.center.getChildren().add(tiles[cnt]);
+                cnt++;
+            }
+        }
+    }
 
     /**
      * update the factory view, according to the Characters input
@@ -525,6 +551,7 @@ public class Game extends Application {
         // TODO
         resetGameState(); // reset the game state.
         refillFactories(); // refill the factories.
+        updateCenterView(); // update the center view.
     }
 
     @Override

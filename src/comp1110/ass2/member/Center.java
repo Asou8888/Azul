@@ -24,7 +24,6 @@ public class Center {
     private ArrayList<Tile> tiles;
 
     /* Member for javafx */
-    private final Group tilesView = new Group();
     public static final int CENTER_HEIGHT = 8;
     public static final int CENTER_WIDTH = 2;
     int xIndex; // the layoutX in board
@@ -43,46 +42,23 @@ public class Center {
         this.tiles = tiles;
     }
 
-    // Constructor for javafx
-    public Center(ArrayList<Tile> tiles, int xIndex, int yIndex) {
-        setLocation(xIndex, yIndex);
-        int cnt = 0;
-        for (int i = 0; i < CENTER_HEIGHT; i++) {
-            for (int j = 0; j < CENTER_WIDTH; j++) {
-                if (cnt < tiles.size()) {
-                    Tile t = tiles.get(cnt);
-                    t.setLocation(j * Tile.TILE_WIDTH, i * Tile.TILE_WIDTH); // relative location to center
-                    // TODO: set the location of this tile
-                    this.tilesView.getChildren().add(t);
-                    cnt++;
-                } else {
-                    Tile t = new Tile(' ', j * Tile.TILE_WIDTH, i * Tile.TILE_WIDTH); // relative location to center
-                    // TODO: add empty tile to fill up the remaining space.
-                    this.tilesView.getChildren().add(t);
-                }
-            }
-        }
-    }
 
     public Center(String center) {
         this.tiles = new ArrayList<>();
         decode(center);
     }
 
-    /**
-     * The empty constructor for javafx
-     *
-     * @param xIndex layoutX
-     * @param yIndex layoutY
-     */
-    public Center(int xIndex, int yIndex) {
-        setLocation(xIndex, yIndex);
-        this.tiles = new ArrayList<>();
-    }
-
 
     public String getCode() {
         return encode();
+    }
+
+    /**
+     * The visitor of tiles.
+     * @return tiles.
+     */
+    public ArrayList<Tile> getTiles() {
+        return this.tiles;
     }
 
 
@@ -226,29 +202,6 @@ public class Center {
     }
 
     /**
-     * The visitor for tilesView
-     *
-     * @return tilesView
-     */
-    public Group getTilesView() {
-        updateView(); // First update the view, then return.
-        return this.tilesView;
-    }
-
-    /**
-     * Set the location of Center
-     *
-     * @param xIndex the layoutX inboard
-     * @param yIndex the layoutY inboard
-     */
-    public void setLocation(int xIndex, int yIndex) {
-        this.xIndex = xIndex;
-        this.yIndex = yIndex;
-        this.tilesView.setLayoutX(xIndex);
-        this.tilesView.setLayoutY(yIndex);
-    }
-
-    /**
      * Place the tiles in Center.
      *
      * @param tiles
@@ -276,37 +229,6 @@ public class Center {
         return removeList;
     }
 
-    /**
-     * clear the tiles in center.
-     */
-    public void clear() {
-        this.tiles.clear();
-        updateView();
-    }
-
-    /**
-     * Update the view of Center(After removing or adding tiles.)
-     * This function should be called everytime the center has action.
-     */
-    public void updateView() {
-        this.tilesView.getChildren().clear(); // refresh the center
-        int cnt = 0;
-        for (int i = 0; i < CENTER_HEIGHT; i++) {
-            for (int j = 0; j < CENTER_WIDTH; j++) {
-                if (cnt < tiles.size()) {
-                    Tile t = tiles.get(cnt);
-                    t.setLocation(j * Tile.TILE_WIDTH, i * Tile.TILE_WIDTH);
-                    // TODO: set the location of this tile
-                    this.tilesView.getChildren().add(t);
-                    cnt++;
-                } else {
-                    Tile t = new Tile(' ', j * Tile.TILE_WIDTH, i * Tile.TILE_WIDTH);
-                    // TODO: add empty tile to fill up the remaining space.
-                    this.tilesView.getChildren().add(t);
-                }
-            }
-        }
-    }
 
     private static String sortChar(String str) {
 
