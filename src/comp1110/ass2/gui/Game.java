@@ -203,6 +203,7 @@ public class Game extends Application {
                 case 'f' -> setFill(Color.LIGHTGRAY); // first player tile
             }
             setOnMousePressed(event -> {      // mouse press indicates begin of drag
+                setOpacity(0.6);
                 mouseX = event.getSceneX();
                 mouseY = event.getSceneY();
             });
@@ -218,6 +219,7 @@ public class Game extends Application {
                 event.consume();
             });
             setOnMouseReleased(event -> {     // drag is complete
+                setOpacity(1.0);
                 snapToGrid();
             });
         }
@@ -309,7 +311,7 @@ public class Game extends Application {
     }
 
 
-   //add Mosaic to root
+    //add Mosaic to root
     private void addMosaicToRoot(){
         /**
          * written by Xiao Xu
@@ -393,38 +395,23 @@ public class Game extends Application {
 
     //add factories to root
     private void addFactoriesToRoot(){
-        String[] sharedState = Azul.splitSharedState(this.gameState);
-        String factory = sharedState[1];
-        int i = 0;
-        int j = 0;
         for(int m = 0;m<5;m++){
             this.factories[m] = new Group();
-            for(int n = 0;n<4;n++){
-                Factories f = new Factories(factory);
-                String[] fac = f.splitFactoryState(factory);
-                DraggableTile d = new DraggableTile(fac[m].charAt(n));
-                d.setLayoutX(j*TILE_SIZE);
-                d.setLayoutY(i*TILE_SIZE);
-                factories[m].getChildren().add(d);
-                i++;
-                if(i >= Factory.MAX_FACTORY_TILES_NUM/2){
-                    i = 0;
-                    j++;
+            for (int i = 0; i < Factory.MAX_FACTORY_TILES_NUM / 2; i++) {
+                for (int j = 0; j < Factory.MAX_FACTORY_TILES_NUM / 2; j++) {
+                    GTile r = new GTile('a');
+                    r.setLayoutX(j*TILE_SIZE);
+                    r.setLayoutY(i*TILE_SIZE);
+                    factories[m].getChildren().add(r);
                 }
-                if(j >= Factory.MAX_FACTORY_TILES_NUM/2){
-                    j = 0;
-                }
-
             }
             //set location
             factories[m].setLayoutX(2.5*m*TILE_SIZE);
             factories[m].setLayoutY(FACTORIES_Y_LAYOUT);
+
         }
 
-
     }
-
-
 
 
 
@@ -484,44 +471,48 @@ public class Game extends Application {
 
     /**
      * update the factory view, according to the Characters input
-     * @param tiles an arrayList of Char, each char represent a draggable tile.
+     * @param factory index-th factory's state code.
      * @param index the index of factory to be updated.
      */
-    private void updateFactory(ArrayList<Character> tiles, int index) {
+    private void updateFactoryView(String factory, int index) {
         // TODO
         this.factories[index].getChildren().clear();
+        GTile[] tiles = new GTile[Factory.MAX_FACTORY_TILES_NUM];
+        int cnt = 0; // the counter of draggable tiles.
+        for (int i = 0; i < factory.length(); i++) {
+            // first character of factory would be a digit, so skip it.
+            tiles[cnt] = new DraggableTile(factory.charAt(i)); // create a draggable tile for each character.
+            cnt++;
+        }
+        for (int i = cnt; i < tiles.length; i++) {
+            // fill up the empty space in factory.
+            tiles[i] = new GTile('a'); // create a GTile.
+        }
+        cnt = 0; // reset the counter.
+        for (int i = 0; i < Factory.MAX_FACTORY_TILES_NUM / 2; i++) {
+            for (int j = 0; j < Factory.MAX_FACTORY_TILES_NUM / 2; j++) {
+                tiles[cnt].setLayoutX(j * TILE_SIZE);
+                tiles[cnt].setLayoutY(i * TILE_SIZE);
+                this.factories[index].getChildren().add(tiles[cnt]);
+                cnt++;
+            }
+        }
     }
 
     /**
      * refill the factory according to current game State.
      */
     private void refillFactories() {
-        if(gameState != null) {
-            System.out.println("Before Refill Factory: {" + gameState[0] + ", " + gameState[1] + "}");
-            this.gameState = Azul.refillFactories(this.gameState); // refill factory, get the game state after refilling, then display it on the board.
-            System.out.println("After Refill Factory: {" + gameState[0] + ", " + gameState[1] + "}");
-            String[] sharedState = Azul.splitSharedState(this.gameState);
-            String factory = sharedState[1];
-            System.out.println("Factory: " + factory);
-            int factoryIndex = -1;
-            ArrayList<Character> tiles = new ArrayList<>();
-            for (int i = 0; i < factory.length(); i++) {
-                if (factoryIndex < 0) {
-                    if (Character.isDigit(factory.charAt(i))) {
-                        // if this character is a digit(and smaller than 1), then the following would be tiles.
-                        factoryIndex = factory.charAt(i) - '0';
-                    }
-                } else {
-                    if (Character.isDigit(factory.charAt(i))) {
-                        // if read another digit, then reset the factoryIndex.
-                        //updateFactory(tiles, factoryIndex); // TODO: update the factory view.
-                        factoryIndex = -1;
-                        tiles.clear(); // clear the tiles arrayList, after updating the factory view.
-                    } else {
-                        tiles.add(factory.charAt(i));
-                    }
-                }
-            }
+        System.out.println("Before Refill Factory: {" + gameState[0] + ", " + gameState[1] + "}");
+        this.gameState = Azul.refillFactories(this.gameState); // refill factory, get the game state after refilling, then display it on the board.
+        System.out.println("After Refill Factory: {" + gameState[0] + ", " + gameState[1] + "}");
+        String[] sharedState = Azul.splitSharedState(this.gameState);
+        String factory = sharedState[1];
+        System.out.println("Factory: " + factory);
+        Factories f = new Factories();
+        String[] eachFactoryState = f.splitFactoryState(factory);
+        for (int i = 0; i < eachFactoryState.length; i++) {
+            updateFactoryView(eachFactoryState[i], i); // update i-th factory view.
         }
     }
 
@@ -541,7 +532,6 @@ public class Game extends Application {
         //  FIXME Task 14: Implement a computer opponent so that a human can play your game against the computer.
         stage.setTitle("Azul");
         // [Original Code] Group root = new Group();
-        newGame();
 
         //add playerState
         addMosaicToRoot();
