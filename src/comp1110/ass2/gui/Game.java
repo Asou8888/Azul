@@ -2,32 +2,23 @@ package comp1110.ass2.gui;
 
 import comp1110.ass2.Azul;
 import comp1110.ass2.member.*;
-import gittest.A;
-import gittest.C;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeLineCap;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 
 public class Game extends Application {
     /*  board layout */
@@ -70,23 +61,18 @@ public class Game extends Application {
     private final Pane[] playerBoard = new Pane[PLAYER_NUM]; // view for player board
     private final Label[] playerLabel = new Label[PLAYER_NUM]; // included in player board.
     private final TextField[] scoreField = new TextField[PLAYER_NUM]; // included in player board.
-    private final Rectangle[] borderForPlayerBoard = new Rectangle[PLAYER_NUM]; // the border of player board.
 
     /*  parameters for player board  */
     private static final int PLAYER_LABEL_HEIGHT = 30; // the height of player label
     private static final int SCORE_FIELD_HEIGHT = 30; // the hieght of scoreField.
     private static final int PLAYER_LABEL_WIDTH = 60; // the width of player label.
     private static final int SCORE_FIELD_WIDTH = 60; // the width of scoreField.
-    private static final int BORDER_HEIGHT = 30; // the height of border
-    private static final int BORDER_WIDTH = 140; // the width of border
     private static final int[] PLAYER_BOARD_LAYOUT_X = {40, 1020, 40, 1020}; // the layoutX of player board.
     private static final int[] PLAYER_BOARD_LAYOUT_Y = {10, 10, 50, 50}; // the layoutY of player board.
     private static final int PLAYER_LABEL_LAYOUT_X = 0; // the layoutX of player labels.
     private static final int SCORE_FIELD_LAYOUT_X = 80; // the layoutX of scoreField.
     private static final int PLAYER_LABEL_LAYOUT_Y = 0; // the layoutY of player labels.
     private static final int SCORE_FIELD_LAYOUT_Y = 0; // the layoutY of scoreField.
-    private static final int BORDER_LAYOUT_X = 0; // the layoutX of border.
-    private static final int BORDER_LAYOUT_Y = 0; // the layoutY of border.
 
     private static final int AMOSAIC_X_LAYOUT = 280; // XIndex of mosaic of player A ,player B +600
     private static final int AMOSAIC_Y_LAYOUT = 227; // YIndex of mosaic/storage of A and B player
