@@ -42,11 +42,6 @@ public class Storage {
             new Tile[STORAGE_ROW_LENGTH[4]]
     };
 
-    /* Member of javafx */
-    private Group storageView = new Group();
-    int xIndex;
-    int yIndex;
-
     /**
      * Constructor for the Storage. Given an array of tiles, returns the
      * current state of where each char represented tile is location in the storage.
@@ -54,7 +49,6 @@ public class Storage {
      * @param tiles the given array of Tile
      */
     public Storage(Tile[] tiles) {
-        createView();
         int pointer = 0;
         for (int i = 0; i < STORAGE_ROW_NUM; i++) {
             for (int j = 0; j < STORAGE_ROW_LENGTH[i]; j++) {
@@ -69,8 +63,11 @@ public class Storage {
         }
     }
 
+    public Storage() {
+        // an empty constructor
+    }
+
     public Storage(Tile[][] tiles) {
-        createView();
         this.tiles = tiles;
     }
 
@@ -80,45 +77,12 @@ public class Storage {
     }
 
     /**
-     * Constructor with no parameters.
+     * The visitor of tiles.
+     * @return tiles[][]
      */
-    public Storage() {
-        createView();
+    public Tile[][] getTiles() {
+        return this.tiles;
     }
-
-    private void createView() {
-        for (int i = 0; i < STORAGE_ROW_NUM; i++) {
-            for (int j = 0; j < STORAGE_ROW_LENGTH[i]; j++) {
-                this.storageView.getChildren().add(new Tile(' ', (j - STORAGE_ROW_LENGTH[i] + 1) * Tile.TILE_WIDTH, i * Tile.TILE_WIDTH));
-            }
-        }
-    }
-
-    public void updateStorageView() {
-        this.storageView.getChildren().clear();
-        for (int i = 0; i < STORAGE_ROW_NUM; i++) {
-            for (int j = 0; j < STORAGE_ROW_LENGTH[i]; j++) {
-                if (this.tiles[i][j] == (Tile) null) {
-                    this.storageView.getChildren().add(new Tile(' ', (j - STORAGE_ROW_LENGTH[i] + 1) * Tile.TILE_WIDTH, i * Tile.TILE_WIDTH));
-                } else {
-                    this.storageView.getChildren().add(new Tile(tiles[i][j].getTileType(), (j - STORAGE_ROW_LENGTH[i] + 1) * Tile.TILE_WIDTH, i * Tile.TILE_WIDTH));
-                }
-            }
-        }
-    }
-
-    public Group getStorageView() {
-        updateStorageView();
-        return this.storageView;
-    }
-
-    public void setLocation(int xIndex, int yIndex) {
-        this.xIndex = xIndex;
-        this.yIndex = yIndex;
-        this.storageView.setLayoutX(this.xIndex);
-        this.storageView.setLayoutY(this.yIndex);
-    }
-
 
     /**
      * Return the code of the current state in Storage.

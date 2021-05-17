@@ -15,6 +15,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.StrokeLineCap;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -471,10 +472,32 @@ public class Game extends Application {
     }
 
     /**
+     * update the storage view, according to the current game state.
+     */
+    private void updateStorageView() {
+        // TODO
+        String player = Azul.whoseTurn(gameState); // get whose turn
+        String[] playerState = Azul.splitPlayerState(gameState).get(player); // get the state of this player.
+        String storage = playerState[2]; // get the storage state from the playerState.
+        Storage s = new Storage(storage);
+        Tile[][] tilesInStorage = s.getTiles(); // get tiles from storage.
+        for (int i = 0; i < Storage.STORAGE_ROW_NUM; i++) {
+            for (int j = 0; j <= i; j++) {
+                if (tilesInStorage[i][j] != null) {
+                    DraggableTile gtile = new DraggableTile(tilesInStorage[i][j].getCode().charAt(0)); // create graphic tile.
+                    gtile.setLayoutX((j - i + 1) * TILE_SIZE);
+                    gtile.setLayoutY(i * TILE_SIZE);
+                    this.storages[player.charAt(0) - 'A'].getChildren().add(gtile);
+                }
+            }
+        }
+    }
+
+    /**
      * update the center view, according to the current game state.
      */
     private void updateCenterView() {
-        // TODO
+        // TODO test
         int cnt = 0; // the counter of draggable tiles.
         String center = Azul.splitSharedState(this.gameState)[2]; // split game state.
         System.out.println("Current Center: " + center); // print out center string in terminal.
@@ -552,6 +575,7 @@ public class Game extends Application {
         resetGameState(); // reset the game state.
         refillFactories(); // refill the factories.
         updateCenterView(); // update the center view.
+        updateStorageView(); // update the storage view.
     }
 
     @Override

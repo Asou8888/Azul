@@ -20,10 +20,6 @@ public class testView extends Application {
 
         storage.decode("S2a13e44a1");
         System.out.println(storage);
-        storage.setLocation(400, 100);
-        root.getChildren().add(storage.getStorageView());
-        System.out.println(Game.rowInStorage);
-
 
 /*
         NewMosaic mosaic = new NewMosaic();
