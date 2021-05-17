@@ -78,8 +78,15 @@ public class Game extends Application {
     private static final int AMOSAIC_X_LAYOUT = 280; // XIndex of mosaic of player A ,player B +600
     private static final int AMOSAIC_Y_LAYOUT = 227; // YIndex of mosaic/storage of A and B player
     private static final int ASTORAGE_X_LAYOUT = 150; // XIndex of storage of A, B +600
+    private static final int ASTORAGE_Y_LAYOUT = 227; //YIndex of storage of A
     private static final int AFLOOR_X_LAYOUT = 120; //XIndex of floor of A, B+600
     private static final int AFLOOR_Y_LAYOUT = 550; //YIndex of floor of A and B
+    private static final int BMOSAIC_X_LAYOUT = 940; // XIndex of mosaic of player B
+    private static final int BMOSAIC_Y_LAYOUT = 227; // YIndex of mosaic of player B
+    private static final int BSTORAGE_X_LAYOUT = 810; // XIndex of storage of B
+    private static final int BSTORAGE_Y_LAYOUT = 227; //YIndex of storage of B
+    private static final int BFLOOR_X_LAYOUT = 780; //XIndex of floor of B
+    private static final int BFLOOR_Y_LAYOUT = 550; //YIndex of floor of B
     private static final int CENTER_X_LAYOUT = 550; //XIndex of center
     private static final int CENTER_Y_LAYOUT = 180; //YIndex of center
     private static final int FACTORIES_X_LAYOUT = 310;
@@ -162,7 +169,7 @@ public class Game extends Application {
 
 
     class GTile extends Rectangle {
-        private char colorChar; // the colour of the tile
+        char colorChar; // the colour of the tile
         int positionX; // the X position of tile on board
         int positionY; // the Y position of tile on board
         int tileID; // graphical representations of tiles
@@ -174,14 +181,20 @@ public class Game extends Application {
          */
         GTile(char tile) {
             if (tile > 'f' || tile < 'a') {
-                throw new IllegalArgumentException("Bad tile: \"" + tile + "\"");
+                this.colorChar = NOT_PLACED;
             }
+            this.colorChar = tile;
             this.tileID = tile - 'a';
             setHeight(TILE_SIZE);
             setWidth(TILE_SIZE);
             setEffect(dropshadow);
             setFill(Color.GREY.brighter());
 
+        }
+
+        GTile(int positionX, int positionY) {
+            this.positionX = positionX;
+            this.positionY = positionY;
         }
 
 
@@ -221,6 +234,9 @@ public class Game extends Application {
          */
         DraggableTile(char tile) {
             super(tile);
+            if (tile > 'f' || tile < 'a') {
+                throw new IllegalArgumentException("Bad tile: \"" + tile + "\"");
+            }
             setLayoutX(homeX); // Set the x-axis coordinate of the starting point
             setLayoutY(homeY); //Set the y-axis coordinate of the starting point
             // set Color to draggable tile.
@@ -258,10 +274,12 @@ public class Game extends Application {
          * Snap the tile to the nearest grid position (if it is over the grid)
          */
         private void snapToGrid() {
-            if (onBoard() && (!alreadyOccupied()) && isValidMember() && isValidMove()) {
+            if (onBoard() && (!alreadyOccupied()) &&  isValidMove()) {
                 //TODO
+                System.out.println("1");
                 setPosition();
             } else {
+                System.out.println("2");
                 snapToHome();
             }
             updateGameState();
@@ -271,8 +289,113 @@ public class Game extends Application {
          * @return true if the tile is on the board
          */
         private boolean onBoard() {
-            //TODO
-            return false;
+            return getLayoutX() > 0 && getLayoutX() < BOARD_WIDTH  &&
+                    getLayoutY() > 0 && getLayoutY() < BOARD_HEIGHT;
+        }
+
+        /**
+         * @return the x and y axis of the tile slots on board, and the member the tile in
+         * (StorageA = 1, MosaicA = 2, FloorA = 3,StorageB = 4, MosaicB = 5, FloorB = 6.)
+        */
+        private int[] findPosition() {
+            int[] xAndY = new int[3];
+            int x = (int) (getLayoutX() + TILE_SIZE / 2); // find the central x position of the draggable tile.
+            int y = (int) (getLayoutY() + TILE_SIZE / 2); // find the central y position of the draggable tile.
+            //if draggable tile released in Mosaic A
+            if (x > AMOSAIC_X_LAYOUT && x < AMOSAIC_X_LAYOUT + (5 * TILE_SIZE) &&
+                    y > AMOSAIC_Y_LAYOUT && y < AMOSAIC_Y_LAYOUT + (5 * TILE_SIZE)) {
+                xAndY[2] = 2;
+                for (int i = 0; i < 5; i++) {
+                    if (x > AMOSAIC_X_LAYOUT + (i * TILE_SIZE) && x < AMOSAIC_X_LAYOUT + (i * TILE_SIZE) + TILE_SIZE) {
+                        xAndY[0] = AMOSAIC_X_LAYOUT + (i * TILE_SIZE);
+                    }
+                }
+                for (int j = 0; j < 5; j++) {
+                    if (y > AMOSAIC_Y_LAYOUT + (j * TILE_SIZE) && y < AMOSAIC_Y_LAYOUT + (j * TILE_SIZE) + TILE_SIZE) {
+                        xAndY[1] = AMOSAIC_Y_LAYOUT + (j * TILE_SIZE);
+                    }
+                }
+            }
+            //if draggable tile released in Mosaic B
+            if (x > BMOSAIC_X_LAYOUT && x < BMOSAIC_X_LAYOUT + (5 * TILE_SIZE) &&
+                    y > BMOSAIC_Y_LAYOUT && y < BMOSAIC_Y_LAYOUT + (5 * TILE_SIZE)) {
+                xAndY[2] = 5;
+                for (int i = 0; i < 5; i++) {
+                    if (x > BMOSAIC_X_LAYOUT + (i * TILE_SIZE) && x < BMOSAIC_X_LAYOUT + (i * TILE_SIZE) + TILE_SIZE) {
+                        xAndY[0] = BMOSAIC_X_LAYOUT + (i * TILE_SIZE);
+                    }
+                }
+                for (int j = 0; j < 5; j++) {
+                    if (y > BMOSAIC_Y_LAYOUT + (j * TILE_SIZE) && y < BMOSAIC_Y_LAYOUT + (j * TILE_SIZE) + TILE_SIZE) {
+                        xAndY[1] = BMOSAIC_Y_LAYOUT + (j * TILE_SIZE);
+                    }
+                }
+            }
+            //if draggable tile released in Storage A
+            if (x > ASTORAGE_X_LAYOUT - TILE_SIZE*4 && x < ASTORAGE_X_LAYOUT +TILE_SIZE &&
+            y > ASTORAGE_Y_LAYOUT && y < ASTORAGE_Y_LAYOUT+(5*TILE_SIZE)) {
+                xAndY[2] = 1;
+                int xRight = ASTORAGE_X_LAYOUT + TILE_SIZE;
+                int YRight = 0;
+                for (int i = 0; i < 5; i++) {
+                    if (x < xRight - (i * TILE_SIZE) && x > xRight - (i * TILE_SIZE) - TILE_SIZE) {
+                        xAndY[0] = xRight - (i * TILE_SIZE) - TILE_SIZE;
+                        YRight = i;
+                    }
+                }
+                int yMax = 5;
+                while (YRight <= yMax) {
+                    if (y > ASTORAGE_Y_LAYOUT + TILE_SIZE * YRight &&
+                            y < ASTORAGE_Y_LAYOUT + TILE_SIZE * YRight + TILE_SIZE) {
+                        xAndY[1] = ASTORAGE_Y_LAYOUT + TILE_SIZE * YRight;
+                    }
+                    YRight++;
+                }
+            }
+            //if draggable tile released in Storage B
+            if (x > BSTORAGE_X_LAYOUT - TILE_SIZE*4 && x < BSTORAGE_X_LAYOUT +TILE_SIZE &&
+                    y > BSTORAGE_Y_LAYOUT && y < BSTORAGE_Y_LAYOUT+(5*TILE_SIZE)) {
+                xAndY[2] = 5;
+                int xRight = BSTORAGE_X_LAYOUT + TILE_SIZE;
+                int YRight = 0;
+                for (int i = 0; i < 5; i++) {
+                    if (x < xRight - (i * TILE_SIZE) && x > xRight - (i * TILE_SIZE) - TILE_SIZE) {
+                        xAndY[0] = xRight - (i * TILE_SIZE) - TILE_SIZE;
+                        YRight = i;
+                    }
+                }
+                int yMax = 5;
+                while (YRight <= yMax) {
+                    if (y > BSTORAGE_Y_LAYOUT + TILE_SIZE * YRight &&
+                            y < BSTORAGE_Y_LAYOUT + TILE_SIZE * YRight + TILE_SIZE) {
+                        xAndY[1] = BSTORAGE_Y_LAYOUT + TILE_SIZE * YRight;
+                    }
+                    YRight++;
+                }
+            }
+            //if draggable tile released in Floor A;
+            if (x > AFLOOR_X_LAYOUT && x < AFLOOR_X_LAYOUT+7*TILE_SIZE &&
+            y > AFLOOR_Y_LAYOUT && y < AFLOOR_Y_LAYOUT +TILE_SIZE){
+                xAndY[2] = 3;
+                for(int i = 0; i < 7;i++){
+                    if (x > AFLOOR_X_LAYOUT + i*TILE_SIZE && x < AFLOOR_X_LAYOUT+i*TILE_SIZE +TILE_SIZE){
+                        xAndY[0] = AFLOOR_X_LAYOUT + i*TILE_SIZE;
+                        xAndY[1] = AFLOOR_Y_LAYOUT;
+                    }
+                }
+            }
+            //if draggable tile released in Floor B;
+            if (x > BFLOOR_X_LAYOUT && x < BFLOOR_X_LAYOUT+7*TILE_SIZE &&
+                    y > BFLOOR_Y_LAYOUT && y < BFLOOR_Y_LAYOUT +TILE_SIZE){
+                xAndY[2] = 6;
+                for(int i = 0; i < 7;i++){
+                    if (x > BFLOOR_X_LAYOUT + i*TILE_SIZE && x < BFLOOR_X_LAYOUT+i*TILE_SIZE +TILE_SIZE){
+                        xAndY[0] = BFLOOR_X_LAYOUT + i*TILE_SIZE;
+                        xAndY[1] = BFLOOR_Y_LAYOUT;
+                    }
+                }
+            }
+            return xAndY;
         }
         /**
          * a function to check whether the current destination cell
@@ -282,25 +405,92 @@ public class Game extends Application {
          * is already occupied, and false otherwise
          */
         private boolean alreadyOccupied() {
-            //TODO
-            return false;
-        }
-
-        /**
-         * a function to check whether the tile in current member destination is valid from last member
-         * @return true if it is valid to move the tile from last to current member
-         */
-        private boolean isValidMember(){
-            //TODO
-            return false;
+            int x = findPosition()[0];
+            int y = findPosition()[1];
+            return this.colorChar != NOT_PLACED;
         }
 
         /**
          * @return if it is valid to move a specific current destination cell from last destination cell.
          */
         private boolean isValidMove(){
-            //TODO
-            return false;
+            String turn = Azul.whoseTurn(gameState);
+            String move = "";
+            int yAxis = findPosition()[1];
+            //find whose turn
+            if (turn.equals("A")){
+                move = move + "A";
+            }
+            else{ move = move + "B";
+            }
+            // add "C" if from Center
+            if (homeX > CENTER_X_LAYOUT && homeX < CENTER_X_LAYOUT + 2* TILE_SIZE &&
+            homeY > CENTER_Y_LAYOUT && homeY < CENTER_Y_LAYOUT + 8 *TILE_SIZE){
+                move = move + "C";
+                // if player A puts tile on StorageA
+                if (turn.equals("A") && (findPosition()[2] == 1)){
+                    move = move + this.colorChar + ((yAxis - ASTORAGE_Y_LAYOUT) / TILE_SIZE - '0');
+                }
+                // if player A puts tile on FloorA
+                if (turn.equals("A") && (findPosition()[2] == 3)) {
+                    move = move + this.colorChar + "F";
+                }
+                // if player B puts tile on StorageB
+                if (turn.equals("B") && (findPosition()[2] == 4)){
+                    move = move + this.colorChar + ((yAxis - BSTORAGE_Y_LAYOUT) / TILE_SIZE - '0');
+                }
+                // if player B puts tile on FloorB
+                if (turn.equals("B") && (findPosition()[2] == 6)) {
+                    move = move + this.colorChar + "F";
+                }
+            }
+            //if draggable tile from factories
+            if (homeX > FACTORIES_X_LAYOUT && homeX < FACTORIES_X_LAYOUT + 12*TILE_SIZE &&
+            homeY > FACTORIES_Y_LAYOUT && homeY < FACTORIES_Y_LAYOUT + 2*TILE_SIZE) {
+                int fac = 0;
+                for (int i = 0; i < 5; i++) {
+                    if (homeX > FACTORIES_X_LAYOUT + i * 2.5 * TILE_SIZE &&
+                            homeX < FACTORIES_X_LAYOUT + i * 2.5 * TILE_SIZE + 2 * TILE_SIZE) {
+                        fac = i; // find which factory the draggable tile from
+                    }
+                }
+                move = move + (fac - '0');
+                // if player A puts tile on StorageA
+                if (turn.equals("A") && (findPosition()[2] == 1)) {
+                    move = move + this.colorChar + ((yAxis - ASTORAGE_Y_LAYOUT) / TILE_SIZE - '0');
+                }
+                // if player A puts tile on FloorA
+                if (turn.equals("A") && (findPosition()[2] == 3)) {
+                    move = move + this.colorChar + "F";
+                }
+                // if player B puts tile on StorageB
+                if (turn.equals("B") && (findPosition()[2] == 4)) {
+                    move = move + this.colorChar + ((yAxis - BSTORAGE_Y_LAYOUT) / TILE_SIZE - '0');
+                }
+                // if player B puts tile on FloorB
+                if (turn.equals("B") && (findPosition()[2] == 6)) {
+                    move = move + this.colorChar + "F";
+                }
+            }
+            //if the draggable tile is from StorageA
+            if (homeX > ASTORAGE_X_LAYOUT- 4*TILE_SIZE && homeX < ASTORAGE_X_LAYOUT + TILE_SIZE &&
+            homeY > ASTORAGE_Y_LAYOUT && homeY < ASTORAGE_Y_LAYOUT + 4* TILE_SIZE){
+                if (turn.equals("A") && findPosition()[2] == 2){
+                    int rowInStorage = (yAxis - ASTORAGE_Y_LAYOUT) / TILE_SIZE;
+                    int colInMosaic = (findPosition()[0]);
+                    move = move + (rowInStorage - '0') + (colInMosaic - '0');
+                }
+            }
+            //if the draggable tile is from StorageB
+            if (homeX > BSTORAGE_X_LAYOUT- 4*TILE_SIZE && homeX < BSTORAGE_X_LAYOUT + TILE_SIZE &&
+            homeY > BSTORAGE_Y_LAYOUT && homeY < BSTORAGE_Y_LAYOUT + 4*TILE_SIZE) {
+                if (turn.equals("B") && findPosition()[2] == 5) {
+                    int rowInStorage = (yAxis - BSTORAGE_Y_LAYOUT) / TILE_SIZE;
+                    int colInMosaic = (findPosition()[0]);
+                    move = move + (rowInStorage - '0') + (colInMosaic - '0');
+                }
+            }
+            return Azul.isMoveValid(gameState,move);
         }
 
         /**
