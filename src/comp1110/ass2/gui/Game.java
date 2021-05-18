@@ -264,7 +264,9 @@ public class Game extends Application {
                 mouseY = event.getSceneY();
                 event.consume();
             });
-            setOnMouseReleased(event -> {     // drag is complete
+            setOnMouseReleased(event -> {
+                mouseX = event.getSceneX();
+                mouseY = event.getSceneY(); // drag is complete
                 setOpacity(1.0);
                 snapToGrid();
             });
@@ -274,7 +276,7 @@ public class Game extends Application {
          * Snap the tile to the nearest grid position (if it is over the grid)
          */
         private void snapToGrid() {
-            if (onBoard() && (!alreadyOccupied()) &&  isValidMove()) {
+            if (isValidMove()) {
                 //TODO
                 System.out.println("1");
                 setPosition();
@@ -299,8 +301,8 @@ public class Game extends Application {
         */
         private int[] findPosition() {
             int[] xAndY = new int[3];
-            int x = (int) (getLayoutX() + TILE_SIZE / 2); // find the central x position of the draggable tile.
-            int y = (int) (getLayoutY() + TILE_SIZE / 2); // find the central y position of the draggable tile.
+            int x = (int) mouseX; // find the central x position of the draggable tile.
+            int y = (int) mouseY; // find the central y position of the draggable tile.
             //if draggable tile released in Mosaic A
             if (x > AMOSAIC_X_LAYOUT && x < AMOSAIC_X_LAYOUT + (5 * TILE_SIZE) &&
                     y > AMOSAIC_Y_LAYOUT && y < AMOSAIC_Y_LAYOUT + (5 * TILE_SIZE)) {
@@ -344,7 +346,7 @@ public class Game extends Application {
                     }
                 }
                 int yMax = 5;
-                while (YRight <= yMax) {
+                while (YRight < yMax) {
                     if (y > ASTORAGE_Y_LAYOUT + TILE_SIZE * YRight &&
                             y < ASTORAGE_Y_LAYOUT + TILE_SIZE * YRight + TILE_SIZE) {
                         xAndY[1] = ASTORAGE_Y_LAYOUT + TILE_SIZE * YRight;
@@ -365,7 +367,7 @@ public class Game extends Application {
                     }
                 }
                 int yMax = 5;
-                while (YRight <= yMax) {
+                while (YRight < yMax) {
                     if (y > BSTORAGE_Y_LAYOUT + TILE_SIZE * YRight &&
                             y < BSTORAGE_Y_LAYOUT + TILE_SIZE * YRight + TILE_SIZE) {
                         xAndY[1] = BSTORAGE_Y_LAYOUT + TILE_SIZE * YRight;
@@ -414,14 +416,17 @@ public class Game extends Application {
          * @return if it is valid to move a specific current destination cell from last destination cell.
          */
         private boolean isValidMove(){
+            System.out.println("0");
             String turn = Azul.whoseTurn(gameState);
             String move = "";
             int yAxis = findPosition()[1];
             //find whose turn
             if (turn.equals("A")){
                 move = move + "A";
+                System.out.println(move);
             }
             else{ move = move + "B";
+                System.out.println(move);
             }
             // add "C" if from Center
             if (homeX > CENTER_X_LAYOUT && homeX < CENTER_X_LAYOUT + 2* TILE_SIZE &&
