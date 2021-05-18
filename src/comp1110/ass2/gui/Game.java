@@ -485,7 +485,7 @@ public class Game extends Application {
                     move = move + "B" + fac + this.colorChar + "F";
                 }
             }
-            //if the draggable tile is from StorageA
+            //if the draggable tile is from StorageA to MosaicA
             if (homeX > ASTORAGE_X_LAYOUT- 4*TILE_SIZE && homeX < ASTORAGE_X_LAYOUT + TILE_SIZE &&
                     homeY > ASTORAGE_Y_LAYOUT && homeY < ASTORAGE_Y_LAYOUT + 4* TILE_SIZE){
                 if (turn.equals("A") && findPosition()[2] == 2){
