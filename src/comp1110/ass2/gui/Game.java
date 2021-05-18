@@ -226,7 +226,8 @@ public class Game extends Application {
         double homeY; // last y position of the tile on board
         double mouseX; // the last x position when dragging the tile on board
         double mouseY; // the last y position then dragging the tile on board
-
+        double layOutX;
+        double layOutY;
         /**
          * Construct a draggable tile
          *
@@ -249,6 +250,8 @@ public class Game extends Application {
             }
             setOnMousePressed(event -> {      // mouse press indicates begin of drag
                 setOpacity(0.6);
+                this.layOutX = getLayoutX();
+                this.layOutY = getLayoutY();
                 homeX = event.getSceneX();
                 homeY = event.getSceneY();
                 mouseX = event.getSceneX();
@@ -509,6 +512,8 @@ public class Game extends Application {
          */
         private void snapToHome(){
             //TODO
+            this.setLayoutX(this.layOutX);
+            this.setLayoutY(this.layOutY);
         }
 
         /**
