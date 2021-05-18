@@ -439,16 +439,17 @@ public class Game extends Application {
                 move = move + "C";
                 // if player A puts tile on StorageA
                 if (turn.equals("A") && (findPosition()[2] == 1)){
-                    move = move + this.colorChar + ((yAxis - ASTORAGE_Y_LAYOUT) / TILE_SIZE - '0');
+                    move = move + this.colorChar + ((int)((yAxis - ASTORAGE_Y_LAYOUT) / TILE_SIZE));
                     System.out.println(move);
                 }
                 // if player A puts tile on FloorA
                 if (turn.equals("A") && (findPosition()[2] == 3)) {
                     move = move + this.colorChar + "F";
+                    System.out.println(move);
                 }
                 // if player B puts tile on StorageB
                 if (turn.equals("B") && (findPosition()[2] == 4)){
-                    move = move + this.colorChar + ((yAxis - BSTORAGE_Y_LAYOUT) / TILE_SIZE - '0');
+                    move = move + this.colorChar + ((int)((yAxis - BSTORAGE_Y_LAYOUT) / TILE_SIZE - '0'));
                 }
                 // if player B puts tile on FloorB
                 if (turn.equals("B") && (findPosition()[2] == 6)) {
@@ -463,12 +464,12 @@ public class Game extends Application {
                     if (homeX > FACTORIES_X_LAYOUT + i * 2.5 * TILE_SIZE &&
                             homeX < FACTORIES_X_LAYOUT + i * 2.5 * TILE_SIZE + 2 * TILE_SIZE) {
                         fac = i; // find which factory the draggable tile from
+                        move = move + (fac);
                     }
                 }
-                move = move + (fac - '0');
                 // if player A puts tile on StorageA
                 if (turn.equals("A") && (findPosition()[2] == 1)) {
-                    move = move + this.colorChar + ((yAxis - ASTORAGE_Y_LAYOUT) / TILE_SIZE - '0');
+                    move = move + this.colorChar + ((int)((yAxis - ASTORAGE_Y_LAYOUT) / TILE_SIZE ));
                 }
                 // if player A puts tile on FloorA
                 if (turn.equals("A") && (findPosition()[2] == 3)) {
@@ -476,20 +477,22 @@ public class Game extends Application {
                 }
                 // if player B puts tile on StorageB
                 if (turn.equals("B") && (findPosition()[2] == 4)) {
-                    move = move + this.colorChar + ((yAxis - BSTORAGE_Y_LAYOUT) / TILE_SIZE - '0');
+                    move = move + this.colorChar + ((int)((yAxis - BSTORAGE_Y_LAYOUT) / TILE_SIZE));
                 }
                 // if player B puts tile on FloorB
                 if (turn.equals("B") && (findPosition()[2] == 6)) {
                     move = move + this.colorChar + "F";
                 }
+                System.out.println(move);
             }
             //if the draggable tile is from StorageA
             if (homeX > ASTORAGE_X_LAYOUT- 4*TILE_SIZE && homeX < ASTORAGE_X_LAYOUT + TILE_SIZE &&
             homeY > ASTORAGE_Y_LAYOUT && homeY < ASTORAGE_Y_LAYOUT + 4* TILE_SIZE){
                 if (turn.equals("A") && findPosition()[2] == 2){
-                    double rowInStorage = (yAxis - ASTORAGE_Y_LAYOUT) / TILE_SIZE;
-                    double colInMosaic = (findPosition()[0]);
-                    move = move + (rowInStorage - '0') + (colInMosaic - '0');
+                    double rowInStorage = (homeY - ASTORAGE_Y_LAYOUT) / TILE_SIZE;
+                    double colInMosaic = ((findPosition()[0]) - AMOSAIC_X_LAYOUT)/TILE_SIZE;
+                    move = move + ((int)rowInStorage) + ((int)colInMosaic);
+                    System.out.println(move);
                 }
             }
             //if the draggable tile is from StorageB
