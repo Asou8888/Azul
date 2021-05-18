@@ -300,10 +300,10 @@ public class Game extends Application {
          * @return the x and y axis of the tile slots on board, and the member the tile in
          * (StorageA = 1, MosaicA = 2, FloorA = 3,StorageB = 4, MosaicB = 5, FloorB = 6.)
         */
-        private int[] findPosition() {
-            int[] xAndY = new int[3];
-            int x = (int) mouseX; // find the central x position of the draggable tile.
-            int y = (int) mouseY; // find the central y position of the draggable tile.
+        private double[] findPosition() {
+            double[] xAndY = new double[3];
+            double x =  mouseX; // find the central x position of the draggable tile.
+            double y =  mouseY; // find the central y position of the draggable tile.
             //if draggable tile released in Mosaic A
             if (x > AMOSAIC_X_LAYOUT && x < AMOSAIC_X_LAYOUT + (5 * TILE_SIZE) &&
                     y > AMOSAIC_Y_LAYOUT && y < AMOSAIC_Y_LAYOUT + (5 * TILE_SIZE)) {
@@ -408,8 +408,8 @@ public class Game extends Application {
          * is already occupied, and false otherwise
          */
         private boolean alreadyOccupied() {
-            int x = findPosition()[0];
-            int y = findPosition()[1];
+            double x = findPosition()[0];
+            double y = findPosition()[1];
             return this.colorChar != NOT_PLACED;
         }
 
@@ -420,7 +420,7 @@ public class Game extends Application {
             System.out.println("0");
             String turn = Azul.whoseTurn(gameState);
             String move = "";
-            int yAxis = findPosition()[1];
+            double yAxis = findPosition()[1];
             //find whose turn
             if (turn.equals("A")){
                 move = move + "A";
@@ -483,8 +483,8 @@ public class Game extends Application {
             if (homeX > ASTORAGE_X_LAYOUT- 4*TILE_SIZE && homeX < ASTORAGE_X_LAYOUT + TILE_SIZE &&
             homeY > ASTORAGE_Y_LAYOUT && homeY < ASTORAGE_Y_LAYOUT + 4* TILE_SIZE){
                 if (turn.equals("A") && findPosition()[2] == 2){
-                    int rowInStorage = (yAxis - ASTORAGE_Y_LAYOUT) / TILE_SIZE;
-                    int colInMosaic = (findPosition()[0]);
+                    double rowInStorage = (yAxis - ASTORAGE_Y_LAYOUT) / TILE_SIZE;
+                    double colInMosaic = (findPosition()[0]);
                     move = move + (rowInStorage - '0') + (colInMosaic - '0');
                 }
             }
@@ -492,8 +492,8 @@ public class Game extends Application {
             if (homeX > BSTORAGE_X_LAYOUT- 4*TILE_SIZE && homeX < BSTORAGE_X_LAYOUT + TILE_SIZE &&
             homeY > BSTORAGE_Y_LAYOUT && homeY < BSTORAGE_Y_LAYOUT + 4*TILE_SIZE) {
                 if (turn.equals("B") && findPosition()[2] == 5) {
-                    int rowInStorage = (yAxis - BSTORAGE_Y_LAYOUT) / TILE_SIZE;
-                    int colInMosaic = (findPosition()[0]);
+                    double rowInStorage = (yAxis - BSTORAGE_Y_LAYOUT) / TILE_SIZE;
+                    double colInMosaic = (findPosition()[0]);
                     move = move + (rowInStorage - '0') + (colInMosaic - '0');
                 }
             }
