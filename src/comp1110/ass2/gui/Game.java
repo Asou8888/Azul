@@ -222,8 +222,8 @@ public class Game extends Application {
         }
     }
     class DraggableTile extends GTile {
-        int homeX; // last x position of the tile on board
-        int homeY; // last y position of the tile on board
+        double homeX; // last x position of the tile on board
+        double homeY; // last y position of the tile on board
         double mouseX; // the last x position when dragging the tile on board
         double mouseY; // the last y position then dragging the tile on board
 
@@ -237,8 +237,7 @@ public class Game extends Application {
             if (tile > 'f' || tile < 'a') {
                 throw new IllegalArgumentException("Bad tile: \"" + tile + "\"");
             }
-            setLayoutX(homeX); // Set the x-axis coordinate of the starting point
-            setLayoutY(homeY); //Set the y-axis coordinate of the starting point
+
             // set Color to draggable tile.
             switch (tile) {
                 case 'a' -> setFill(Color.BLUE); // blue tile
@@ -250,6 +249,8 @@ public class Game extends Application {
             }
             setOnMousePressed(event -> {      // mouse press indicates begin of drag
                 setOpacity(0.6);
+                homeX = event.getSceneX();
+                homeY = event.getSceneY();
                 mouseX = event.getSceneX();
                 mouseY = event.getSceneY();
             });
@@ -435,6 +436,7 @@ public class Game extends Application {
                 // if player A puts tile on StorageA
                 if (turn.equals("A") && (findPosition()[2] == 1)){
                     move = move + this.colorChar + ((yAxis - ASTORAGE_Y_LAYOUT) / TILE_SIZE - '0');
+                    System.out.println(move);
                 }
                 // if player A puts tile on FloorA
                 if (turn.equals("A") && (findPosition()[2] == 3)) {
