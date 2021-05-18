@@ -77,13 +77,13 @@ public class Game extends Application {
 
     private static final int AMOSAIC_X_LAYOUT = 280; // XIndex of mosaic of player A ,player B +600
     private static final int AMOSAIC_Y_LAYOUT = 227; // YIndex of mosaic/storage of A and B player
-    private static final int ASTORAGE_X_LAYOUT = 150; // XIndex of storage of A, B +600
+    private static final int ASTORAGE_X_LAYOUT = 198; // XIndex of storage of A, B +600
     private static final int ASTORAGE_Y_LAYOUT = 227; //YIndex of storage of A
     private static final int AFLOOR_X_LAYOUT = 120; //XIndex of floor of A, B+600
     private static final int AFLOOR_Y_LAYOUT = 550; //YIndex of floor of A and B
     private static final int BMOSAIC_X_LAYOUT = 940; // XIndex of mosaic of player B
     private static final int BMOSAIC_Y_LAYOUT = 227; // YIndex of mosaic of player B
-    private static final int BSTORAGE_X_LAYOUT = 810; // XIndex of storage of B
+    private static final int BSTORAGE_X_LAYOUT = 858; // XIndex of storage of B
     private static final int BSTORAGE_Y_LAYOUT = 227; //YIndex of storage of B
     private static final int BFLOOR_X_LAYOUT = 780; //XIndex of floor of B
     private static final int BFLOOR_Y_LAYOUT = 550; //YIndex of floor of B
@@ -268,7 +268,10 @@ public class Game extends Application {
             setOnMouseReleased(event -> {
                 mouseX = event.getSceneX();
                 mouseY = event.getSceneY(); // drag is complete
+                System.out.println("Release Position: " + mouseX + " " + mouseY);
                 setOpacity(1.0);
+                double[] pos = findPosition();
+                System.out.println(pos[0] + " " + pos[1] + " " + pos[2]);
                 snapToGrid();
             });
         }
@@ -358,6 +361,7 @@ public class Game extends Application {
             //if draggable tile released in Storage B
             if (x > BSTORAGE_X_LAYOUT - TILE_SIZE*4 && x < BSTORAGE_X_LAYOUT +TILE_SIZE &&
                     y > BSTORAGE_Y_LAYOUT && y < BSTORAGE_Y_LAYOUT+(5*TILE_SIZE)) {
+                System.out.println("In Storage B: Current Mouse Position: " + x + " " + y);
                 xAndY[2] = 5;
                 int xRight = BSTORAGE_X_LAYOUT + TILE_SIZE;
                 int YRight = 0;
@@ -602,7 +606,7 @@ public class Game extends Application {
             for (int i = 0; i < Storage.STORAGE_ROW_NUM; i++) {
                 for (int j = 0; j <= i; j++) {
                     GTile r = new GTile('a');
-                    r.setLayoutX((j - i + 1) * TILE_SIZE);
+                    r.setLayoutX((j - i) * TILE_SIZE);
                     r.setLayoutY(i * TILE_SIZE);
                     storages[m].getChildren().add(r);
                 }
@@ -815,7 +819,7 @@ public class Game extends Application {
             for (int j = 0; j <= i; j++) {
                 if (tilesInStorage[i][j] != null) {
                     DraggableTile gtile = new DraggableTile(tilesInStorage[i][j].getCode().charAt(0)); // create graphic tile.
-                    gtile.setLayoutX((j - i + 1) * TILE_SIZE);
+                    gtile.setLayoutX((j - i) * TILE_SIZE);
                     gtile.setLayoutY(i * TILE_SIZE);
                     this.storages[player.charAt(0) - 'A'].getChildren().add(gtile);
                 }
