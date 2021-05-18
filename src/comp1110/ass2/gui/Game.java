@@ -292,8 +292,8 @@ public class Game extends Application {
          * @return true if the tile is on the board
          */
         private boolean onBoard() {
-            return getLayoutX() > 0 && getLayoutX() < BOARD_WIDTH  &&
-                    getLayoutY() > 0 && getLayoutY() < BOARD_HEIGHT;
+            return mouseX > 0 && mouseX < BOARD_WIDTH  &&
+                    mouseY > 0 && mouseY < BOARD_HEIGHT;
         }
 
         /**
