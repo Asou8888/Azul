@@ -304,6 +304,7 @@ public class Game extends Application {
                 snapToHome();
                 // System.out.println(findMove());
             }
+            checkCompletion();
         }
 
         /**
@@ -419,18 +420,6 @@ public class Game extends Application {
             }
             return xAndY;
         }
-        /**
-         * a function to check whether the current destination cell
-         * is already occupied by another tile
-         *
-         * @return true if the destination cell for the current tile
-         * is already occupied, and false otherwise
-         */
-        private boolean alreadyOccupied() {
-            double x = findPosition()[0];
-            double y = findPosition()[1];
-            return this.colorChar != NOT_PLACED;
-        }
 
         /**
          * @return if it is valid to move a specific current destination cell from last destination cell.
@@ -499,7 +488,7 @@ public class Game extends Application {
             }
             //if the draggable tile is from StorageA to MosaicA
             if (homeX > ASTORAGE_X_LAYOUT- 4*TILE_SIZE && homeX < ASTORAGE_X_LAYOUT + TILE_SIZE &&
-                    homeY > ASTORAGE_Y_LAYOUT && homeY < ASTORAGE_Y_LAYOUT + 4* TILE_SIZE &&
+                    homeY > ASTORAGE_Y_LAYOUT && homeY < ASTORAGE_Y_LAYOUT + 5* TILE_SIZE &&
                     Azul.isCenterAndFactoriesEmpty(gameState)){
                 if (turn.equals("A") && findPosition()[2] == 2){
                     double rowInStorage = (homeY - ASTORAGE_Y_LAYOUT) / TILE_SIZE;
@@ -509,7 +498,7 @@ public class Game extends Application {
             }
             //if the draggable tile is from StorageB to MosaicB
             if (homeX > BSTORAGE_X_LAYOUT- 4*TILE_SIZE && homeX < BSTORAGE_X_LAYOUT + TILE_SIZE &&
-                    homeY > BSTORAGE_Y_LAYOUT && homeY < BSTORAGE_Y_LAYOUT + 4*TILE_SIZE &&
+                    homeY > BSTORAGE_Y_LAYOUT && homeY < BSTORAGE_Y_LAYOUT + 5*TILE_SIZE &&
                     Azul.isCenterAndFactoriesEmpty(gameState)) {
                 if (turn.equals("B") && findPosition()[2] == 5) {
                     double rowInStorage = (yAxis - BSTORAGE_Y_LAYOUT) / TILE_SIZE;
@@ -732,15 +721,15 @@ public class Game extends Application {
 
     }
 
-
-
-
-
     /**
      * Check game completion and update states.
      */
     private void checkCompletion() {
-        // TODO
+        if (Azul.isGameEnd(gameState)){ //if the game is end
+            showCompletion(); // show completion message
+            resetPieces(); // put all tiles back to original position
+            makeControls(); //create a control for allowing restart
+        }
     }
 
     /**

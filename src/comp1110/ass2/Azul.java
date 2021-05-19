@@ -2210,7 +2210,8 @@ public class Azul {
      * @param gameState
      * @return return true if there is one row of mosaic in A or B.
      */
-    public boolean isGameEnd (String[] gameState) {
+    public
+    static boolean isGameEnd (String[] gameState) {
         HashMap<String, String[]> splitPlayerState = splitPlayerState(gameState);
         String mosaicA = splitPlayerState.get("A")[1]; // mosaic for playerA
         String mosaicB = splitPlayerState.get("B")[1]; // mosaic for playerB
