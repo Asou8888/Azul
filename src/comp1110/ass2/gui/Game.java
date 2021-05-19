@@ -287,6 +287,11 @@ public class Game extends Application {
                 //TODO
                 System.out.println("1");
                 updateGameState();
+                updateCenterView();
+                updateScoresView();
+                updateStorageView();
+                updateMosaicView();
+                updateFloorView();
             } else {
                 System.out.println("2");
                 snapToHome();
@@ -487,16 +492,18 @@ public class Game extends Application {
             }
             //if the draggable tile is from StorageA to MosaicA
             if (homeX > ASTORAGE_X_LAYOUT- 4*TILE_SIZE && homeX < ASTORAGE_X_LAYOUT + TILE_SIZE &&
-                    homeY > ASTORAGE_Y_LAYOUT && homeY < ASTORAGE_Y_LAYOUT + 4* TILE_SIZE){
+                    homeY > ASTORAGE_Y_LAYOUT && homeY < ASTORAGE_Y_LAYOUT + 4* TILE_SIZE &&
+                    isFactoryAndCenterEmpty()){
                 if (turn.equals("A") && findPosition()[2] == 2){
                     double rowInStorage = (homeY - ASTORAGE_Y_LAYOUT) / TILE_SIZE;
                     double colInMosaic = ((findPosition()[0]) - AMOSAIC_X_LAYOUT)/TILE_SIZE;
                     move = move + "A" + ((int)rowInStorage) + ((int)colInMosaic);
                 }
             }
-            //if the draggable tile is from StorageB
+            //if the draggable tile is from StorageB to MosaicB
             if (homeX > BSTORAGE_X_LAYOUT- 4*TILE_SIZE && homeX < BSTORAGE_X_LAYOUT + TILE_SIZE &&
-                    homeY > BSTORAGE_Y_LAYOUT && homeY < BSTORAGE_Y_LAYOUT + 4*TILE_SIZE) {
+                    homeY > BSTORAGE_Y_LAYOUT && homeY < BSTORAGE_Y_LAYOUT + 4*TILE_SIZE &&
+                    isFactoryAndCenterEmpty()) {
                 if (turn.equals("B") && findPosition()[2] == 5) {
                     double rowInStorage = (yAxis - BSTORAGE_Y_LAYOUT) / TILE_SIZE;
                     double colInMosaic = ((findPosition()[0]) - BMOSAIC_X_LAYOUT)/TILE_SIZE;
@@ -504,6 +511,18 @@ public class Game extends Application {
                 }
             }
             return move;
+        }
+
+        private boolean isFactoryAndCenterEmpty() {
+            String game0 = gameState[0];
+            int start = game0.indexOf("F");
+            int end = game0.indexOf("C");
+            String fac = game0.substring(start,end);
+            String game01 = game0.substring(1);
+            int start1 = game01.indexOf("C");
+            int end1 = game01.indexOf("B");
+            String cen = game01.substring(start1,end1);
+            return (fac.equals("F") &&cen.equals("C"));
         }
 
 
