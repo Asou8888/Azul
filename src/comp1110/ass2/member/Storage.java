@@ -324,6 +324,11 @@ public class Storage {
         }
     }
 
+    public boolean NoFullRow(){
+         if (isRowFull(0) || isRowFull(1) || isRowFull(2) || isRowFull(3) || isRowFull(4)) return false;
+         else return true;
+    }
+
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder("Storage: \n");

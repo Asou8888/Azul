@@ -286,7 +286,7 @@ public class Game extends Application {
                 //TODO
                 updateGameState();
 
-                if(Azul.isCenterAndFactoriesEmpty(gameState)){
+                if(Azul.isCenterAndFactoriesEmpty(gameState) && NoTilingMove()){
                     gameState = Azul.nextRound(gameState);
                 }
                 System.out.println("Valid Move");
@@ -784,6 +784,15 @@ public class Game extends Application {
         this.gameState = new String[]{
                 startSharedState, startPlayerState
         };
+    }
+
+    private boolean NoTilingMove(){
+        HashMap<String, String[]> playerState = Azul.splitPlayerState(this.gameState);
+        String storageAString = playerState.get(String.valueOf('A'))[2];
+        String storageBString = playerState.get(String.valueOf('B'))[2];
+        Storage storageA = new Storage(storageAString);
+        Storage storageB = new Storage(storageBString);
+        return (storageA.NoFullRow() && storageB.NoFullRow());
     }
 
     /**
