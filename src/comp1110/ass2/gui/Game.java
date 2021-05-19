@@ -298,6 +298,7 @@ public class Game extends Application {
                 updateMosaicView();
                 updateFloorView();
                 updateBagView();
+
             } else {
                 System.out.println("Not valid Move.");
                 snapToHome();
