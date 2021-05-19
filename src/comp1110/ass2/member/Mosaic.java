@@ -127,6 +127,7 @@ public class Mosaic {
     }
 
 
+
     /**
      * Calculate the current score in the mosaic.(This will be calculated at the end of each round)
      * @return the current score in the mosaic

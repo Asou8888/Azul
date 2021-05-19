@@ -284,14 +284,20 @@ public class Game extends Application {
         private void snapToGrid() {
             if (isValidMove()) {
                 //TODO
-                System.out.println("Valid Move");
                 updateGameState();
+
+                if(Azul.isCenterAndFactoriesEmpty(gameState)){
+                    gameState = Azul.nextRound(gameState);
+                }
+                System.out.println("Valid Move");
+
                 updateFactoryView();
                 updateCenterView();
                 updateScoresView();
                 updateStorageView();
                 updateMosaicView();
                 updateFloorView();
+                updateBagView();
             } else {
                 System.out.println("Not valid Move.");
                 snapToHome();
@@ -957,19 +963,28 @@ public class Game extends Application {
 
     private void updateMosaicView() {
         HashMap<String,String[]> map = Azul.splitPlayerState(gameState);
-        char player = gameState[0].charAt(0);
-        String mosaicString = map.get(String.valueOf(player))[1];
-        GTile[] tiles = new GTile[NewMosaic.MOSAIC_WIDTH];
-        int cnt = 0;
-        for (int i = 1; i < mosaicString.length(); i = i + 3) {
-            tiles[cnt] = new DraggableTile(mosaicString.charAt(i));
-            int row = mosaicString.charAt(i+1) -'0';
-            int column = mosaicString.charAt(i+2) -'0';
-            tiles[cnt].setLayoutX((column)*TILE_SIZE);
-            tiles[cnt].setLayoutY(row*TILE_SIZE);
-            if(player =='A') mosaics[0].getChildren().add(tiles[cnt]);
-            else mosaics[1].getChildren().add(tiles[cnt]);
-            cnt++;
+        for (int i = 0; i < PLAYER_NUM; i++) {
+            this.mosaics[i].getChildren().clear(); // clear
+            char playerChar = (char) ('A' + i);
+            String mosaicString = map.get(String.valueOf(playerChar))[1];
+            NewMosaic m = new NewMosaic(mosaicString);
+            Tile[][] tilesInStorage = m.getTiles();
+            for (int row = 0; row < NewMosaic.MOSAIC_WIDTH; row++) {
+                for (int col = 0; col < NewMosaic.MOSAIC_WIDTH; col++) {
+                    if (tilesInStorage[row][col] == null) {
+                        GTile gtile = new GTile(NOT_PLACED);
+                        gtile.setLayoutX(col* TILE_SIZE);
+                        gtile.setLayoutY(row * TILE_SIZE);
+                        this.mosaics[i].getChildren().add(gtile); // add to group
+                    } else {
+
+                        DraggableTile draggableTile = new DraggableTile(tilesInStorage[row][col].getCode().charAt(0));
+                        draggableTile.setLayoutX(col * TILE_SIZE);
+                        draggableTile.setLayoutY(row * TILE_SIZE);
+                        this.mosaics[i].getChildren().add(draggableTile);
+                    }
+                }
+            }
         }
     }
 

@@ -361,6 +361,10 @@ public class NewMosaic {
         }
     }
 
+    public Tile[][] getTiles(){
+        return this.tiles;
+    }
+
     public Tile[][] move(char color, int row, int column) {
         Tile a = new Tile(color);
         tiles[row][column] = a;
