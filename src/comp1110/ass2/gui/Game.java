@@ -827,6 +827,10 @@ public class Game extends Application {
      */
     private void updateStorageView() {
         // TODO
+        // clear the previous view.
+        for (Group storage: this.storages) {
+            
+        }
         String player = Azul.whoseTurn(gameState); // get whose turn
         String[] playerState = Azul.splitPlayerState(gameState).get(player); // get the state of this player.
         String storage = playerState[2]; // get the storage state from the playerState.
