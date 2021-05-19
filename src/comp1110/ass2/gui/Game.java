@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
@@ -23,10 +24,26 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 import java.awt.*;
+import javafx.scene.image.Image;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Game extends Application {
+
+    private final Group board = new Group();
+    /* where to find media assets */
+    private static final String URI_BASE = "../assets/"; //art material
+    private static final String BASEBOARD_URI = Game.class.getResource(URI_BASE + "pic.png").toString();
+    /*  [Reference: https://gitlab.cecs.anu.edu.au/comp1110/dinosaurs/-/blob/master/src/comp1110/ass1/gui/Game.java#L388]
+     *  Audio set up
+     */
+
+    private static final String LOOP_URI = Game.class.getResource(URI_BASE + "Azul.wav").toString();
+    private AudioClip loop;
+
+    /*  Game Variable  */
+    private boolean loopPlaying = false;
+
     /*  board layout */
     private static final int BOARD_WIDTH = 1200;
     private static final int BOARD_HEIGHT = 700;
@@ -138,16 +155,6 @@ public class Game extends Application {
         dropshadow.setOffsetY(2.0);
         dropshadow.setColor(Color.color(0, 0, 0, 0.4));
     }
-
-    /*  [Reference: https://gitlab.cecs.anu.edu.au/comp1110/dinosaurs/-/blob/master/src/comp1110/ass1/gui/Game.java#L388]
-     *  Audio set up
-     */
-    private static final String URI_BASE = "../assets/";
-    private static final String LOOP_URI = Game.class.getResource(URI_BASE + "Azul.wav").toString();
-    private AudioClip loop;
-
-    /*  Game Variable  */
-    private boolean loopPlaying = false;
 
     /**
      * Set up the sound loop.
@@ -1062,6 +1069,24 @@ public class Game extends Application {
         }
     }
 
+    /**
+     * Set up the group that represents the places that make the board
+     */
+    private void makeBoard() {
+        board.getChildren().clear();
+
+        ImageView baseboard = new ImageView();
+        baseboard.setImage(new Image(BASEBOARD_URI) {
+        });
+        root.getChildren().add(baseboard);
+        baseboard.setFitWidth(BOARD_WIDTH);
+        baseboard.setFitHeight(BOARD_HEIGHT);
+        baseboard.setLayoutX(0);
+        baseboard.setLayoutY(0);
+        board.getChildren().add(baseboard);
+
+        board.toBack();
+    }
 
 
 
@@ -1094,9 +1119,14 @@ public class Game extends Application {
         addBagToRoot();
         Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
         root.getChildren().add(gTiles);
+
         root.getChildren().add(controls);
         setUpSoundLoop();
 
+        root.getChildren().add(board);
+        // setUpHandlers(scene);
+        // setUpSoundLoop();
+        makeBoard();
         makeControls();
         newGame();
         stage.setScene(scene);
