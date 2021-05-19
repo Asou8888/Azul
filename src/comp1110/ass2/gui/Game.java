@@ -868,8 +868,21 @@ public class Game extends Application {
                 cnt++;
             }
         }
+    }
 
-
+    /**
+     * update the factory view, according to current gameState.
+     */
+    private void updateFactoryView() {
+        // TODO test
+        String[] sharedState = Azul.splitSharedState(this.gameState); // split the current game state.
+        String factoryState = sharedState[1]; // get the factory state from the splitted game state.
+        Factories facs = new Factories(factoryState);
+        String[] fac = facs.splitFactoryState(factoryState);
+        for (int i = 0; i < fac.length; i++) {
+            this.factories[i].getChildren().clear(); // clear the origin factories.
+            updateFactoryView(fac[i], i); // update i-th factory view.
+        }
     }
 
     /**

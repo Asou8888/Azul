@@ -2046,11 +2046,29 @@ public class Azul {
     }
 
     /**
+     * Find out whether the center and factory are empty.
+     *     If they are empty, then only tileMoves are available.
+     * @param gameState the current game state.
+     * @return whether the center and factory are empty.
+     */
+    private static boolean isCenterAndFactoriesEmpty(String[] gameState) {
+        String[] sharedState = splitSharedState(gameState);
+        //  check whether all factories are empty
+        String factories = sharedState[1]; // the factories state is in the 2nd String.
+        Factories fac = new Factories(factories); // decode factories.
+        //  check whether center is empty.
+        String center = sharedState[2]; // the center state is in the 3rd String.
+        Center cen = new Center(center); // decode center.
+        return fac.isEmpty() && cen.isEmpty();
+    }
+
+    /**
      * Generate all the possible moves.
      * @param gameState current game state
      * @return the list of possible moves.
      */
     public static ArrayList<String> generateMoves(String[] gameState) {
+        // TODO: For Task 15: need to return all the possible moves.
         String[] sharedState = splitSharedState(gameState); // split the shared state
         HashMap<String, String[]> playerStateMap = splitPlayerState(gameState); // split the player state
         String player = whoseTurn(gameState); // get whose turn.
