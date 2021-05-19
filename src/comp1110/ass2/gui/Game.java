@@ -5,6 +5,7 @@ import comp1110.ass2.member.*;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -273,8 +274,6 @@ public class Game extends Application {
                 mouseY = event.getSceneY(); // drag is complete
                 System.out.println("Release Position: " + mouseX + " " + mouseY);
                 setOpacity(1.0);
-                double[] pos = findPosition();
-                System.out.println(pos[0] + " " + pos[1] + " " + pos[2]);
                 snapToGrid();
             });
         }
@@ -285,17 +284,18 @@ public class Game extends Application {
         private void snapToGrid() {
             if (isValidMove()) {
                 //TODO
-                System.out.println("1");
+                System.out.println("Valid Move");
                 updateGameState();
+                updateFactoryView();
                 updateCenterView();
                 updateScoresView();
                 updateStorageView();
                 updateMosaicView();
                 updateFloorView();
             } else {
-                System.out.println("2");
+                System.out.println("Not valid Move.");
                 snapToHome();
-                System.out.println(findMove());
+                // System.out.println(findMove());
             }
         }
 
@@ -493,7 +493,7 @@ public class Game extends Application {
             //if the draggable tile is from StorageA to MosaicA
             if (homeX > ASTORAGE_X_LAYOUT- 4*TILE_SIZE && homeX < ASTORAGE_X_LAYOUT + TILE_SIZE &&
                     homeY > ASTORAGE_Y_LAYOUT && homeY < ASTORAGE_Y_LAYOUT + 4* TILE_SIZE &&
-                    isFactoryAndCenterEmpty()){
+                    Azul.isCenterAndFactoriesEmpty(gameState)){
                 if (turn.equals("A") && findPosition()[2] == 2){
                     double rowInStorage = (homeY - ASTORAGE_Y_LAYOUT) / TILE_SIZE;
                     double colInMosaic = ((findPosition()[0]) - AMOSAIC_X_LAYOUT)/TILE_SIZE;
@@ -503,7 +503,7 @@ public class Game extends Application {
             //if the draggable tile is from StorageB to MosaicB
             if (homeX > BSTORAGE_X_LAYOUT- 4*TILE_SIZE && homeX < BSTORAGE_X_LAYOUT + TILE_SIZE &&
                     homeY > BSTORAGE_Y_LAYOUT && homeY < BSTORAGE_Y_LAYOUT + 4*TILE_SIZE &&
-                    isFactoryAndCenterEmpty()) {
+                    Azul.isCenterAndFactoriesEmpty(gameState)) {
                 if (turn.equals("B") && findPosition()[2] == 5) {
                     double rowInStorage = (yAxis - BSTORAGE_Y_LAYOUT) / TILE_SIZE;
                     double colInMosaic = ((findPosition()[0]) - BMOSAIC_X_LAYOUT)/TILE_SIZE;
@@ -512,19 +512,6 @@ public class Game extends Application {
             }
             return move;
         }
-
-        private boolean isFactoryAndCenterEmpty() {
-            String game0 = gameState[0];
-            int start = game0.indexOf("F");
-            int end = game0.indexOf("C");
-            String fac = game0.substring(start,end);
-            String game01 = game0.substring(1);
-            int start1 = game01.indexOf("C");
-            int end1 = game01.indexOf("B");
-            String cen = game01.substring(start1,end1);
-            return (fac.equals("F") &&cen.equals("C"));
-        }
-
 
         /**
          * set the tile back to last valid position before mouse pressing.
@@ -607,8 +594,8 @@ public class Game extends Application {
         mosaics[0].setLayoutX(AMOSAIC_X_LAYOUT);
         mosaics[0].setLayoutY(AMOSAIC_Y_LAYOUT);
 
-        mosaics[1].setLayoutX(AMOSAIC_X_LAYOUT+660);
-        mosaics[1].setLayoutY(AMOSAIC_Y_LAYOUT);
+        mosaics[1].setLayoutX(BMOSAIC_X_LAYOUT);
+        mosaics[1].setLayoutY(BMOSAIC_Y_LAYOUT);
 
         for(Group m:mosaics){
             root.getChildren().add(m);
@@ -631,10 +618,10 @@ public class Game extends Application {
         }
         //set location of storages
         storages[0].setLayoutX(ASTORAGE_X_LAYOUT);
-        storages[0].setLayoutY(AMOSAIC_Y_LAYOUT);
+        storages[0].setLayoutY(ASTORAGE_Y_LAYOUT);
 
-        storages[1].setLayoutX(ASTORAGE_X_LAYOUT+660);
-        storages[1].setLayoutY(AMOSAIC_Y_LAYOUT);
+        storages[1].setLayoutX(BSTORAGE_X_LAYOUT);
+        storages[1].setLayoutY(BSTORAGE_Y_LAYOUT);
 
         for(Group s:storages){
             root.getChildren().add(s);
@@ -658,8 +645,8 @@ public class Game extends Application {
         floor[0].setLayoutX(AFLOOR_X_LAYOUT);
         floor[0].setLayoutY(AFLOOR_Y_LAYOUT);
 
-        floor[1].setLayoutX(AFLOOR_X_LAYOUT+600);
-        floor[1].setLayoutY(AFLOOR_Y_LAYOUT);
+        floor[1].setLayoutX(BFLOOR_X_LAYOUT);
+        floor[1].setLayoutY(BFLOOR_Y_LAYOUT);
 
         for(Group f:floor){
             root.getChildren().add(f);
@@ -826,23 +813,31 @@ public class Game extends Application {
      * update the storage view, according to the current game state.
      */
     private void updateStorageView() {
+        System.out.println("update Storage View.....\n" + "Current state: {" + this.gameState[0] + ", " + this.gameState[1] + "}");
         // TODO
-        // clear the previous view.
-        for (Group storage: this.storages) {
-            
-        }
-        String player = Azul.whoseTurn(gameState); // get whose turn
-        String[] playerState = Azul.splitPlayerState(gameState).get(player); // get the state of this player.
-        String storage = playerState[2]; // get the storage state from the playerState.
-        Storage s = new Storage(storage);
-        Tile[][] tilesInStorage = s.getTiles(); // get tiles from storage.
-        for (int i = 0; i < Storage.STORAGE_ROW_NUM; i++) {
-            for (int j = 0; j <= i; j++) {
-                if (tilesInStorage[i][j] != null) {
-                    DraggableTile gtile = new DraggableTile(tilesInStorage[i][j].getCode().charAt(0)); // create graphic tile.
-                    gtile.setLayoutX((j - i) * TILE_SIZE);
-                    gtile.setLayoutY(i * TILE_SIZE);
-                    this.storages[player.charAt(0) - 'A'].getChildren().add(gtile);
+        HashMap<String, String[]> playerState = Azul.splitPlayerState(this.gameState);
+        for (int i = 0; i < PLAYER_NUM; i++) {
+            this.storages[i].getChildren().clear(); // clear the previous view.
+            char playerChar = (char) ('A' + i);
+            String storage = playerState.get(String.valueOf(playerChar))[2]; // get the storage state from player state. 'A' + i equals to the current player code.('A' - 'D')
+            System.out.println("    Update Storage of player " + playerChar + "...");
+            Storage s = new Storage(storage);
+            Tile[][] tilesInStorage = s.getTiles(); // get tiles from storage.
+            for (int row = 0; row < Storage.STORAGE_ROW_NUM; row++) {
+                for (int col = 0; col <= row; col++) {
+                    if (tilesInStorage[row][col] == null) {
+                        // System.out.println("        position(" + row + "," + col + ") is null");
+                        GTile gtile = new GTile(NOT_PLACED);
+                        gtile.setLayoutX((col - row) * TILE_SIZE);
+                        gtile.setLayoutY(row * TILE_SIZE);
+                        this.storages[i].getChildren().add(gtile); // add to group
+                    } else {
+                        // System.out.println("        position(" + row + "," + col + ") is " + tilesInStorage[row][col].getCode().charAt(0));
+                        DraggableTile draggableTile = new DraggableTile(tilesInStorage[row][col].getCode().charAt(0)); // create draggable color tile.
+                        draggableTile.setLayoutX((col - row) * TILE_SIZE);
+                        draggableTile.setLayoutY(row * TILE_SIZE);
+                        this.storages[i].getChildren().add(draggableTile); // add to group
+                    }
                 }
             }
         }
@@ -853,6 +848,19 @@ public class Game extends Application {
      */
     private void updateCenterView() {
         // TODO test
+        System.out.println("Updating center view......");
+        /*  Clear previous draggable tile and update  */
+        this.center.getChildren().clear(); // clear all.
+        for (int i = 0; i < Center.CENTER_HEIGHT; i++) {
+            for (int j = 0; j < Center.CENTER_WIDTH; j++) {
+                GTile gtile = new GTile(NOT_PLACED);
+                gtile.setLayoutX(j * TILE_SIZE);
+                gtile.setLayoutY(i * TILE_SIZE);
+                this.center.getChildren().add(gtile);
+            }
+        }
+        /* --- Clear finished  ---*/
+        /*  Add new graphic tiles to the center  */
         int cnt = 0; // the counter of draggable tiles.
         String center = Azul.splitSharedState(this.gameState)[2]; // split game state.
         System.out.println("Current Center: " + center); // print out center string in terminal.
@@ -883,8 +891,8 @@ public class Game extends Application {
         String factoryState = sharedState[1]; // get the factory state from the splitted game state.
         Factories facs = new Factories(factoryState);
         String[] fac = facs.splitFactoryState(factoryState);
+        // TODO debug
         for (int i = 0; i < fac.length; i++) {
-            this.factories[i].getChildren().clear(); // clear the origin factories.
             updateFactoryView(fac[i], i); // update i-th factory view.
         }
     }
@@ -899,10 +907,12 @@ public class Game extends Application {
         this.factories[index].getChildren().clear();
         GTile[] tiles = new GTile[Factory.MAX_FACTORY_TILES_NUM];
         int cnt = 0; // the counter of draggable tiles.
-        for (int i = 0; i < factory.length(); i++) {
-            // first character of factory would be a digit, so skip it.
-            tiles[cnt] = new DraggableTile(factory.charAt(i)); // create a draggable tile for each character.
-            cnt++;
+        if (factory != null && !factory.equals("")) {
+            for (int i = 0; i < factory.length(); i++) {
+                // first character of factory would be a digit, so skip it.
+                tiles[cnt] = new DraggableTile(factory.charAt(i)); // create a draggable tile for each character.
+                cnt++;
+            }
         }
         for (int i = cnt; i < tiles.length; i++) {
             // fill up the empty space in factory.
@@ -920,21 +930,28 @@ public class Game extends Application {
     }
 
     private void updateFloorView() {
-        HashMap<String,String[]> map = Azul.splitPlayerState(gameState);
-        char player = gameState[0].charAt(0);
-        String floorString = map.get(String.valueOf(player))[3];
-        GTile[] tiles = new GTile[Floor.FLOOR_WIDTH];
-        int cnt = 0;
-        for (int i = 1; i < floorString.length(); i++) {
-            // first character of factory would be a digit, so skip it.
-            tiles[cnt] = new DraggableTile(floorString.charAt(i)); // create a draggable tile for each character.
-            cnt++;
-        }
-        for(int i = 0;i < floorString.length()-1;i++){
-            tiles[i].setLayoutX(i*TILE_SIZE);
-            tiles[i].setLayoutY(0);
-            if(player =='A') floor[0].getChildren().add(tiles[i]);
-            else floor[1].getChildren().add(tiles[i]);
+        System.out.println("Updating Floor View......");
+        HashMap<String, String[]> playerState = Azul.splitPlayerState(this.gameState); // get the player state.
+        for (int i = 0; i < PLAYER_NUM; i++) {
+            /*  Clear previous view  */
+            this.floor[i].getChildren().clear(); // clear the i-th floor.
+            char playerChar = (char)('A' + i); // get the player char ('A' or 'B')
+
+            String floor = playerState.get(String.valueOf(playerChar))[3]; // get the floor state
+            GTile[] tiles = new GTile[Floor.FLOOR_WIDTH];
+            int cnt = 0;
+            for (int j = 1; j < floor.length(); j++) {
+                tiles[cnt] = new DraggableTile(floor.charAt(j)); // create draggable tile for each character
+                cnt++;
+            }
+            for (int j = cnt; j < Floor.FLOOR_WIDTH; j++) {
+                tiles[j] = new GTile(NOT_PLACED);
+            }
+            for (int j = 0; j < tiles.length; j++) {
+                tiles[j].setLayoutX(j * TILE_SIZE);
+                tiles[j].setLayoutY(0);
+                this.floor[i].getChildren().add(tiles[j]);
+            }
         }
     }
 
@@ -992,7 +1009,7 @@ public class Game extends Application {
         resetGameState(); // reset the game state.
         refillFactories(); // refill the factories.
         updateCenterView(); // update the center view.
-        updateStorageView(); // update the storage view.
+        // updateStorageView(); // update the storage view.
         updateScoresView(); // update the score view.
     }
 

@@ -135,7 +135,7 @@ public class Storage {
      * decode the state String(storage) to the storage class
      * Author: Ruizheng Shen, Date: 2021.4.27
      *
-     * @param storage
+     * @param storage storage state(String)
      */
     public void decode(String storage) {
         // TODO: test
@@ -149,8 +149,6 @@ public class Storage {
             for (int j = 0; j < num; j++) {
                 Tile t = new Tile(colorChar);
                 t.setBelong(TileBelonging.Storage);
-                t.setOnMouseClicked(mouseEvent -> t.setOpacity(0)
-                );
                 // newTiles[j] = new Tile(colorChar); // initialize the tile with colorChar.
                 newTiles[j] = t;
             }

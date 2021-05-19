@@ -16,12 +16,6 @@ public class Floor {
     public static final int FLOOR_WIDTH = 7;
     public static final int[] lostPoint = {-1, -1, -2, -2, -2, -3, -3};
 
-    /* Members of Floor */
-    private Group floorView = new Group();
-    int xIndex;
-    int yIndex;
-
-
 
     public Floor() {
         this.tiles = new Tile[FLOOR_WIDTH];
@@ -31,42 +25,12 @@ public class Floor {
         this.tiles = tiles;
     }
 
-    private void createView() {
-        // TODO
-        for (int i = 0; i < FLOOR_WIDTH; i++) {
-            this.floorView.getChildren().add(new Tile(' ', i * Tile.TILE_WIDTH, 0));
-        }
-    }
-    public void setLocation(int xIndex, int yIndex) {
-        // TODO
-        this.xIndex = xIndex;
-        this.yIndex = yIndex;
-        this.floorView.setLayoutX(this.xIndex);
-        this.floorView.setLayoutY(this.yIndex);
-    }
-    public void updateFloorView() {
-        // TODO
-        this.floorView.getChildren().clear();
-        for (int i = 0; i < FLOOR_WIDTH; i++) {
-            if (this.tiles[i] != (Tile) null) {
-                this.floorView.getChildren().add(new Tile(tiles[i].getTileType(), i * Tile.TILE_WIDTH, 0));
-            } else {
-                this.floorView.getChildren().add(new Tile(' ', i * Tile.TILE_WIDTH, 0));
-            }
-        }
-    }
-    public Group getFloorView() {
-        updateFloorView();
-        return this.floorView;
-    }
-
     /**
      * return the code of the current state of floor.
      *
      * @return the String code of the current floor.
      */
     public String getCode() {
-        // TODO: Think about should we do anything else in this method.
         return encode();
     }
 
@@ -92,7 +56,6 @@ public class Floor {
      * @return the code
      */
     private String encode() {
-        // TODO: implements the encode method.
             StringBuilder code = new StringBuilder("F"); //The string starts at "F".
             for (int i = 0; i < FLOOR_WIDTH; i++) {
                 String floor = "";
@@ -115,7 +78,6 @@ public class Floor {
          * @return the current score in the floor
          */
     public int score() {
-        // TODO: implements the score method.
         int index = 0;  // set an index
         for (Tile x : tiles) {
             if (x != null) {    // find out amount of tiles in Floor
@@ -158,9 +120,6 @@ public class Floor {
                 char tile  = floor.charAt(i);
                 Tile t = new Tile(tile);
                 t.setBelong(TileBelonging.Floor);
-                t.setOnMouseClicked(e -> {
-                    t.setOpacity(0);
-                    });
                 newTiles[i-1] = t;
             }
             placeTile(newTiles);

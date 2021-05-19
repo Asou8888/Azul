@@ -2051,7 +2051,7 @@ public class Azul {
      * @param gameState the current game state.
      * @return whether the center and factory are empty.
      */
-    private static boolean isCenterAndFactoriesEmpty(String[] gameState) {
+    public static boolean isCenterAndFactoriesEmpty(String[] gameState) {
         String[] sharedState = splitSharedState(gameState);
         //  check whether all factories are empty
         String factories = sharedState[1]; // the factories state is in the 2nd String.
