@@ -2204,7 +2204,21 @@ public class Azul {
         }
     }
 
-
+    /**
+     *
+     * @param gameState
+     * @return return true if there is one row of mosaic in A or B.
+     */
+    public boolean isGameEnd (String[] gameState) {
+        HashMap<String, String[]> splitPlayerState = splitPlayerState(gameState);
+        String mosaicA = splitPlayerState.get("A")[1]; // mosaic for playerA
+        String mosaicB = splitPlayerState.get("B")[1]; // mosaic for playerB
+        NewMosaic newMosaicA = new NewMosaic();
+        newMosaicA.decode(mosaicA);
+        NewMosaic newMosaicB = new NewMosaic();
+        newMosaicB.decode(mosaicB);
+        return ((!newMosaicA.isRowFull()) && (!newMosaicB.isRowFull())); //return true if there is no row that is full.
+    }
     public static void main(String[] args) {
         /*
         // Test case for task 9
