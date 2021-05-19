@@ -16,6 +16,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
@@ -107,6 +108,16 @@ public class Game extends Application {
     private static final int BAG_LABEL_Y_LAYOUT = 100;
     private static final int BAG_X_LAYOUT = 20;
     private static final int BAG_Y_LAYOUT = 70;
+
+    /*  Completion Window  */
+    private static final int BOX_WIDTH = 744;
+    private static final int BOX_HEIGHT = 434;
+    private static final Pane completionBox = new Pane(); // giving mark information when the game ends.
+    private static final Label completionLabel = new Label("Congratulation!"); // "Congratulation" Label
+    private static final Label[] completionPlayersLabel = new Label[PLAYER_NUM]; // the label for players.
+    private static final TextField[] completionPlayersScoreBoard = new TextField[PLAYER_NUM]; // the score board for players.
+    private static final HBox[] completionHbox = new HBox[PLAYER_NUM]; // horizontal box for player label and score board.
+    private static final VBox completionVbox = new VBox(); // vertical box for players.
     Text completionText = new Text("Well Done");
 
 
@@ -131,13 +142,9 @@ public class Game extends Application {
     /*  [Reference: https://gitlab.cecs.anu.edu.au/comp1110/dinosaurs/-/blob/master/src/comp1110/ass1/gui/Game.java#L388]
      *  Audio set up
      */
-
-    /* FIXME
     private static final String URI_BASE = "../assets/";
-    private static final String LOOP_URI = Game.class.getResource(URI_BASE + "Song for a Poet(Acoustic) 1644.wav").toString();
+    private static final String LOOP_URI = Game.class.getResource(URI_BASE + "Azul.wav").toString();
     private AudioClip loop;
-
-     */
 
     /*  Game Variable  */
     private boolean loopPlaying = false;
@@ -145,7 +152,6 @@ public class Game extends Application {
     /**
      * Set up the sound loop.
      */
-    /* FIXME
     private void setUpSoundLoop() {
         try {
             loop = new AudioClip(LOOP_URI);
@@ -155,12 +161,9 @@ public class Game extends Application {
         }
     }
 
-     */
-
     /**
      * Turn the sound loop on or off.
      */
-    /* FIXME
     private void toggleSoundLoop() {
         if (loopPlaying) {
             loop.stop();
@@ -169,8 +172,6 @@ public class Game extends Application {
         }
         loopPlaying = !loopPlaying;
     }
-
-     */
 
 
     class GTile extends Rectangle {
@@ -762,19 +763,39 @@ public class Game extends Application {
      */
     private void makeCompletion() {
         // TODO
+        System.out.println("Calling makeCompletion!");
+        completionBox.setPrefWidth(BOX_WIDTH); // set width
+        completionBox.setPrefHeight(BOX_HEIGHT); // set height
+        completionLabel.setFont(new Font(30)); // set the size of font.
+        completionLabel.setLayoutX(100);
+        completionLabel.setLayoutY(100);
+        completionBox.getChildren().add(completionLabel);
         HashMap<String ,String[]> map = Azul.splitPlayerState(gameState);
-        String AScore = map.get("A")[0] + Azul.getBonusPoints(gameState,'A');
-        String BScore = map.get("B")[0] + Azul.getBonusPoints(gameState,'B');
-        completionText.setText("playerA: " + AScore + "         " + "playerB: " + BScore);
-        completionText.setFill(Color.BLACK);
-        //completionText.setEffect(dropShadow);
-        completionText.setCache(true);
-        //completionText.setFont(Font.("Arial", FontWeight.EXTRA_BOLD, 80));
-        completionText.setLayoutX(500);
-        completionText.setLayoutY(375);
-        completionText.setTextAlignment(TextAlignment.CENTER);
-        root.getChildren().add(completionText);
-
+        String AScore = String.valueOf(Integer.parseInt(map.get("A")[0]) + Azul.getBonusPoints(gameState,'A')); // add score and bonus score.
+        String BScore = String.valueOf(Integer.parseInt(map.get("B")[0]) + Azul.getBonusPoints(gameState,'B')); // add score and bonus score.
+        /*  Set up player labels and score boards */
+        for (int i = 0; i < PLAYER_NUM; i++) {
+            completionPlayersLabel[i] = new Label(String.valueOf((char)('A' + i)) + " scores : "); // set the text in player labels.
+        }
+        completionPlayersScoreBoard[0] = new TextField(AScore);
+        completionPlayersScoreBoard[1] = new TextField(BScore);
+        for (int i = 0; i < PLAYER_NUM; i++) {
+            completionPlayersScoreBoard[i].setDisable(true); // not changeable.
+        }
+        /* ---- end set up ---- */
+        for (int i = 0; i < PLAYER_NUM; i++) {
+            completionHbox[i] = new HBox();
+            completionHbox[i].getChildren().add(completionPlayersLabel[i]);
+            completionHbox[i].getChildren().add(completionPlayersScoreBoard[i]); // create horizontal item.
+            completionVbox.getChildren().add(completionHbox[i]); // add the horizontal item to vbox.
+        }
+        completionVbox.setLayoutX(200);
+        completionVbox.setLayoutY(200);
+        completionVbox.setSpacing(20);
+        completionBox.getChildren().add(completionVbox);
+        completionBox.setLayoutX(BOARD_WIDTH / 2 - BOX_WIDTH / 2);
+        completionBox.setLayoutY(BOARD_HEIGHT / 2 - BOX_HEIGHT / 2);
+        root.getChildren().add(completionBox);
     }
 
     /**
@@ -1054,6 +1075,7 @@ public class Game extends Application {
         updateCenterView(); // update the center view.
         // updateStorageView(); // update the storage view.
         updateScoresView(); // update the score view.
+        toggleSoundLoop(); // toggle sound loop
     }
 
     @Override
@@ -1062,52 +1084,21 @@ public class Game extends Application {
         //  FIXME Task 14: Implement a computer opponent so that a human can play your game against the computer.
         stage.setTitle("Azul");
         // [Original Code] Group root = new Group();
-
         // add player board to root
         addPlayerBoardToRoot();
-
-
-        //add playerState
         addMosaicToRoot();
         addStorageToRoot();
         addFloorToRoot();
-
-        //add sharedState
         addCenterToRoot();
         addFactoriesToRoot();
         addBagToRoot();
-
         Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
-
-
         root.getChildren().add(gTiles);
-
-
-
         root.getChildren().add(controls);
-
-        // setUpHandlers(scene);
-        // setUpSoundLoop();
+        setUpSoundLoop();
 
         makeControls();
-
-
-
         newGame();
-
-        hideCompletion();
-
-        //test
-        /**
-        gameState[0] = "AFCB1616181614D0000000000";
-        gameState[1] = "A1Ma00b01c02e04c11d22b33S1b22c13a34a1FbeeeeB0MS0c11b12e13d4Ff";
-        updateScoresView();
-        updateStorageView();
-        updateFloorView();
-        updateMosaicView();
-        updateBagView();
-         **/
-
         stage.setScene(scene);
         stage.show();
     }
