@@ -186,6 +186,17 @@ public class NewMosaic {
         return true;
     }
 
+    /**
+     * return true if any row is full. (To determine whether the game ends.)
+     * @return is any row full
+     */
+    public boolean isRowFull() {
+        for (int i = 0; i < MOSAIC_WIDTH; i++) {
+            if (isRowFull(i)) return true;
+        }
+        return false;
+    }
+
     public boolean isColumnFull(int col) {
         // TODO test
         for (int i = 0; i < MOSAIC_WIDTH; i++) {
