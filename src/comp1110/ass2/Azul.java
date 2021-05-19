@@ -961,7 +961,8 @@ public class Azul {
                     } else {
                         sharedState = "B" + sharedState.substring(1, sharedState.toCharArray().length);
                     }
-                    newGameState[0] = sharedState;
+                    privateState = emptyFloorwithBonus(gameState,APlayer) + emptyFloorwithBonus(gameState,BPlayer);
+                    newGameState[0] = sharedState.substring(0, C + 1) + "f" + sharedState.substring(C + 1, sharedState.toCharArray().length - 11) + discard;
                     newGameState[1] = privateState;
                     return refillFactories(newGameState);
                 }
