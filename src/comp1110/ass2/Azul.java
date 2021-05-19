@@ -2219,7 +2219,7 @@ public class Azul {
         newMosaicA.decode(mosaicA);
         NewMosaic newMosaicB = new NewMosaic();
         newMosaicB.decode(mosaicB);
-        return ((!newMosaicA.isRowFull()) && (!newMosaicB.isRowFull())); //return true if there is no row that is full.
+        return (newMosaicA.isRowFull() || newMosaicB.isRowFull()); //return true if there is no row that is full.
     }
     public static void main(String[] args) {
         /*

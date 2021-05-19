@@ -16,6 +16,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 import java.awt.*;
@@ -104,6 +107,7 @@ public class Game extends Application {
     private static final int BAG_LABEL_Y_LAYOUT = 100;
     private static final int BAG_X_LAYOUT = 20;
     private static final int BAG_Y_LAYOUT = 70;
+    Text completionText = new Text("Well Done");
 
 
 
@@ -731,6 +735,8 @@ public class Game extends Application {
      */
     private void checkCompletion() {
         if (Azul.isGameEnd(gameState)){ //if the game is end
+
+            makeCompletion();
             showCompletion(); // show completion message
             resetPieces(); // put all tiles back to original position
             makeControls(); //create a control for allowing restart
@@ -756,6 +762,19 @@ public class Game extends Application {
      */
     private void makeCompletion() {
         // TODO
+        HashMap<String ,String[]> map = Azul.splitPlayerState(gameState);
+        String AScore = map.get("A")[0] + Azul.getBonusPoints(gameState,'A');
+        String BScore = map.get("B")[0] + Azul.getBonusPoints(gameState,'B');
+        completionText.setText("playerA: " + AScore + "         " + "playerB: " + BScore);
+        completionText.setFill(Color.BLACK);
+        //completionText.setEffect(dropShadow);
+        completionText.setCache(true);
+        //completionText.setFont(Font.("Arial", FontWeight.EXTRA_BOLD, 80));
+        completionText.setLayoutX(500);
+        completionText.setLayoutY(375);
+        completionText.setTextAlignment(TextAlignment.CENTER);
+        root.getChildren().add(completionText);
+
     }
 
     /**
@@ -763,6 +782,8 @@ public class Game extends Application {
      */
     private void showCompletion() {
         // TODO
+        completionText.toFront();
+        completionText.setOpacity(1);
     }
 
     /**
@@ -770,6 +791,9 @@ public class Game extends Application {
      */
     private void hideCompletion() {
         // TODO
+        completionText.toBack();
+        completionText.setOpacity(0);
+
     }
 
     /**
@@ -1064,14 +1088,19 @@ public class Game extends Application {
 
         // setUpHandlers(scene);
         // setUpSoundLoop();
+
         makeControls();
-        makeCompletion();
+
+
 
         newGame();
+
+        hideCompletion();
+
         //test
         /**
         gameState[0] = "AFCB1616181614D0000000000";
-        gameState[1] = "A1Ma00e04c11d22b33S1b22c13a34a1FbeeeeB0MS0c11b12e13d4Ff";
+        gameState[1] = "A1Ma00b01c02e04c11d22b33S1b22c13a34a1FbeeeeB0MS0c11b12e13d4Ff";
         updateScoresView();
         updateStorageView();
         updateFloorView();
