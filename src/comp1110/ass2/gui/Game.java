@@ -190,6 +190,10 @@ public class Game extends Application {
             setWidth(TILE_SIZE);
             setEffect(dropshadow);
             setFill(Color.GREY.brighter());
+            setScaleX(0.9);
+            setScaleY(0.9);
+            setArcWidth(10);
+            setArcHeight(10);
 
         }
 
@@ -290,7 +294,7 @@ public class Game extends Application {
                     gameState = Azul.nextRound(gameState);
                 }
                 System.out.println("Valid Move");
-
+                System.out.println("Current Game State: {" + gameState[0] + ", " + gameState[1] + "}");
                 updateFactoryView();
                 updateCenterView();
                 updateScoresView();
@@ -301,6 +305,7 @@ public class Game extends Application {
 
             } else {
                 System.out.println("Not valid Move.");
+                System.out.println("Current Game State: {" + gameState[0] + ", " + gameState[1] + "}");
                 snapToHome();
                 // System.out.println(findMove());
             }
