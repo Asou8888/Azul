@@ -52,7 +52,7 @@ public class Game extends Application {
     private static final int PLAYER_NUM = 2; // 2 players
     private static final int FACTORY_NUM = 5; //5 factories
     private static final String[] PLAYER_CODE = new String[]{"A", "B", "C", "D"};
-    private static final int COLOR_TILES_NUM = 20; // the number of tiles of each color.
+
 
     public static boolean isClick = false;
     public static Tile from; // the tile when clicked
@@ -154,6 +154,7 @@ public class Game extends Application {
     private AudioClip releaseSound;
 
     /**
+     * @author Ruizheng Shen
      * Set up the sound loop.
      */
     private void setUpSoundLoop() {
@@ -167,6 +168,7 @@ public class Game extends Application {
     }
 
     /**
+     * @author Ruizheng Shen
      * Set up sound effect.
      */
     private void setUpClickSound() {
@@ -180,6 +182,7 @@ public class Game extends Application {
     }
 
     /**
+     * @author Ruizheng Shen
      * Set up release sound effect.
      */
     private void setUpReleaseSound() {
@@ -193,6 +196,7 @@ public class Game extends Application {
     }
 
     /**
+     * @author Ruizheng Shen
      * Turn the sound loop on or off.
      */
     private void toggleSoundLoop() {
@@ -205,6 +209,7 @@ public class Game extends Application {
     }
 
     /**
+     * @author Ruizheng Shen
      * Turn the click effect on or off.
      */
     private void toggleClickEffects() {
@@ -212,6 +217,7 @@ public class Game extends Application {
     }
 
     /**
+     * @author Ruizheng Shen
      * Turn the release effect on or off.
      */
     private void toggleReleaseEffects() {
@@ -219,6 +225,9 @@ public class Game extends Application {
     }
 
 
+    /**
+     * @author Yixin Ge
+     */
     class GTile extends Rectangle {
         char colorChar; // the colour of the tile
         int positionX; // the X position of tile on board
@@ -265,7 +274,6 @@ public class Game extends Application {
                 throw new IllegalArgumentException("Bad tile: \"" + tileID + "\"");
             }
 
-            String t = String.format("%02d", tileID); //formatted as at least 2 decimal integers eg. 07
             // setImage(new Image(Game.class.getResource(URI_BASE + t + ".png").toString()));
             this.tileID = tileID;
             setHeight(TILE_SIZE); //set height TODO may change the value
@@ -276,6 +284,10 @@ public class Game extends Application {
             setLayoutY(y);
         }
     }
+
+    /**
+     * @author Yixin Ge
+     */
     class DraggableTile extends GTile {
         double homeX; // last x position of the tile on board
         double homeY; // last y position of the tile on board
@@ -339,11 +351,11 @@ public class Game extends Application {
         }
 
         /**
+         * @author Yixin Ge
          * Snap the tile to the nearest grid position (if it is over the grid)
          */
         private void snapToGrid() {
             if (isValidMove()) {
-                //TODO
                 updateGameState();
 
                 if(Azul.isCenterAndFactoriesEmpty(gameState) && NoTilingMove()){
@@ -368,15 +380,9 @@ public class Game extends Application {
             checkCompletion();
         }
 
-        /**
-         * @return true if the tile is on the board
-         */
-        private boolean onBoard() {
-            return mouseX > 0 && mouseX < BOARD_WIDTH  &&
-                    mouseY > 0 && mouseY < BOARD_HEIGHT;
-        }
 
         /**
+         * @author Yixin Ge
          * @return the x and y axis of the tile slots on board, and the member the tile in
          * (StorageA = 1, MosaicA = 2, FloorA = 3,StorageB = 4, MosaicB = 5, FloorB = 6.)
         */
@@ -483,6 +489,7 @@ public class Game extends Application {
         }
 
         /**
+         * @author Yixin Ge
          * @return if it is valid to move a specific current destination cell from last destination cell.
          */
         private boolean isValidMove(){
@@ -491,7 +498,7 @@ public class Game extends Application {
         }
 
         /**
-         *
+         *@author Yixin Ge
          * @return the string of the drafting move or tiling move
          */
         private String findMove(){
@@ -584,39 +591,28 @@ public class Game extends Application {
         }
 
         /**
+         * @author Yixin Ge
          * set the tile back to last valid position before mouse pressing.
          */
         private void snapToHome(){
-            //TODO
             this.setLayoutX(this.layOutX);
             this.setLayoutY(this.layOutY);
         }
 
         /**
+         * @author Yixin Ge
          * the game state should be updated each time when there is a possible tile moving.
          */
         private void updateGameState() {
             gameState = Azul.applyMove(gameState,findMove());
         }
     }
-    /**
-     * Set up the tiles
-     */
-    private void makeTiles() {
-        // TODO test
-        this.gTiles.getChildren().clear(); // clear all the previous tiles.
-        this.gTiles.getChildren().add(new DraggableTile('f')); // add 'first player' tile.
-        for (int i = 0; i < COLOR_TILES_NUM; i++) {
-            this.gTiles.getChildren().add(new DraggableTile('a')); // add 'a' tiles.
-            this.gTiles.getChildren().add(new DraggableTile('b')); // add 'b' tiles.
-            this.gTiles.getChildren().add(new DraggableTile('c')); // add 'c' tiles.
-            this.gTiles.getChildren().add(new DraggableTile('d')); // add 'd' tiles.
-            this.gTiles.getChildren().add(new DraggableTile('e')); // add 'e' tiles.
-        }
-    }
 
+
+    /**
+     * @author RuiZheng Shen
+     */
     private void addPlayerBoardToRoot() {
-        // TODO refactor the code, define layout using playerBoard.
         for (int i = 0; i < PLAYER_NUM; i++) {
             this.playerBoard[i] = new Pane();
             /*  set up player label  */
@@ -644,11 +640,12 @@ public class Game extends Application {
             root.getChildren().add(this.playerBoard[i]);
         }
     }
+
     //add Mosaic to root
+    /**
+     * @author Xiao Xu
+     */
     private void addMosaicToRoot(){
-        /**
-         * written by Xiao Xu
-         */
         for(int m = 0;m<PLAYER_NUM;m++){
             this.mosaics[m] = new Group();
             for (int i = 0; i < NewMosaic.MOSAIC_WIDTH; i++) {
@@ -673,6 +670,11 @@ public class Game extends Application {
 
     }
 
+
+
+    /**
+     * @author Xiao Xu
+     */
     //add storage to root
     private void addStorageToRoot(){
         for(int m = 0;m<PLAYER_NUM;m++) {
@@ -699,6 +701,9 @@ public class Game extends Application {
 
     }
 
+    /**
+     * @author Xiao Xu
+     */
     //add floor to root
     private void addFloorToRoot(){
         for(int m = 0; m<PLAYER_NUM;m++){
@@ -723,6 +728,9 @@ public class Game extends Application {
         }
     }
 
+    /**
+     * @author Xiao Xu
+     */
     //add center to root
     private void addCenterToRoot(){
         for (int i = 0; i < Center.CENTER_HEIGHT; i++) {
@@ -740,6 +748,9 @@ public class Game extends Application {
         root.getChildren().add(center);
     }
 
+    /**
+     * @author Xiao Xu
+     */
     //add factories to root
     private void addFactoriesToRoot(){
         for(int m = 0;m<5;m++){
@@ -763,6 +774,10 @@ public class Game extends Application {
         }
 
     }
+
+    /***
+     * @author Xiao Xu
+     */
     private void addBagToRoot(){
         bagLable[0] = new Label("Tile a (Blue): ");
         bagLable[1] = new Label("Tile b (Green): ");
@@ -770,7 +785,7 @@ public class Game extends Application {
         bagLable[3] = new Label("Tile d (Purple): ");
         bagLable[4] = new Label("Tile e (Red): ");
 
-        TextField[] t = new TextField[NUMBER_OF_TILETYPE];
+
         for(int i = 0; i < NUMBER_OF_TILETYPE;i++){
             bagField[i] = new TextField("20");
             bag.getChildren().add(bagField[i]);
@@ -796,6 +811,7 @@ public class Game extends Application {
     }
 
     /**
+     * @author YiXin Ge
      * Check game completion and update states.
      */
     private void checkCompletion() {
@@ -804,11 +820,12 @@ public class Game extends Application {
             makeCompletion();
             showCompletion(); // show completion message
             resetPieces(); // put all tiles back to original position
-            makeControls(); //create a control for allowing restart
+
         }
     }
 
     /**
+     * @author YiXin Ge
      * Put all of the tiles back in their home position.
      */
     private void resetPieces() {
@@ -819,17 +836,13 @@ public class Game extends Application {
 
     }
 
-    /**
-     * Create controls that allow the game restarted.
-     */
-    private void makeControls() {
-    }
+
 
     /**
+     * @author Ruizheng Shen
      * Create the message to be displayed when the player completes the puzzle.
      */
     private void makeCompletion() {
-        // TODO
         System.out.println("Calling makeCompletion!");
         completionBox.setPrefWidth(BOX_WIDTH); // set width
         completionBox.setPrefHeight(BOX_HEIGHT); // set height
@@ -842,7 +855,7 @@ public class Game extends Application {
         String BScore = String.valueOf(Integer.parseInt(map.get("B")[0]) + Azul.getBonusPoints(gameState,'B')); // add score and bonus score.
         /*  Set up player labels and score boards */
         for (int i = 0; i < PLAYER_NUM; i++) {
-            completionPlayersLabel[i] = new Label(String.valueOf((char)('A' + i)) + " scores : "); // set the text in player labels.
+            completionPlayersLabel[i] = new Label((char) ('A' + i) + " scores : "); // set the text in player labels.
         }
         completionPlayersScoreBoard[0] = new TextField(AScore);
         completionPlayersScoreBoard[1] = new TextField(BScore);
@@ -866,25 +879,26 @@ public class Game extends Application {
     }
 
     /**
+     * @author Ruizheng Shen
      * Show the completion message.
      */
     private void showCompletion() {
-        // TODO
         completionText.toFront();
         completionText.setOpacity(1);
     }
 
     /**
+     * @author Ruizheng Shen
      * Hide the completion message.
      */
     private void hideCompletion() {
-        // TODO
         completionText.toBack();
         completionText.setOpacity(0);
 
     }
 
     /**
+     * @author Ruizheng Shen
      * Reset the game state.
      */
     private void resetGameState() {
@@ -893,6 +907,10 @@ public class Game extends Application {
         };
     }
 
+    /**
+     * @author Xiao Xu
+     * @return true if there is no tiling move
+     */
     private boolean NoTilingMove(){
         HashMap<String, String[]> playerState = Azul.splitPlayerState(this.gameState);
         String storageAString = playerState.get(String.valueOf('A'))[2];
@@ -903,6 +921,7 @@ public class Game extends Application {
     }
 
     /**
+     * @author Ruizheng Shen
      * update scores of every players.
      */
     private void updateScoresView() {
@@ -932,11 +951,11 @@ public class Game extends Application {
     }
 
     /**
+     * @author Ruizheng Shen
      * update the storage view, according to the current game state.
      */
     private void updateStorageView() {
         System.out.println("update Storage View.....\n" + "Current state: {" + this.gameState[0] + ", " + this.gameState[1] + "}");
-        // TODO
         HashMap<String, String[]> playerState = Azul.splitPlayerState(this.gameState);
         for (int i = 0; i < PLAYER_NUM; i++) {
             this.storages[i].getChildren().clear(); // clear the previous view.
@@ -966,10 +985,10 @@ public class Game extends Application {
     }
 
     /**
+     * @author Ruizheng Shen
      * update the center view, according to the current game state.
      */
     private void updateCenterView() {
-        // TODO test
         System.out.println("Updating center view......");
         /*  Clear previous draggable tile and update  */
         this.center.getChildren().clear(); // clear all.
@@ -1005,26 +1024,27 @@ public class Game extends Application {
     }
 
     /**
+     * @author Ruizheng Shen
      * update the factory view, according to current gameState.
      */
     private void updateFactoryView() {
-        // TODO test
+
         String[] sharedState = Azul.splitSharedState(this.gameState); // split the current game state.
         String factoryState = sharedState[1]; // get the factory state from the splitted game state.
         Factories facs = new Factories(factoryState);
         String[] fac = facs.splitFactoryState(factoryState);
-        // TODO debug
+
         for (int i = 0; i < fac.length; i++) {
             updateFactoryView(fac[i], i); // update i-th factory view.
         }
     }
     /**
+     * @author Ruizheng Shen
      * update the factory view, according to the Characters input
      * @param factory index-th factory's state code.
      * @param index the index of factory to be updated.
      */
     private void updateFactoryView(String factory, int index) {
-        // TODO
         this.factories[index].getChildren().clear();
         GTile[] tiles = new GTile[Factory.MAX_FACTORY_TILES_NUM];
         int cnt = 0; // the counter of draggable tiles.
@@ -1050,6 +1070,9 @@ public class Game extends Application {
         }
     }
 
+    /**
+     * @author Ruizheng Shen
+     */
     private void updateFloorView() {
         System.out.println("Updating Floor View......");
         HashMap<String, String[]> playerState = Azul.splitPlayerState(this.gameState); // get the player state.
@@ -1076,6 +1099,9 @@ public class Game extends Application {
         }
     }
 
+    /**
+     * @author Ruizheng Shen
+     */
     private void updateMosaicView() {
         HashMap<String,String[]> map = Azul.splitPlayerState(gameState);
         for (int i = 0; i < PLAYER_NUM; i++) {
@@ -1103,6 +1129,9 @@ public class Game extends Application {
         }
     }
 
+    /**
+     * @author Xiao Xu
+     */
     private void updateBagView(){
         String bagString = Azul.splitSharedState(gameState)[3];
         for(int i = 0; i<NUMBER_OF_TILETYPE;i++){
@@ -1112,6 +1141,7 @@ public class Game extends Application {
     }
 
     /**
+     * @author Ruizheng Shen
      * refill the factory according to current game State.
      */
     private void refillFactories() {
@@ -1129,6 +1159,7 @@ public class Game extends Application {
     }
 
     /**
+     * @author Ruizheng Shen
      * Set up the group that represents the places that make the board
      */
     private void makeBoard() {
@@ -1150,10 +1181,10 @@ public class Game extends Application {
 
 
     /**
+     * @author Ruizheng Shen
      * Start a new game, reset everything.
      */
     private void newGame() {
-        // TODO
         resetGameState(); // reset the game state.
         refillFactories(); // refill the factories.
         updateCenterView(); // update the center view.
@@ -1202,7 +1233,7 @@ public class Game extends Application {
         restartButton.setBackground(background);
         restartButton.setOnAction((ActionEvent e)-> { // mute the audio when clicked
             newGame();
-            toggleSoundLoop();;
+            toggleSoundLoop();
         });
         Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
         root.getChildren().add(gTiles);
@@ -1215,7 +1246,6 @@ public class Game extends Application {
 
         root.getChildren().add(board);
         makeBoard();
-        makeControls();
         newGame();
         File file = new File("assets/icon.png");
         String iconString = file.toURI().toString();
