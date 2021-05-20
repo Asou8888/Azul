@@ -1,0 +1,36 @@
+# IMPORTANT: It is very important that you correctly complete this originality
+# statement.
+#
+# This is your statement of your submitted work being your own.
+# Incorrectly filling out this statement could lead to charges
+# of academic misconduct.
+# 
+# For information on how to fill this out correctly, see
+# https://cs.anu.edu.au/courses/comp1110/help/faq/09-originality/
+#
+
+declaration: >-
+  I submit the work below for assessment as my best work. I declare that this
+  is entirely my own work, with the following documented exceptions:
+
+# Use this to list any code that you used that you did not write,
+# aside from code provided by the lecturer.  Provide a comment
+# explaining your use and the URL to that code and the licence for
+# that code
+
+
+
+# I wish to submit the following methods as entirely my own (remove this if
+# you want to just submit classes):
+method:
+   - private double[] findPosition()
+   - The method could get the list of double which include x postion and
+     y position of tile slot on board corresponding to the dragging tile, and the ints representing Storage, Floor and Mosaic for players.
+   - By using the absolute x and y position of dragging tile, I set limits length and width for each member, and use for loop to
+     collect the valid x and y position and record which member it is currently in.
+   - it is nessassary to add the representing ints as later we need to crate a String move and use it via Azul.isValidMove() and
+     Azul.applyMove().
+
+# sign *your* name and uid here
+name: Yixin Ge
+uid: u6616522
