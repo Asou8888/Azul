@@ -23,12 +23,8 @@ import java.util.HashSet;
 public class Center {
     private ArrayList<Tile> tiles;
 
-    /* Member for javafx */
     public static final int CENTER_HEIGHT = 8;
-    public static final int CENTER_WIDTH = 2;
-    int xIndex; // the layoutX in board
-    int yIndex; // the layoutY in board
-
+    public static final int CENTER_WIDTH= 2;
     // Constructors for Azul
     public Center(Tile[] tiles) {
         this.tiles = new ArrayList<Tile>(Arrays.asList(tiles));
@@ -55,6 +51,7 @@ public class Center {
 
     /**
      * The visitor of tiles.
+     *
      * @return tiles.
      */
     public ArrayList<Tile> getTiles() {
@@ -76,26 +73,16 @@ public class Center {
      * @return String of the code
      */
 
+    /**
+     * @return the code
+     * @author Xiao Xu
+     */
     public String encode() {
-        //TODO
-        /**
-         * Written by Xiao Xu 4/29
-         */
-        /*
-        String center = "C";
-        for (int i = 0; i < tiles.size(); i++) {
-            center += tiles.get(i).getCode();
-        }
-
-         */
-        /**
-         * Modified bby Ruizheng Shen, 5.1
-         */
         StringBuilder center = new StringBuilder("C");
         boolean hasFirstPlayer = false;
-        for (int i = 0; i < tiles.size(); i++) {
-            if (tiles.get(i).getTileType() != TileType.FirstPlayer) {
-                center.append(tiles.get(i).getCode());
+        for (Tile tile : tiles) {
+            if (tile.getTileType() != TileType.FirstPlayer) {
+                center.append(tile.getCode());
             } else {
                 hasFirstPlayer = true;
             }
@@ -104,63 +91,65 @@ public class Center {
         return sortChar(center.toString());
     }
 
+    /**
+     * @param center the center state
+     * @author Ruizheng Shen
+     */
     public void decode(String center) {
         int num = center.length();
         for (int n = 1; n < num; n++) {
             Tile t = new Tile(center.charAt(n));
             t.setBelong(TileBelonging.Center);
-            t.setOnMouseClicked(e -> {
-                // TODO
-                t.setOpacity(0.6);
-                if (!Game.isClick) {
-                    Game.isClick = true;
-                    Game.from = t;
-                }
-            });
             this.tiles.add(t);
         }
     }
 
 
     /**
-     * get the number of tiles in current stage
-     *
      * @return the number of tiles in center
+     * @author Xiao Xu
+     * get the number of tiles in current stage.
      */
     public int getCurrentNum() {
-        //TODO:return the number of tiles in current stage
-        int num = this.tiles.size();
-        return num;
-
+        return this.tiles.size();
     }
 
     /**
-     * Determine whether there is a firstPlayer tile in center or not
-     *
      * @return true if there is and false if there is not
+     * @author Xiao Xu
+     * Determine whether there is a firstPlayer tile in center or not
      */
     public boolean hasFirstPlayer() {
-        //TODO:return if there is a firstplayer in center
         String c = encode();
         return c.contains("f");
     }
 
-    public int tileNum(char color){
+    /**
+     * @param color the colorChar
+     * @return the number of tiles of that color.
+     * @author Xiao Xu
+     */
+    public int tileNum(char color) {
         int num = 0;
         String center = getCode();
-        for(int i = 0;i<center.length();i++){
-            if(center.charAt(i) == color){
+        for (int i = 0; i < center.length(); i++) {
+            if (center.charAt(i) == color) {
                 num += 1;
             }
         }
         return num;
     }
 
-    public String deleteTile(char color){
+    /**
+     * @param color the colorChar
+     * @return the updated state of center
+     * @author Xiao Xu
+     */
+    public String deleteTile(char color) {
         String c = encode();
         String newcenter = "";
-        for(int i = 0; i<c.length();i++){
-            if(c.charAt(i) != color){
+        for (int i = 0; i < c.length(); i++) {
+            if (c.charAt(i) != color) {
                 newcenter += c.charAt(i);
             }
         }
@@ -173,52 +162,54 @@ public class Center {
 
 
     /**
-     * Determine if the center is empty or not
-     *
      * @return true if center is empty and false if not
+     * @author Xiao Xu
+     * Determine if the center is empty or not.
      */
     public boolean isEmpty() {
-        //TODO:return if the center is empty or not
         return tiles.size() == 0;
     }
 
-    public void addTile(String tile){
-        for(int i =0;i<tile.length();i++){
+    /**
+     * @param tile the string of tiles to be placed in the center.
+     * @author Xiao Xu
+     */
+    public void addTile(String tile) {
+        for (int i = 0; i < tile.length(); i++) {
             Tile a = new Tile(tile.charAt(i));
             tiles.add(a);
         }
     }
 
     /**
-     * List out the colors in the center(using HashSet to avoid color duplicated).
      * @return colors
+     * @author Ruizheng Shen
+     * List out the colors in the center(using HashSet to avoid color duplicated).
      */
     public HashSet<TileType> getColors() {
         HashSet<TileType> colors = new HashSet<>();
-        for (Tile t: tiles) {
+        for (Tile t : tiles) {
             colors.add(t.getTileType());
         }
         return colors;
     }
 
     /**
+     * @param tiles the tiles to be placed in the center.
+     * @author Ruizheng Shen
      * Place the tiles in Center.
-     *
-     * @param tiles
      */
     public void placeTiles(ArrayList<Tile> tiles) {
-        // TODO: check whether the input tiles valid.
         this.tiles.addAll(tiles);
     }
 
     /**
-     * Remove the tiles from center according to the tile's color.
-     *
      * @param color the color of tiles need to be removed(move to storage/floor)
      * @return removeList the tiles removed.(If empty, this move is invalid)
+     * @author Ruizheng Shen
+     * Remove the tiles from center according to the tile's color.
      */
     public ArrayList<Tile> removeTiles(TileType color) {
-        // TODO: test
         ArrayList<Tile> removeList = new ArrayList<>();
         tiles.forEach(t -> {
             if (t.getTileType() == color) {
@@ -229,13 +220,14 @@ public class Center {
         return removeList;
     }
 
-
+    /**
+     * @param str sort the string
+     * @return the String in order.
+     * @author Xiao Xu
+     */
     private static String sortChar(String str) {
-
         char[] chs = stringToArray(str);
-
         sort(chs);
-
         return toString(chs);
     }
 
@@ -243,26 +235,12 @@ public class Center {
         return new String(chs);
     }
 
-
     private static void sort(char[] chs) {
         Arrays.sort(chs);
     }
+
     private static char[] stringToArray(String string) {
         return string.toCharArray();
-    }
-
-    public static void main(String[] args) {
-        String c = "Cbbef";
-        Center center = new Center();
-        center.decode(c);
-        center.addTile("ab");
-        System.out.println(center.getCode());
-
-        // test case for task 11
-        Center c1 = new Center();
-        c1.decode("Cf");
-        c1.addTile("bbe");
-        System.out.println(c1.getCode());
     }
 
 }

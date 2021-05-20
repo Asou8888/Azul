@@ -6,11 +6,6 @@ package comp1110.ass2.member;
  * @since 2021.3.27
  */
 
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-
 /**
  * Modified by Ruizheng Shen, 2021.4.19
  * Add a constructor.
@@ -36,6 +31,7 @@ public class Discard {
     }
 
     /**
+     * @author Ruizheng Shen
      * The Discard is an 11-character string that represents the tiles in the Discard area.
      * <p>
      * first character is a "D".
@@ -46,7 +42,6 @@ public class Discard {
      * @return String of the code
      */
     public String encode() {
-        //TODO
         StringBuilder code = new StringBuilder("D");
         String aCnt = amountChar( 'a');
         code.append(aCnt);
@@ -60,7 +55,13 @@ public class Discard {
         code.append(eCnt);
         return code.toString();
     }
-    //find amount of a color in Tile[], return in String.
+
+    /**
+     * find amount of a color in Tile[], return in String.
+     * @author Xiao Xu
+     * @param type the coloreChar
+     * @return the number of tiles
+     */
     public String amountChar(char type) {
         int cnt = 0;
         int len = tiles.length;
@@ -81,8 +82,9 @@ public class Discard {
     }
 
     /**
+     * @author YiXin Ge
      * Given the String Start with "D" and decode it into list of tiles.
-     * @param discard
+     * @param discard the discard state
      */
     public void decode(String discard) {
         int a = Integer.parseInt(discard.substring(1,3));
@@ -114,6 +116,11 @@ public class Discard {
         placeTiles(newTiles);
     }
 
+    /**
+     * @author YiXin Ge
+     * @param color the color of the tiles
+     * @param num the number of the tiles
+     */
     public void placeTiles(char color,int num){
         int numOfTiles = 0;
         if(num != 0) {
@@ -130,10 +137,10 @@ public class Discard {
     }
 
     /**
+     * @author Xiao Xu
      * replace a tile in last valid position in the discard.
-     * @param color
+     * @param color the colorChar
      */
-    //TODO
     public void replaceTile(char color){
         int num = 0;
         for(int i = 0;i<tiles.length;i++){
@@ -147,8 +154,9 @@ public class Discard {
     }
 
     /**
+     * @author Ruizheng Shen
      * Determine if the amount of tiles can be fitted in discard.
-     * @param tiles
+     * @param tiles the tiles to be placed in the discard.
      */
     public boolean placeTiles(Tile[] tiles) {
         int cnt = lengthTile();
@@ -159,8 +167,8 @@ public class Discard {
         return false;
     }
     /**
+     * @author Ruizheng Shen
      * find the number of tiles in current stage
-     *
      * @return the number of tiles
      */
     public int lengthTile(){
@@ -172,12 +180,11 @@ public class Discard {
         return 100;
     }
     /**
-     * Determine if diacard is empty
-     *
+     * @author YiXin Ge
+     * Determine if discard is empty
      * @return true if is empty and not otherwise
      */
     public boolean isEmpty() {
-        //TODO
         return this.tiles[0] == null;
     }
 
@@ -201,18 +208,4 @@ public class Discard {
         return eTiles;
     }
 
-    public static void main(String[] args) {
-        String a = new String("D0409050713");
-        Discard d = new Discard();
-        d.decode(a);
-
-        for (int i = 0; i< 100; i++) {
-            if (d.tiles[i] != null) {
-                System.out.print(d.tiles[i].getCode());
-            }
-        }
-        d.placeTiles('a',0);
-        System.out.println(d.getCode());
-
-    }
 }

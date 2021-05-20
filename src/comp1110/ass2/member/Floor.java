@@ -20,6 +20,7 @@ public class Floor {
     public Floor() {
         this.tiles = new Tile[FLOOR_WIDTH];
     }
+
     // for testing(Author: Ruizheng Shen)
     public Floor(Tile[] tiles) {
         this.tiles = tiles;
@@ -56,27 +57,27 @@ public class Floor {
      * @return the code
      */
     private String encode() {
-            StringBuilder code = new StringBuilder("F"); //The string starts at "F".
-            for (int i = 0; i < FLOOR_WIDTH; i++) {
-                String floor = "";
-                int nu = 0; //later use to find whether it is null or not
-                if (this.tiles[i] != null) {
-                    nu++; // if there is a tile in position i, add by 1.
-                    floor = this.tiles[i].getCode(); // get the char of tile at position i
-                }
-                if (nu != 0) { // if the position i is not a null
-                    code.append(floor); // add the char in string code
-                }
+        StringBuilder code = new StringBuilder("F"); //The string starts at "F".
+        for (int i = 0; i < FLOOR_WIDTH; i++) {
+            String floor = "";
+            int nu = 0; //later use to find whether it is null or not
+            if (this.tiles[i] != null) {
+                nu++; // if there is a tile in position i, add by 1.
+                floor = this.tiles[i].getCode(); // get the char of tile at position i
             }
+            if (nu != 0) { // if the position i is not a null
+                code.append(floor); // add the char in string code
+            }
+        }
         return code.toString(); //return the String start with "F".
     }
 
 
-        /**
-         * Calculate the current score in the floor.(This will be calculate at the end of each round.)
-         *
-         * @return the current score in the floor
-         */
+    /**
+     * Calculate the current score in the floor.(This will be calculate at the end of each round.)
+     *
+     * @return the current score in the floor
+     */
     public int score() {
         int index = 0;  // set an index
         for (Tile x : tiles) {
@@ -90,18 +91,18 @@ public class Floor {
                 // if one more tiles, add one more point corresponding to lostPoint[].
                 scr += lostPoint[i];
             }
-
         }
         return scr;
     }
 
     /**
      * Determine the floor contains full amount of tiles, which should exactly have 7 tiles.
+     *
      * @return the state of floor if it is fulfilled.
      */
     public boolean isFloorFull() {
-        for (int i = 0; i < FLOOR_WIDTH; i++){ // the maximum length of floor is 7
-            if (tiles[i] == null){ // in the range, if there is a null
+        for (int i = 0; i < FLOOR_WIDTH; i++) { // the maximum length of floor is 7
+            if (tiles[i] == null) { // in the range, if there is a null
                 return false; // then the floor is not full
             }
         }
@@ -111,16 +112,17 @@ public class Floor {
 
     /**
      * given a string which is represented floor state and decode it into the list of tiles.
-     * @param floor
+     *
+     * @param floor the floor state
      */
-    public void decode (String floor){
-        if (floor.charAt(0) == 'F' && floor.length() <= FLOOR_WIDTH+1){
-            Tile[] newTiles = new Tile[floor.length()-1];
-            for(int i = 1; i < floor.length();i++){
-                char tile  = floor.charAt(i);
+    public void decode(String floor) {
+        if (floor.charAt(0) == 'F' && floor.length() <= FLOOR_WIDTH + 1) {
+            Tile[] newTiles = new Tile[floor.length() - 1];
+            for (int i = 1; i < floor.length(); i++) {
+                char tile = floor.charAt(i);
                 Tile t = new Tile(tile);
                 t.setBelong(TileBelonging.Floor);
-                newTiles[i-1] = t;
+                newTiles[i - 1] = t;
             }
             placeTile(newTiles);
         }
@@ -128,7 +130,8 @@ public class Floor {
 
     /**
      * Determine whether the tiles has enough space to place into floor
-     * @param tiles
+     *
+     * @param tiles the tiles to be placed in the floor.
      */
     public boolean placeTile(Tile[] tiles) {
         int cnt = lengthTile();
@@ -142,9 +145,9 @@ public class Floor {
     /**
      * @return the length of tiles in floor without null.
      */
-    public int lengthTile(){
-        for (int i = 0; i < FLOOR_WIDTH; i ++){
-            if (this.tiles[i] == null){
+    public int lengthTile() {
+        for (int i = 0; i < FLOOR_WIDTH; i++) {
+            if (this.tiles[i] == null) {
                 return i;
             }
         }
@@ -154,10 +157,10 @@ public class Floor {
     /**
      * @return the amount of empty space in floor.
      */
-    public int emptyNum(){
+    public int emptyNum() {
         int num = 0;
-        for(int i = 0;i<FLOOR_WIDTH;i++){
-            if(tiles[i] == null){
+        for (int i = 0; i < FLOOR_WIDTH; i++) {
+            if (tiles[i] == null) {
                 num += 1;
             }
         }
@@ -166,46 +169,36 @@ public class Floor {
 
     /**
      * change the tile of the last position in floor via changing its color.
-     * @param color
+     *
+     * @param color the color of tile to be placed.
      */
-    public void replaceTile(char color){
+    public void replaceTile(char color) {
         tiles[6] = new Tile(color);
     }
 
     /**
      * place tiles into floor within the limit of maximum position of floor.
      * if there is fulfilled, then the last position will be replaced by the color given.
-     * @param color
-     * @param num
+     *
+     * @param color the color of tiles to be placed
+     * @param num   the number of tiles.
      */
-    public void placeTile(char color,int num){
+    public void placeTile(char color, int num) {
         if (emptyNum() == 0) replaceTile(color);
-        if(emptyNum() >= num){
+        if (emptyNum() >= num) {
             num = num;
-        }else {
+        } else {
             num = emptyNum();
         }
         int numOfTiles = 0;
-        for(int i =0;i<FLOOR_WIDTH;i++){
-            if(tiles[i] == null){
+        for (int i = 0; i < FLOOR_WIDTH; i++) {
+            if (tiles[i] == null) {
                 tiles[i] = new Tile(color);
                 numOfTiles += 1;
-                if(numOfTiles == num){
+                if (numOfTiles == num) {
                     break;
                 }
             }
         }
-    }
-
-    public static void main(String[] args) {
-        String a = new String("Fabc");
-        Floor f = new Floor();
-        f.decode(a);
-        for (int i = 0; i< FLOOR_WIDTH; i++) {
-            if (f.tiles[i] != null) {
-                System.out.print(f.tiles[i].getCode());
-            }
-        }
-        System.out.println(f.emptyNum());
     }
 }

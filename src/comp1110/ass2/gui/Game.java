@@ -127,7 +127,6 @@ public class Game extends Application {
     Text completionText = new Text("Well Done");
 
 
-
     /*  game state  */
     private String[] gameState; // current game state
     private static final String startSharedState = "AFCfB2020202020D0000000000"; // shared state at the start of the game
@@ -137,6 +136,7 @@ public class Game extends Application {
      *  Define a drop shadow effect that we will apply to the tile
      */
     private static DropShadow dropshadow;
+
     /*  static initializer to initialize dropShadow  */ {
         dropshadow = new DropShadow();
         dropshadow.setOffsetX(2.0);
@@ -266,8 +266,8 @@ public class Game extends Application {
          * A constructor used to build the objective tile.
          *
          * @param tileID The tile to be displayed (one of 100 objectives)
-         * @param x    The x position of the tile
-         * @param y    The y position of the tile
+         * @param x      The x position of the tile
+         * @param y      The y position of the tile
          */
         GTile(int tileID, int x, int y) {
             if (!(tileID <= 100 && tileID >= 1)) {
@@ -295,6 +295,7 @@ public class Game extends Application {
         double mouseY; // the last y position then dragging the tile on board
         double layOutX;
         double layOutY;
+
         /**
          * Construct a draggable tile
          *
@@ -358,7 +359,7 @@ public class Game extends Application {
             if (isValidMove()) {
                 updateGameState();
 
-                if(Azul.isCenterAndFactoriesEmpty(gameState) && NoTilingMove()){
+                if (Azul.isCenterAndFactoriesEmpty(gameState) && NoTilingMove()) {
                     gameState = Azul.nextRound(gameState);
                 }
                 System.out.println("Valid Move");
@@ -382,15 +383,15 @@ public class Game extends Application {
 
 
         /**
-         * @author Yixin Ge
          * @return the x and y axis of the tile slots on board, and the member the tile in
          * (StorageA = 1, MosaicA = 2, FloorA = 3,StorageB = 4, MosaicB = 5, FloorB = 6.)
-        */
+         * @author Yixin Ge
+         */
         private double[] findPosition() {
-            double[] xAndY = new double[]{-1.0,-1.0,-1.0};
+            double[] xAndY = new double[]{-1.0, -1.0, -1.0};
 
-            double x =  mouseX; // find the central x position of the draggable tile.
-            double y =  mouseY; // find the central y position of the draggable tile.
+            double x = mouseX; // find the central x position of the draggable tile.
+            double y = mouseY; // find the central y position of the draggable tile.
             //if draggable tile released in Mosaic A
             if (x > AMOSAIC_X_LAYOUT && x < AMOSAIC_X_LAYOUT + (5 * TILE_SIZE) &&
                     y > AMOSAIC_Y_LAYOUT && y < AMOSAIC_Y_LAYOUT + (5 * TILE_SIZE)) {
@@ -422,8 +423,8 @@ public class Game extends Application {
                 }
             }
             //if draggable tile released in Storage A
-            if (x > ASTORAGE_X_LAYOUT - TILE_SIZE*4 && x < ASTORAGE_X_LAYOUT +TILE_SIZE &&
-            y > ASTORAGE_Y_LAYOUT && y < ASTORAGE_Y_LAYOUT+(5*TILE_SIZE)) {
+            if (x > ASTORAGE_X_LAYOUT - TILE_SIZE * 4 && x < ASTORAGE_X_LAYOUT + TILE_SIZE &&
+                    y > ASTORAGE_Y_LAYOUT && y < ASTORAGE_Y_LAYOUT + (5 * TILE_SIZE)) {
                 int xRight = ASTORAGE_X_LAYOUT + TILE_SIZE;
                 int YRight = 0;
                 for (int i = 0; i < 5; i++) {
@@ -443,8 +444,8 @@ public class Game extends Application {
                 }
             }
             //if draggable tile released in Storage B
-            if (x > BSTORAGE_X_LAYOUT - TILE_SIZE*4 && x < BSTORAGE_X_LAYOUT +TILE_SIZE &&
-                    y > BSTORAGE_Y_LAYOUT && y < BSTORAGE_Y_LAYOUT+(5*TILE_SIZE)) {
+            if (x > BSTORAGE_X_LAYOUT - TILE_SIZE * 4 && x < BSTORAGE_X_LAYOUT + TILE_SIZE &&
+                    y > BSTORAGE_Y_LAYOUT && y < BSTORAGE_Y_LAYOUT + (5 * TILE_SIZE)) {
                 int xRight = BSTORAGE_X_LAYOUT + TILE_SIZE;
                 int YRight = 0;
                 for (int i = 0; i < 5; i++) {
@@ -464,23 +465,23 @@ public class Game extends Application {
                 }
             }
             //if draggable tile released in Floor A;
-            if (x > AFLOOR_X_LAYOUT && x < AFLOOR_X_LAYOUT+7*TILE_SIZE &&
-            y > AFLOOR_Y_LAYOUT && y < AFLOOR_Y_LAYOUT +TILE_SIZE){
+            if (x > AFLOOR_X_LAYOUT && x < AFLOOR_X_LAYOUT + 7 * TILE_SIZE &&
+                    y > AFLOOR_Y_LAYOUT && y < AFLOOR_Y_LAYOUT + TILE_SIZE) {
                 xAndY[2] = 3;
-                for(int i = 0; i < 7;i++){
-                    if (x > AFLOOR_X_LAYOUT + i*TILE_SIZE && x < AFLOOR_X_LAYOUT+i*TILE_SIZE +TILE_SIZE){
-                        xAndY[0] = AFLOOR_X_LAYOUT + i*TILE_SIZE;
+                for (int i = 0; i < 7; i++) {
+                    if (x > AFLOOR_X_LAYOUT + i * TILE_SIZE && x < AFLOOR_X_LAYOUT + i * TILE_SIZE + TILE_SIZE) {
+                        xAndY[0] = AFLOOR_X_LAYOUT + i * TILE_SIZE;
                         xAndY[1] = AFLOOR_Y_LAYOUT;
                     }
                 }
             }
             //if draggable tile released in Floor B;
-            if (x > BFLOOR_X_LAYOUT && x < BFLOOR_X_LAYOUT+7*TILE_SIZE &&
-                    y > BFLOOR_Y_LAYOUT && y < BFLOOR_Y_LAYOUT +TILE_SIZE){
+            if (x > BFLOOR_X_LAYOUT && x < BFLOOR_X_LAYOUT + 7 * TILE_SIZE &&
+                    y > BFLOOR_Y_LAYOUT && y < BFLOOR_Y_LAYOUT + TILE_SIZE) {
                 xAndY[2] = 6;
-                for(int i = 0; i < 7;i++){
-                    if (x > BFLOOR_X_LAYOUT + i*TILE_SIZE && x < BFLOOR_X_LAYOUT+i*TILE_SIZE +TILE_SIZE){
-                        xAndY[0] = BFLOOR_X_LAYOUT + i*TILE_SIZE;
+                for (int i = 0; i < 7; i++) {
+                    if (x > BFLOOR_X_LAYOUT + i * TILE_SIZE && x < BFLOOR_X_LAYOUT + i * TILE_SIZE + TILE_SIZE) {
+                        xAndY[0] = BFLOOR_X_LAYOUT + i * TILE_SIZE;
                         xAndY[1] = BFLOOR_Y_LAYOUT;
                     }
                 }
@@ -489,38 +490,38 @@ public class Game extends Application {
         }
 
         /**
-         * @author Yixin Ge
          * @return if it is valid to move a specific current destination cell from last destination cell.
+         * @author Yixin Ge
          */
-        private boolean isValidMove(){
+        private boolean isValidMove() {
 
-            return (Azul.isMoveValid(gameState,findMove()));
+            return (Azul.isMoveValid(gameState, findMove()));
         }
 
         /**
-         *@author Yixin Ge
          * @return the string of the drafting move or tiling move
+         * @author Yixin Ge
          */
-        private String findMove(){
+        private String findMove() {
             String turn = Azul.whoseTurn(gameState);
             String move = "";
             double yAxis = findPosition()[1];
             if (findPosition()[2] == -1) return "";
             //find whose turn
             // add "C" if from Center
-            if (homeX > CENTER_X_LAYOUT && homeX < CENTER_X_LAYOUT + 2* TILE_SIZE &&
-                    homeY > CENTER_Y_LAYOUT && homeY < CENTER_Y_LAYOUT + 8 *TILE_SIZE){
+            if (homeX > CENTER_X_LAYOUT && homeX < CENTER_X_LAYOUT + 2 * TILE_SIZE &&
+                    homeY > CENTER_Y_LAYOUT && homeY < CENTER_Y_LAYOUT + 8 * TILE_SIZE) {
                 // if player A puts tile on StorageA
-                if (turn.equals("A") && (findPosition()[2] == 1)){
-                    move = move + "A" + "C" + this.colorChar + ((int)((yAxis - ASTORAGE_Y_LAYOUT) / TILE_SIZE));
+                if (turn.equals("A") && (findPosition()[2] == 1)) {
+                    move = move + "A" + "C" + this.colorChar + ((int) ((yAxis - ASTORAGE_Y_LAYOUT) / TILE_SIZE));
                 }
                 // if player A puts tile on FloorA
                 if (turn.equals("A") && (findPosition()[2] == 3)) {
                     move = move + "A" + "C" + this.colorChar + "F";
                 }
                 // if player B puts tile on StorageB
-                if (turn.equals("B") && (findPosition()[2] == 4)){
-                    move = move + "B" + "C" + this.colorChar + ((int)((yAxis - BSTORAGE_Y_LAYOUT) / TILE_SIZE));
+                if (turn.equals("B") && (findPosition()[2] == 4)) {
+                    move = move + "B" + "C" + this.colorChar + ((int) ((yAxis - BSTORAGE_Y_LAYOUT) / TILE_SIZE));
                 }
                 // if player B puts tile on FloorB
                 if (turn.equals("B") && (findPosition()[2] == 6)) {
@@ -528,8 +529,8 @@ public class Game extends Application {
                 }
             }
             //if draggable tile from factories
-            if (homeX > FACTORIES_X_LAYOUT && homeX < FACTORIES_X_LAYOUT + 12*TILE_SIZE &&
-                    homeY > FACTORIES_Y_LAYOUT && homeY < FACTORIES_Y_LAYOUT + 2*TILE_SIZE) {
+            if (homeX > FACTORIES_X_LAYOUT && homeX < FACTORIES_X_LAYOUT + 12 * TILE_SIZE &&
+                    homeY > FACTORIES_Y_LAYOUT && homeY < FACTORIES_Y_LAYOUT + 2 * TILE_SIZE) {
                 int fac = 0;
                 for (int i = 0; i < 5; i++) {
                     if (homeX > FACTORIES_X_LAYOUT + i * 2.5 * TILE_SIZE &&
@@ -539,7 +540,7 @@ public class Game extends Application {
                 }
                 // if player A puts tile on StorageA
                 if (turn.equals("A") && (findPosition()[2] == 1)) {
-                    move = move + "A" + fac + this.colorChar + ((int)((yAxis - ASTORAGE_Y_LAYOUT) / TILE_SIZE ));
+                    move = move + "A" + fac + this.colorChar + ((int) ((yAxis - ASTORAGE_Y_LAYOUT) / TILE_SIZE));
                 }
                 // if player A puts tile on FloorA
                 if (turn.equals("A") && (findPosition()[2] == 3)) {
@@ -547,7 +548,7 @@ public class Game extends Application {
                 }
                 // if player B puts tile on StorageB
                 if (turn.equals("B") && (findPosition()[2] == 4)) {
-                    move = move + "B" + fac + this.colorChar + ((int)((yAxis - BSTORAGE_Y_LAYOUT) / TILE_SIZE));
+                    move = move + "B" + fac + this.colorChar + ((int) ((yAxis - BSTORAGE_Y_LAYOUT) / TILE_SIZE));
                 }
                 // if player B puts tile on FloorB
                 if (turn.equals("B") && (findPosition()[2] == 6)) {
@@ -555,35 +556,35 @@ public class Game extends Application {
                 }
             }
             //if the draggable tile is from StorageA
-            if (homeX > ASTORAGE_X_LAYOUT- 4*TILE_SIZE && homeX < ASTORAGE_X_LAYOUT + TILE_SIZE &&
-                    homeY > ASTORAGE_Y_LAYOUT && homeY < ASTORAGE_Y_LAYOUT + 5* TILE_SIZE &&
-                    Azul.isCenterAndFactoriesEmpty(gameState)){
+            if (homeX > ASTORAGE_X_LAYOUT - 4 * TILE_SIZE && homeX < ASTORAGE_X_LAYOUT + TILE_SIZE &&
+                    homeY > ASTORAGE_Y_LAYOUT && homeY < ASTORAGE_Y_LAYOUT + 5 * TILE_SIZE &&
+                    Azul.isCenterAndFactoriesEmpty(gameState)) {
                 //if the tile is to MosaicA
-                if (turn.equals("A") && findPosition()[2] == 2){
+                if (turn.equals("A") && findPosition()[2] == 2) {
                     double rowInStorage = (homeY - ASTORAGE_Y_LAYOUT) / TILE_SIZE;
-                    double colInMosaic = ((findPosition()[0]) - AMOSAIC_X_LAYOUT)/TILE_SIZE;
-                    move = move + "A" + ((int)rowInStorage) + ((int)colInMosaic);
+                    double colInMosaic = ((findPosition()[0]) - AMOSAIC_X_LAYOUT) / TILE_SIZE;
+                    move = move + "A" + ((int) rowInStorage) + ((int) colInMosaic);
                 }
                 //if the tile is to FloorA
                 if (turn.equals("A") && findPosition()[2] == 3) {
                     double rowInStorage = (homeY - ASTORAGE_Y_LAYOUT) / TILE_SIZE;
-                    move = move + "A" + (int)rowInStorage + "F";
+                    move = move + "A" + (int) rowInStorage + "F";
                 }
             }
             //if the draggable tile is from StorageB
-            if (homeX > BSTORAGE_X_LAYOUT- 4*TILE_SIZE && homeX < BSTORAGE_X_LAYOUT + TILE_SIZE &&
-                    homeY > BSTORAGE_Y_LAYOUT && homeY < BSTORAGE_Y_LAYOUT + 5*TILE_SIZE &&
+            if (homeX > BSTORAGE_X_LAYOUT - 4 * TILE_SIZE && homeX < BSTORAGE_X_LAYOUT + TILE_SIZE &&
+                    homeY > BSTORAGE_Y_LAYOUT && homeY < BSTORAGE_Y_LAYOUT + 5 * TILE_SIZE &&
                     Azul.isCenterAndFactoriesEmpty(gameState)) {
                 //if the tile is to MosaicB
                 if (turn.equals("B") && findPosition()[2] == 5) {
                     double rowInStorage = (homeY - BSTORAGE_Y_LAYOUT) / TILE_SIZE;
-                    double colInMosaic = ((findPosition()[0]) - BMOSAIC_X_LAYOUT)/TILE_SIZE;
-                    move = move + "B" +(int)(rowInStorage) + ((int)colInMosaic);
+                    double colInMosaic = ((findPosition()[0]) - BMOSAIC_X_LAYOUT) / TILE_SIZE;
+                    move = move + "B" + (int) (rowInStorage) + ((int) colInMosaic);
                 }
                 //if the tile is to FloorB
                 if (turn.equals("B") && findPosition()[2] == 6) {
                     double rowInStorage = (homeY - BSTORAGE_Y_LAYOUT) / TILE_SIZE;
-                    move = move + "B" + (int)rowInStorage + "F";
+                    move = move + "B" + (int) rowInStorage + "F";
                 }
             }
             System.out.println("move is " + move);
@@ -594,7 +595,7 @@ public class Game extends Application {
          * @author Yixin Ge
          * set the tile back to last valid position before mouse pressing.
          */
-        private void snapToHome(){
+        private void snapToHome() {
             this.setLayoutX(this.layOutX);
             this.setLayoutY(this.layOutY);
         }
@@ -604,7 +605,7 @@ public class Game extends Application {
          * the game state should be updated each time when there is a possible tile moving.
          */
         private void updateGameState() {
-            gameState = Azul.applyMove(gameState,findMove());
+            gameState = Azul.applyMove(gameState, findMove());
         }
     }
 
@@ -642,17 +643,18 @@ public class Game extends Application {
     }
 
     //add Mosaic to root
+
     /**
      * @author Xiao Xu
      */
-    private void addMosaicToRoot(){
-        for(int m = 0;m<PLAYER_NUM;m++){
+    private void addMosaicToRoot() {
+        for (int m = 0; m < PLAYER_NUM; m++) {
             this.mosaics[m] = new Group();
             for (int i = 0; i < NewMosaic.MOSAIC_WIDTH; i++) {
                 for (int j = 0; j < NewMosaic.MOSAIC_WIDTH; j++) {
                     GTile r = new GTile('a');
-                    r.setLayoutX(i*TILE_SIZE);
-                    r.setLayoutY(j*TILE_SIZE);
+                    r.setLayoutX(i * TILE_SIZE);
+                    r.setLayoutY(j * TILE_SIZE);
                     mosaics[m].getChildren().add(r);
                 }
             }
@@ -664,20 +666,19 @@ public class Game extends Application {
         mosaics[1].setLayoutX(BMOSAIC_X_LAYOUT);
         mosaics[1].setLayoutY(BMOSAIC_Y_LAYOUT);
 
-        for(Group m:mosaics){
+        for (Group m : mosaics) {
             root.getChildren().add(m);
         }
 
     }
 
 
-
     /**
      * @author Xiao Xu
      */
     //add storage to root
-    private void addStorageToRoot(){
-        for(int m = 0;m<PLAYER_NUM;m++) {
+    private void addStorageToRoot() {
+        for (int m = 0; m < PLAYER_NUM; m++) {
             this.storages[m] = new Group();
             for (int i = 0; i < Storage.STORAGE_ROW_NUM; i++) {
                 for (int j = 0; j <= i; j++) {
@@ -695,7 +696,7 @@ public class Game extends Application {
         storages[1].setLayoutX(BSTORAGE_X_LAYOUT);
         storages[1].setLayoutY(BSTORAGE_Y_LAYOUT);
 
-        for(Group s:storages){
+        for (Group s : storages) {
             root.getChildren().add(s);
         }
 
@@ -705,12 +706,12 @@ public class Game extends Application {
      * @author Xiao Xu
      */
     //add floor to root
-    private void addFloorToRoot(){
-        for(int m = 0; m<PLAYER_NUM;m++){
+    private void addFloorToRoot() {
+        for (int m = 0; m < PLAYER_NUM; m++) {
             this.floor[m] = new Group();
-            for(int i = 0;i < Floor.FLOOR_WIDTH;i++){
+            for (int i = 0; i < Floor.FLOOR_WIDTH; i++) {
                 GTile r = new GTile('a');
-                r.setLayoutX(i*TILE_SIZE);
+                r.setLayoutX(i * TILE_SIZE);
                 r.setLayoutY(0);
                 floor[m].getChildren().add(r);
             }
@@ -723,7 +724,7 @@ public class Game extends Application {
         floor[1].setLayoutX(BFLOOR_X_LAYOUT);
         floor[1].setLayoutY(BFLOOR_Y_LAYOUT);
 
-        for(Group f:floor){
+        for (Group f : floor) {
             root.getChildren().add(f);
         }
     }
@@ -732,12 +733,12 @@ public class Game extends Application {
      * @author Xiao Xu
      */
     //add center to root
-    private void addCenterToRoot(){
+    private void addCenterToRoot() {
         for (int i = 0; i < Center.CENTER_HEIGHT; i++) {
             for (int j = 0; j < Center.CENTER_WIDTH; j++) {
                 GTile r = new GTile('a');
-                r.setLayoutX(j*TILE_SIZE);
-                r.setLayoutY(i*TILE_SIZE);
+                r.setLayoutX(j * TILE_SIZE);
+                r.setLayoutY(i * TILE_SIZE);
                 center.getChildren().add(r);
             }
         }
@@ -752,24 +753,24 @@ public class Game extends Application {
      * @author Xiao Xu
      */
     //add factories to root
-    private void addFactoriesToRoot(){
-        for(int m = 0;m<5;m++){
+    private void addFactoriesToRoot() {
+        for (int m = 0; m < 5; m++) {
             this.factories[m] = new Group();
             for (int i = 0; i < Factory.MAX_FACTORY_TILES_NUM / 2; i++) {
                 for (int j = 0; j < Factory.MAX_FACTORY_TILES_NUM / 2; j++) {
                     GTile r = new GTile('a');
-                    r.setLayoutX(j*TILE_SIZE);
-                    r.setLayoutY(i*TILE_SIZE);
+                    r.setLayoutX(j * TILE_SIZE);
+                    r.setLayoutY(i * TILE_SIZE);
                     factories[m].getChildren().add(r);
                 }
             }
             //set location
-            factories[m].setLayoutX(2.5*m*TILE_SIZE+FACTORIES_X_LAYOUT);
+            factories[m].setLayoutX(2.5 * m * TILE_SIZE + FACTORIES_X_LAYOUT);
             factories[m].setLayoutY(FACTORIES_Y_LAYOUT);
 
         }
 
-        for(Group f:factories){
+        for (Group f : factories) {
             root.getChildren().add(f);
         }
 
@@ -778,7 +779,7 @@ public class Game extends Application {
     /***
      * @author Xiao Xu
      */
-    private void addBagToRoot(){
+    private void addBagToRoot() {
         bagLable[0] = new Label("Tile a (Blue): ");
         bagLable[1] = new Label("Tile b (Green): ");
         bagLable[2] = new Label("Tile c (Orange): ");
@@ -786,20 +787,20 @@ public class Game extends Application {
         bagLable[4] = new Label("Tile e (Red): ");
 
 
-        for(int i = 0; i < NUMBER_OF_TILETYPE;i++){
+        for (int i = 0; i < NUMBER_OF_TILETYPE; i++) {
             bagField[i] = new TextField("20");
             bag.getChildren().add(bagField[i]);
             bagField[i].setDisable(true);
             bagField[i].setLayoutX(BAG_TEXT_FIELD_X_LAYOUT);
-            bagField[i].setLayoutY(BAG_TEXT_FIELD_Y_LAYOUT+30*i);
+            bagField[i].setLayoutY(BAG_TEXT_FIELD_Y_LAYOUT + 30 * i);
             bagField[i].setPrefHeight(BAG_TEXT_FIELD_HEIGHT);
             bagField[i].setPrefWidth(BAG_TEXT_FIELD_WEIGHT);
         }
 
-        for(int i = 0;i < NUMBER_OF_TILETYPE;i++){
+        for (int i = 0; i < NUMBER_OF_TILETYPE; i++) {
             bag.getChildren().add(bagLable[i]);
             bagLable[i].setLayoutX(BAG_LABEL_X_LAYOUT);
-            bagLable[i].setLayoutY(BAG_LABEL_Y_LAYOUT+30*i);
+            bagLable[i].setLayoutY(BAG_LABEL_Y_LAYOUT + 30 * i);
         }
         Label b = new Label("Bag");
 
@@ -815,7 +816,7 @@ public class Game extends Application {
      * Check game completion and update states.
      */
     private void checkCompletion() {
-        if (Azul.isGameEnd(gameState)){ //if the game is end
+        if (Azul.isGameEnd(gameState)) { //if the game is end
 
             makeCompletion();
             showCompletion(); // show completion message
@@ -837,7 +838,6 @@ public class Game extends Application {
     }
 
 
-
     /**
      * @author Ruizheng Shen
      * Create the message to be displayed when the player completes the puzzle.
@@ -850,9 +850,9 @@ public class Game extends Application {
         completionLabel.setLayoutX(100);
         completionLabel.setLayoutY(100);
         completionBox.getChildren().add(completionLabel);
-        HashMap<String ,String[]> map = Azul.splitPlayerState(gameState);
-        String AScore = String.valueOf(Integer.parseInt(map.get("A")[0]) + Azul.getBonusPoints(gameState,'A')); // add score and bonus score.
-        String BScore = String.valueOf(Integer.parseInt(map.get("B")[0]) + Azul.getBonusPoints(gameState,'B')); // add score and bonus score.
+        HashMap<String, String[]> map = Azul.splitPlayerState(gameState);
+        String AScore = String.valueOf(Integer.parseInt(map.get("A")[0]) + Azul.getBonusPoints(gameState, 'A')); // add score and bonus score.
+        String BScore = String.valueOf(Integer.parseInt(map.get("B")[0]) + Azul.getBonusPoints(gameState, 'B')); // add score and bonus score.
         /*  Set up player labels and score boards */
         for (int i = 0; i < PLAYER_NUM; i++) {
             completionPlayersLabel[i] = new Label((char) ('A' + i) + " scores : "); // set the text in player labels.
@@ -908,10 +908,10 @@ public class Game extends Application {
     }
 
     /**
-     * @author Xiao Xu
      * @return true if there is no tiling move
+     * @author Xiao Xu
      */
-    private boolean NoTilingMove(){
+    private boolean NoTilingMove() {
         HashMap<String, String[]> playerState = Azul.splitPlayerState(this.gameState);
         String storageAString = playerState.get(String.valueOf('A'))[2];
         String storageBString = playerState.get(String.valueOf('B'))[2];
@@ -1008,7 +1008,7 @@ public class Game extends Application {
         Center c = new Center(center);
         ArrayList<Tile> tileInCenter = c.getTiles();
         GTile[] tiles = new GTile[c.getCurrentNum()];
-        for (Tile t: tileInCenter) {
+        for (Tile t : tileInCenter) {
             tiles[cnt] = new DraggableTile(t.getCode().charAt(0)); // get the colorChar from tile.
             cnt++; // update the counter.
         }
@@ -1038,11 +1038,12 @@ public class Game extends Application {
             updateFactoryView(fac[i], i); // update i-th factory view.
         }
     }
+
     /**
+     * @param factory index-th factory's state code.
+     * @param index   the index of factory to be updated.
      * @author Ruizheng Shen
      * update the factory view, according to the Characters input
-     * @param factory index-th factory's state code.
-     * @param index the index of factory to be updated.
      */
     private void updateFactoryView(String factory, int index) {
         this.factories[index].getChildren().clear();
@@ -1079,7 +1080,7 @@ public class Game extends Application {
         for (int i = 0; i < PLAYER_NUM; i++) {
             /*  Clear previous view  */
             this.floor[i].getChildren().clear(); // clear the i-th floor.
-            char playerChar = (char)('A' + i); // get the player char ('A' or 'B')
+            char playerChar = (char) ('A' + i); // get the player char ('A' or 'B')
 
             String floor = playerState.get(String.valueOf(playerChar))[3]; // get the floor state
             GTile[] tiles = new GTile[Floor.FLOOR_WIDTH];
@@ -1100,10 +1101,10 @@ public class Game extends Application {
     }
 
     /**
-     * @author Ruizheng Shen
+     * @author Ruizheng Shen, Xiao Xu
      */
     private void updateMosaicView() {
-        HashMap<String,String[]> map = Azul.splitPlayerState(gameState);
+        HashMap<String, String[]> map = Azul.splitPlayerState(gameState);
         for (int i = 0; i < PLAYER_NUM; i++) {
             this.mosaics[i].getChildren().clear(); // clear
             char playerChar = (char) ('A' + i);
@@ -1114,7 +1115,7 @@ public class Game extends Application {
                 for (int col = 0; col < NewMosaic.MOSAIC_WIDTH; col++) {
                     if (tilesInStorage[row][col] == null) {
                         GTile gtile = new GTile(NOT_PLACED);
-                        gtile.setLayoutX(col* TILE_SIZE);
+                        gtile.setLayoutX(col * TILE_SIZE);
                         gtile.setLayoutY(row * TILE_SIZE);
                         this.mosaics[i].getChildren().add(gtile); // add to group
                     } else {
@@ -1132,10 +1133,10 @@ public class Game extends Application {
     /**
      * @author Xiao Xu
      */
-    private void updateBagView(){
+    private void updateBagView() {
         String bagString = Azul.splitSharedState(gameState)[3];
-        for(int i = 0; i<NUMBER_OF_TILETYPE;i++){
-            bagField[i].setText(bagString.substring(2*i+1,2*i+3));
+        for (int i = 0; i < NUMBER_OF_TILETYPE; i++) {
+            bagField[i].setText(bagString.substring(2 * i + 1, 2 * i + 3));
         }
 
     }
@@ -1179,7 +1180,6 @@ public class Game extends Application {
     }
 
 
-
     /**
      * @author Ruizheng Shen
      * Start a new game, reset everything.
@@ -1188,14 +1188,16 @@ public class Game extends Application {
         resetGameState(); // reset the game state.
         refillFactories(); // refill the factories.
         updateCenterView(); // update the center view.
-        // updateStorageView(); // update the storage view.
         updateScoresView(); // update the score view.
-        toggleSoundLoop(); // toggle sound loop
-        updateFloorView();
-        updateMosaicView();
-        updateStorageView();
+        toggleSoundLoop(); // toggle sound loop.
+        updateFloorView(); // update floor view.
+        updateMosaicView(); // update mosaic view.
+        updateStorageView(); // update storage view.
     }
 
+    /**
+     * @author Yixin Ge, Xiao Xu, Ruizheng Shen
+     */
     @Override
     public void start(Stage stage) throws Exception {
         //  FIXME Task 12: Implement a basic playable Azul game in JavaFX that only allows tiles to be placed in valid places
@@ -1210,31 +1212,34 @@ public class Game extends Application {
         addCenterToRoot();
         addFactoriesToRoot();
         addBagToRoot();
+
         // create a button to mute or play the audio on board
-        Button muteButton= new Button();
+        Button muteButton = new Button();
         muteButton.setText("Mute");
-        muteButton.setFont(Font.font(null,FontWeight.BOLD,20)); // set the size and form of the text
-        muteButton.setLayoutX(BOARD_WIDTH-120); // set location
+        muteButton.setFont(Font.font(null, FontWeight.BOLD, 20)); // set the size and form of the text
+        muteButton.setLayoutX(BOARD_WIDTH - 120); // set location
         muteButton.setLayoutY(50);
-        BackgroundFill backgroundFill= new BackgroundFill(Paint.valueOf("#F2F8A6"),CornerRadii.EMPTY,Insets.EMPTY); //set background color
+        BackgroundFill backgroundFill = new BackgroundFill(Paint.valueOf("#F2F8A6"), CornerRadii.EMPTY, Insets.EMPTY); //set background color
         Background background = new Background(backgroundFill);
         muteButton.setBackground(background);
-        muteButton.setOnAction((ActionEvent e)->{ // mute the audio when clicked
+        muteButton.setOnAction((ActionEvent e) -> { // mute the audio when clicked
             toggleSoundLoop();
-            muteButton.setOnAction((ActionEvent e1)->{ // replay the audio when clicked again
+            muteButton.setOnAction((ActionEvent e1) -> { // replay the audio when clicked again
                 toggleSoundLoop();
+            });
         });
-        });
-        Button restartButton= new Button();
+        Button restartButton = new Button();
         restartButton.setText("Restart");
-        restartButton.setFont(Font.font(null,FontWeight.BOLD,20)); // set the size and form of the text
-        restartButton.setLayoutX(BOARD_WIDTH-120); // set location
+        restartButton.setFont(Font.font(null, FontWeight.BOLD, 20)); // set the size and form of the text
+        restartButton.setLayoutX(BOARD_WIDTH - 120); // set location
         restartButton.setLayoutY(120);
         restartButton.setBackground(background);
-        restartButton.setOnAction((ActionEvent e)-> { // mute the audio when clicked
+        restartButton.setOnAction((ActionEvent e) -> { // mute the audio when clicked
             newGame();
             toggleSoundLoop();
         });
+
+
         Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
         root.getChildren().add(gTiles);
         root.getChildren().add(muteButton);
@@ -1247,6 +1252,7 @@ public class Game extends Application {
         root.getChildren().add(board);
         makeBoard();
         newGame();
+
         File file = new File("assets/icon.png");
         String iconString = file.toURI().toString();
         Image icon = new Image(iconString);

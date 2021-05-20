@@ -9,6 +9,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
+ *
+ *                               !!!!!! Do not use player(it was already in Game.java) !!!!!!!!
+ *
+ *
+ *
+ */
+
+/**
  * The player class implements the player in the game. Including the implements of player's name and player's moves.
  *
  * @author Ruizheng Shen
@@ -91,7 +99,6 @@ public class Player {
      * @return whether this draft move is available according to the game rules.
      */
     public boolean draftMove(Tile[] tiles, int row) {
-        // TODO: implements the draftMove method.
         // check whether there's a 'first player' tile.
         tiles = placeFirstPlayerTile(tiles);
         // move tiles to storage
@@ -119,7 +126,6 @@ public class Player {
      * @return whether this tile move is available according to the game rules.
      */
     public boolean tileMove(int row, int col) {
-        // TODO: implements the tileMove method.
         if(storage.isRowFull(row)){
             storage.emptyRow(row);
             mosaic.move(storage.rowColour(row),row,col);
@@ -133,7 +139,6 @@ public class Player {
      * @param tiles
      */
     public Tile[] placeFirstPlayerTile(Tile[] tiles) {
-        // TODO: test
         ArrayList<Tile> newTiles = new ArrayList<>();
         for (Tile t: tiles) {
             if (t.getTileType() != TileType.FirstPlayer) {
@@ -169,7 +174,6 @@ public class Player {
      * calculate the score of this player
      */
     public void calculateScore() {
-        // TODO: calculate the score of this player
     }
 
     public NewMosaic getMosaic(){
@@ -180,7 +184,6 @@ public class Player {
      * Decode the state
      */
     public void decode(String[] gameState) {
-        // TODO: get the shared state and the player state according to game state.
         this.sharedState = Azul.splitSharedState(gameState);
         this.playerState = Azul.splitPlayerState(gameState).get(this.playerCode);
     }

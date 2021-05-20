@@ -53,9 +53,11 @@ public class Bag {
      *
      * @return String of the code
      */
-    //implement by Yixin Ge
+    /**
+     * @author YiXin Ge
+     * @return code
+     */
     public String encode() {
-        //TODO
         StringBuilder code = new StringBuilder("B");
         String aCnt = amountChar('a');
         code.append(aCnt);
@@ -70,6 +72,11 @@ public class Bag {
         return code.toString();
     }
 
+    /**
+     * @author Xiao Xu
+     * @param type color of the tile.
+     * @return number of tiles of that color.
+     */
     //find amount of a color in Tile[], return in String.
     public String amountChar(char type) {
         int cnt = 0;
@@ -90,6 +97,10 @@ public class Bag {
         return cntS;
     }
 
+    /**
+     * @author YiXin Ge
+     * @param bag the bag state
+     */
     public void decode(String bag) {
         int a = Integer.parseInt(bag.substring(1, 3));
         aTiles = a;
@@ -120,6 +131,11 @@ public class Bag {
         placeTiles(newTiles);
     }
 
+    /**
+     * @author YiXin Ge
+     * @param tiles the tiles to be placed in the bag.
+     * @return whether the place is valid.
+     */
     public boolean placeTiles(Tile[] tiles) {
         int cnt = lengthTile();
         if (cnt + tiles.length <= 100) {
@@ -130,8 +146,8 @@ public class Bag {
     }
 
     /**
-     * find the number of tiles in bag
-     *
+     * @author YiXin Ge
+     * find the number of tiles in bag.
      * @return number of tiles in bag in current stage
      */
     public int lengthTile() {
@@ -163,27 +179,5 @@ public class Bag {
         return eTiles;
     }
 
-    public static void main(String[] args) {
-        /*Tile[] tiles = new Tile[]{
-                new Tile(TileType.Red),
-                new Tile(TileType.Green),
-                new Tile(TileType.Blue),
-                new Tile(TileType.Blue),
-                new Tile(TileType.Blue),
-                new Tile(TileType.Blue),
-                new Tile(TileType.Blue)};
-        Bag b = new Bag(tiles);
-        System.out.println(b.getCode());
-
-         */
-        String a = new String("B1915161614");
-        Bag d = new Bag();
-        d.decode(a);
-        for (int i = 0; i < 100; i++) {
-            if (d.tiles[i] != null) {
-                System.out.print(d.tiles[i].getCode());
-            }
-        }
-    }
 }
 

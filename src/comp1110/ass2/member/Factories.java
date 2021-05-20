@@ -1,9 +1,5 @@
 package comp1110.ass2.member;
 
-import gittest.A;
-import javafx.scene.Group;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -14,14 +10,11 @@ public class Factories {
     public static int factoryNum;
     private Factory[] factories;
 
-    /* Members for javafx */
-    private Group[] factoriesView;
-    int xIndex;
-    int yIndex;
 
     /**
      * Constructor: decide the number of factories based on player numbers.
-     * @param playerNum
+     *
+     * @param playerNum the player number
      */
     public Factories(int playerNum) {
         /*  The number of factories depends on the number of players.
@@ -46,8 +39,6 @@ public class Factories {
         for (int i = 0; i < factoryNum; i++) {
             factories[i] = new Factory();
         }
-        // create factoryView.
-        createView();
     }
 
     /**
@@ -59,13 +50,12 @@ public class Factories {
         for (int i = 0; i < factoryNum; i++) {
             factories[i] = new Factory();
         }
-        // create factoryView
-        createView();
     }
 
     /**
      * Constructor: create factories by factory state code
-     * @param factory
+     *
+     * @param factory the factory state
      */
     public Factories(String factory) {
         factoryNum = 5;
@@ -74,39 +64,12 @@ public class Factories {
             this.factories[i] = new Factory();
         }
         decode(factory);
-        // create factoryView
-        createView();
-    }
-
-    /**
-     * create view for factory
-     */
-    private void createView() {
-        this.factoriesView = new Group[factoryNum];
-        updateFactoriesView();
-    }
-
-    /**
-     * Update the factories view, should be called after each action.
-     */
-    public void updateFactoriesView() {
-        for (int i = 0; i < factoryNum; i++) {
-            this.factoriesView[i] = factories[i].getFactoryView();
-        }
-    }
-
-    /**
-     * The visitor of factoriesView(5 grids in normal case)
-     * @return View of factories
-     */
-    public Group[] getFactoriesView() {
-        updateFactoriesView();
-        return this.factoriesView;
     }
 
 
     /**
      * encode the current state in factories.
+     *
      * @return factory code
      */
     private String encode() {
@@ -121,6 +84,7 @@ public class Factories {
 
     /**
      * the state code visitor
+     *
      * @return the state code of factory
      */
     public String getCode() {
@@ -129,11 +93,11 @@ public class Factories {
 
     /**
      * decode the factory state to tiles in factories,(default player number: 2)
-     * @param factory
+     *
+     * @param factory the factory state
      * @return return false if the code invalid
      */
     public void decode(String factory) {
-        // TODO: check validity.
         String[] split = splitFactoryState(factory); //  get the split factory code.
         for (int i = 0; i < factoryNum; i++) {
             this.factories[i].decode(split[i]);
@@ -142,7 +106,8 @@ public class Factories {
 
     /**
      * Split the factory state into each factory.
-     * @param factory
+     *
+     * @param factory split the factory state
      * @return split factory state
      */
     public String[] splitFactoryState(String factory) {
@@ -176,7 +141,8 @@ public class Factories {
 
     /**
      * return the color of factory num in ArrayList<TileType>
-     * @param num
+     *
+     * @param num the number of tiles of that color.
      * @return colors
      */
     public ArrayList<TileType> getColors(int num) {
@@ -190,18 +156,19 @@ public class Factories {
 
     /**
      * draft tiles from factory according to color.
+     *
      * @param color the color which player wants to draft.
-     * @param num draft from factory[num].
+     * @param num   draft from factory[num].
      * @return tiles
      */
     public Tile[] draftTile(int num, TileType color) {
-        // TODO test
         return factories[num].draftTile(color);
     }
 
     /**
      * clear factory[num]
-     * @param num
+     *
+     * @param num the index of factory
      */
     public void clear(int num) {
         this.factories[num].clear();
@@ -209,10 +176,11 @@ public class Factories {
 
     /**
      * Determine whether all of these factories are empty.
+     *
      * @return whether all of these factories are empty.
      */
     public boolean isEmpty() {
-        for (Factory f: this.factories) {
+        for (Factory f : this.factories) {
             if (!f.isEmpty()) {
                 return false;
             }
@@ -222,6 +190,7 @@ public class Factories {
 
     /**
      * Given an index, determine whether Factory[index] is empty.
+     *
      * @param index the index of the factory
      * @return whether Factory[index] is empty.
      */
@@ -229,25 +198,10 @@ public class Factories {
         return this.factories[index].isEmpty();
     }
 
-    public void setLocation(int x, int y) {
-        this.xIndex = x;
-        this.yIndex = y;
-        // TODO: set layout for all factories.
-        for (int i = 0; i < factoryNum; i++) {
-            // FIXME
-            factories[i].setLocation(this.xIndex + i * (2 * Tile.TILE_WIDTH) + i * 10, this.yIndex);
-        }
-    }
-    public int getxIndex() {
-        return this.xIndex;
-    }
-    public int getyIndex() {
-        return this.yIndex;
-    }
-
     public Factory getFactory(int index) {
         return factories[index];
     }
+
     public int tileNum(char color, int num) {
         return this.factories[num].tileNum(color);
     }
@@ -259,28 +213,5 @@ public class Factories {
             s.append("factory ").append(i).append(": ").append(this.factories[i]).append("\n");
         }
         return s.toString();
-    }
-
-    public static void main(String[] args) {
-        // test case 1, test decode(), normal case
-        Factories fs1 = new Factories("F0abbe2ccdd");
-        System.out.println(fs1);
-        // test case 2, test decode(), empty case
-        Factories fsEmpty = new Factories("F");
-        System.out.println(fsEmpty);
-        // test case 3, test decode(), edging case
-        Factories fsEdge1 = new Factories("F4dddd");
-        System.out.println(fsEdge1);
-        // test case 4, test decode() & getColors(), normal case
-        Factories fs2 = new Factories("F0cdde1bbbe2abde3cdee4bcce");
-        System.out.println(fs2);
-        for (int i = 0; i < 5; i++) {
-            // factory 0 - 4
-            ArrayList<TileType> colors = fs2.getColors(i);
-            colors.forEach(t -> {
-                System.out.print(t + " ");
-            });
-            System.out.println();
-        }
     }
 }

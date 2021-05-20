@@ -1,13 +1,5 @@
 package comp1110.ass2.member;
 
-import comp1110.ass2.gui.Game;
-import javafx.event.EventHandler;
-import javafx.scene.Group;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Paint;
-
-import java.awt.*;
-
 /**
  * @author Yixin Ge
  * @version 1.0
@@ -16,6 +8,7 @@ import java.awt.*;
 
 /**
  * Modified by Ruizheng Shen.
+ *
  * @author Ruizheng Shen
  * @version 2.0
  * @since 2021.4.26
@@ -72,12 +65,12 @@ public class Storage {
     }
 
     public Storage(String storage) {
-        // TODO test
         decode(storage);
     }
 
     /**
      * The visitor of tiles.
+     *
      * @return tiles[][]
      */
     public Tile[][] getTiles() {
@@ -138,7 +131,6 @@ public class Storage {
      * @param storage storage state(String)
      */
     public void decode(String storage) {
-        // TODO: test
         // String storage: S{[row][colorChar][number]}*
         // storage.charAt(0) == 'S'
         for (int i = 1; i < storage.length(); i = i + 3) {
@@ -165,7 +157,6 @@ public class Storage {
      * @return whether this move is valid.
      */
     public boolean placeTiles(Tile[] tiles, int row) {
-        // TODO: test, first check the validity(not finished yet)
         if (!isPlaceValid(tiles, row)) return false;
         for (int i = 0; i < tiles.length; i++) {
             this.tiles[row][STORAGE_ROW_LENGTH[row] - 1 - i] = tiles[i];
@@ -175,12 +166,12 @@ public class Storage {
 
     /**
      * determine whether the placing in this row is valid.
+     *
      * @param tiles the tiles to be placed
-     * @param row the row to place in
+     * @param row   the row to place in
      * @return whether the placing in this row is valid.
      */
     public boolean isPlaceValid(Tile[] tiles, int row) {
-        // TODO get check with NewMosaic
         // check the tiles color
         for (Tile t : tiles) {
             if (!isRowColorSame(t, row)) return false;
@@ -271,7 +262,6 @@ public class Storage {
      * @return whether the color is not same as any colors having in the same row in Mosaic.
      */
     public boolean isColorDifInMosaicRow(Tile[] tilesFromFactory, TileType[] colorList) {
-        // TODO: test
         // row: the index of the row
         // colorList: the colors contained in this row in mosaic
         TileType tileColor = tilesFromFactory[0].getTileType();
@@ -288,7 +278,6 @@ public class Storage {
      * @return whether the rightmost space for tile in a row is empty or not.
      */
     public boolean isRightEmpty(int row) {
-        // TODO: test
         // the rightmost position in a row, should be 'STORAGE_ROW_LENGTH[row] - 1'.
         return this.tiles[row][STORAGE_ROW_LENGTH[row] - 1] == null;
     }
@@ -324,9 +313,8 @@ public class Storage {
         }
     }
 
-    public boolean NoFullRow(){
-         if (isRowFull(0) || isRowFull(1) || isRowFull(2) || isRowFull(3) || isRowFull(4)) return false;
-         else return true;
+    public boolean NoFullRow() {
+        return !isRowFull(0) && !isRowFull(1) && !isRowFull(2) && !isRowFull(3) && !isRowFull(4);
     }
 
     @Override
@@ -340,29 +328,4 @@ public class Storage {
         }
         return s.toString();
     }
-
-
-    public static void main(String[] args) {
-        Storage s = new Storage();
-        s.decode("S0a11c22a33c44b5"); // decode the String and put them into the storage
-        for (int i = 0; i < STORAGE_ROW_NUM; i++) {
-            System.out.print("[");
-            for (int j = 0; j < STORAGE_ROW_LENGTH[i]; j++) {
-                if (s.tiles[i][j] == null) {
-                    System.out.print(" , ");
-                } else {
-                    System.out.print(s.tiles[i][j].getCode() + ", ");
-                }
-            }
-            System.out.println("]");
-        }
-        // test case, test placeTile() validity
-        Storage s1 = new Storage();
-        Tile[] tiles = new Tile[]{
-                new Tile('a'),
-                new Tile('a'),
-        };
-        System.out.println(s1.placeTiles(tiles, 0));
-    }
-
 }

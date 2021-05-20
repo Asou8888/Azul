@@ -6,11 +6,7 @@ package comp1110.ass2.member;
  * @version 2.0(improve on Mosaic)
  */
 
-import comp1110.ass2.gui.Game;
-import javafx.scene.Group;
-
 import java.util.ArrayList;
-import java.util.function.ToDoubleBiFunction;
 
 public class NewMosaic {
     private Tile[][] tiles;
@@ -20,22 +16,14 @@ public class NewMosaic {
     private final boolean isVariant; // whether the mosaic is variant, if not, the mosaic will be the beginner mosaic.
 
 
-    /* Members of javafx */
-    private final Group mosaicView = new Group();
-    int xIndex;
-    int yIndex;
-
-    // FIXME: createView
     public NewMosaic() {
         this.tiles = new Tile[MOSAIC_WIDTH][MOSAIC_WIDTH];
         this.isVariant = true;
-        createView();
     }
 
     public NewMosaic(String mosaic) {
         this.tiles = new Tile[MOSAIC_WIDTH][MOSAIC_WIDTH];
         this.isVariant = true;
-        createView();
         decode(mosaic);
     }
 
@@ -51,12 +39,10 @@ public class NewMosaic {
                     new TileType[]{TileType.Green, TileType.Orange, TileType.Purple, TileType.Red, TileType.Blue}
             };
         }
-        createView();
     }
 
     public NewMosaic(Tile[] tiles) {
         this.isVariant = true;
-        createView();
         for (int i = 0; i < MOSAIC_WIDTH; i++) {
             for (int j = 0; j < MOSAIC_WIDTH; j++) {
                 this.tiles[i][j] = tiles[MOSAIC_WIDTH * i + j];
@@ -66,64 +52,7 @@ public class NewMosaic {
 
     public NewMosaic(Tile[][] tiles) {
         this.isVariant = true;
-        createView();
         this.tiles = tiles;
-    }
-
-    private void createView() {
-        // TODO
-        if (isVariant) {
-            for (int i = 0; i < MOSAIC_WIDTH; i++) {
-                for (int j = 0; j < MOSAIC_WIDTH; j++) {
-                    this.mosaicView.getChildren().add(new Tile(' ', j * Tile.TILE_WIDTH, i * Tile.TILE_WIDTH));
-                }
-            }
-        } else {
-            for (int i = 0; i < MOSAIC_WIDTH; i++) {
-                for (int j = 0; j < MOSAIC_WIDTH; j++) {
-                    this.mosaicView.getChildren().add(new Tile(pattern[i][j], j * Tile.TILE_WIDTH, i * Tile.TILE_WIDTH));
-                }
-            }
-        }
-    }
-
-    public void setLocation(int xIndex, int yIndex) {
-        // TODO
-        this.xIndex = xIndex;
-        this.yIndex = yIndex;
-        this.mosaicView.setLayoutX(this.xIndex);
-        this.mosaicView.setLayoutY(this.yIndex);
-    }
-
-    public void updateMosaicView() {
-        // TODO
-        this.mosaicView.getChildren().clear();
-        for (int i = 0; i < MOSAIC_WIDTH; i++) {
-            for (int j = 0; j < MOSAIC_WIDTH; j++) {
-                if (tiles[i][j] != (Tile) null) {
-                    this.mosaicView.getChildren().add(new Tile(tiles[i][j].getTileType(), j * Tile.TILE_WIDTH, i * Tile.TILE_WIDTH));
-                } else {
-                    this.mosaicView.getChildren().add(new Tile(' ', j * Tile.TILE_WIDTH, i * Tile.TILE_WIDTH));
-                }
-            }
-        }
-    }
-
-    public Group getMosaicView() {
-        // TODO
-        updateMosaicView();
-        return this.mosaicView;
-    }
-
-    /**
-     * The visitor of xIndex and yIndex
-     */
-    public int getxIndex() {
-        return xIndex;
-    }
-
-    public int getyIndex() {
-        return yIndex;
     }
 
 
@@ -143,6 +72,12 @@ public class NewMosaic {
         return code.toString();
     }
 
+    /**
+     * get colors of this row.
+     *
+     * @param row the row number
+     * @return the colors in this row.
+     */
     public ArrayList<TileType> rowColorList(int row) {
         ArrayList<TileType> colors = new ArrayList<>();
         for (int j = 0; j < MOSAIC_WIDTH; j++) {
@@ -153,6 +88,12 @@ public class NewMosaic {
         return colors;
     }
 
+    /**
+     * get colors of this column
+     *
+     * @param col the column number
+     * @return the colors in this column
+     */
     public ArrayList<TileType> colColorList(int col) {
         ArrayList<TileType> colors = new ArrayList<>();
         for (int i = 0; i < MOSAIC_WIDTH; i++) {
@@ -163,7 +104,11 @@ public class NewMosaic {
         return colors;
     }
 
-
+    /**
+     * determine whether this mosaic is empty
+     *
+     * @return whether this mosaic is empty.
+     */
     public boolean isEmpty() {
         for (int i = 0; i < MOSAIC_WIDTH; i++) {
             for (int j = 0; j < MOSAIC_WIDTH; j++) {
@@ -178,6 +123,12 @@ public class NewMosaic {
         return tiles[row][col] == null;
     }
 
+    /**
+     * Determine whether this row is full.(To determine whether the game should end.)
+     *
+     * @param row the number of row
+     * @return whether this row is full
+     */
     public boolean isRowFull(int row) {
         for (int i = 0; i < MOSAIC_WIDTH; i++) {
             if (tiles[row][i] == null)
@@ -188,6 +139,7 @@ public class NewMosaic {
 
     /**
      * return true if any row is full. (To determine whether the game ends.)
+     *
      * @return is any row full
      */
     public boolean isRowFull() {
@@ -198,7 +150,6 @@ public class NewMosaic {
     }
 
     public boolean isColumnFull(int col) {
-        // TODO test
         for (int i = 0; i < MOSAIC_WIDTH; i++) {
             if (tiles[i][col] == null)
                 return false;
@@ -208,26 +159,26 @@ public class NewMosaic {
 
     /**
      * Determine whether a placing tiles in a position is valid.
+     *
      * @param tile the tile need to be placed.
-     * @param row the row in mosaic
-     * @param col the column in mosaic
+     * @param row  the row in mosaic
+     * @param col  the column in mosaic
      * @return whether a placing tiles in a position is valid.
      */
     public boolean isPlaceValid(Tile tile, int row, int col) {
-        // TODO test
         if (!isEmpty(row, col)) {
             return false;
         } else {
             ArrayList<TileType> rowColors = rowColorList(row);
             ArrayList<TileType> colColors = colColorList(col);
             // check whether there's color conflict in the same row
-            for (TileType color: rowColors) {
+            for (TileType color : rowColors) {
                 if (tile.getTileType() == color) {
                     return false;
                 }
             }
             // check whether there's color conflict in the same column.
-            for (TileType color: colColors) {
+            for (TileType color : colColors) {
                 if (tile.getTileType() == color) {
                     return false;
                 }
@@ -238,13 +189,14 @@ public class NewMosaic {
 
     /**
      * determine whether this color exists in this row
-     * @param row the row
+     *
+     * @param row   the row
      * @param color the color of tile
      * @return whether this color exists in this row
      */
     public boolean isColorExisted(int row, TileType color) {
         ArrayList<TileType> colors = rowColorList(row);
-        for (TileType c: colors) {
+        for (TileType c : colors) {
             if (color == c) {
                 return true;
             }
@@ -254,10 +206,10 @@ public class NewMosaic {
 
     /**
      * Calculate the bonus score in mosaic at the end of the game
+     *
      * @return bonus score
      */
     public int getBonusScore() {
-        // TODO test
         int bonusScore = 0;
         // calculate row score
         for (int i = 0; i < MOSAIC_WIDTH; i++) {
@@ -269,7 +221,7 @@ public class NewMosaic {
             }
         }
         int[] colorNum = calculateColor();
-        for (int i: colorNum) {
+        for (int i : colorNum) {
             if (colorNum[i] == BIGGEST_NUM_OF_COLOR_TILE) {
                 bonusScore += 10;
             }
@@ -280,10 +232,10 @@ public class NewMosaic {
 
     /**
      * Calculate the number of the colors in the mosaic
+     *
      * @return the number of the colors tiles
      */
     private int[] calculateColor() {
-        // TODO test
         int[] cnt = new int[]{0, 0, 0, 0, 0}; // 0th for blue, 1st for green, 2nd for orange, 3rd for purple, 4th for red.
         for (int i = 0; i < MOSAIC_WIDTH; i++) {
             for (int j = 0; j < MOSAIC_WIDTH; j++) {
@@ -358,21 +310,11 @@ public class NewMosaic {
             int col = mosaic.charAt(i + 2) - '0'; // the column of this tile.
             Tile t = new Tile(colorChar);
             t.setBelong(TileBelonging.Mosaic);
-            t.setOnMouseClicked(e -> {
-                // FIXME
-                t.setOpacity(0.6);
-                if (Game.isClick) { //if it is an second click
-                    Game.isClick = false; //clear click
-                    Tile p = Game.from;//load the tile from Storage
-                    //TODO
-
-                }
-            });
             tiles[row][col] = new Tile(colorChar); // put the tile in this position.
         }
     }
 
-    public Tile[][] getTiles(){
+    public Tile[][] getTiles() {
         return this.tiles;
     }
 
@@ -392,22 +334,6 @@ public class NewMosaic {
             s.append("\n");
         }
         return s.toString();
-    }
-
-
-    public static void main(String[] args) {
-        Tile[][] tiles = new Tile[][]{
-                new Tile[]{null, null, null, new Tile(TileType.Purple), null},
-                new Tile[]{null, null, null, new Tile(TileType.Green), null},
-                new Tile[]{null, new Tile(TileType.Orange), null, new Tile(TileType.Red), new Tile(TileType.Green)},
-                new Tile[]{null, null, null, null, null},
-                new Tile[]{null, null, null, null, null}
-        };
-        NewMosaic m = new NewMosaic(tiles);
-
-        System.out.println(m.score(2, 3));
-        m.move('a', 0, 1);
-        System.out.println(tiles[0][1].getCode());
     }
 
 }

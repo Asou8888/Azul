@@ -1,8 +1,6 @@
 package comp1110.ass2.member;
 
 import comp1110.ass2.gui.Game;
-import gittest.A;
-import javafx.scene.Group;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,13 +22,6 @@ public class Factory {
     public static final int MAX_FACTORY_TILES_NUM = 4;
     private ArrayList<Tile> tiles;
 
-    /* Members for javafx */
-    int xIndex;
-    int yIndex;
-    Group factoryView = new Group();
-
-
-
 
     /**
      * Constructor for the Factory. Given array of tiles, returns the
@@ -38,13 +29,14 @@ public class Factory {
      *
      * @param tiles the given array of Tile
      */
-    public Factory(Tile[] tiles){
+    public Factory(Tile[] tiles) {
         this.tiles = new ArrayList<>(Arrays.asList(tiles));
     }
 
     /**
      * Another constructor with ArrayList as input.
-     * @param tiles
+     *
+     * @param tiles the input tile list
      */
     public Factory(ArrayList<Tile> tiles) {
         this.tiles = tiles;
@@ -55,69 +47,19 @@ public class Factory {
      */
     public Factory() {
         this.tiles = new ArrayList<>();
-        createView();
     }
 
     /**
-     * Create view for a factory, only called by the constructor
-     */
-    private void createView() {
-        factoryView = new Group();
-        int cnt = 0;
-        for (int i = 0; i < MAX_FACTORY_TILES_NUM / 2; i++) {
-            for (int j = 0; j < MAX_FACTORY_TILES_NUM / 2; j++) {
-                if (tiles.isEmpty() || tiles.get(cnt) == null) {
-                    cnt++;
-                    factoryView.getChildren().add(new Tile(' ', i * Tile.TILE_WIDTH, j * Tile.TILE_WIDTH));
-                } else {
-                    Tile t = tiles.get(cnt);
-                    t.setLocation(i * Tile.TILE_WIDTH, j * Tile.TILE_WIDTH);
-                    factoryView.getChildren().add(t);
-                    cnt++;
-                }
-            }
-        }
-    }
-    public void updateFactoryView() {
-        this.factoryView.getChildren().clear(); // clear the previous view.
-        int cnt = 0;
-        for (int i = 0; i < MAX_FACTORY_TILES_NUM / 2; i++) {
-            for (int j = 0; j < MAX_FACTORY_TILES_NUM / 2; j++) {
-                if (cnt >= tiles.size()) {
-                    cnt++;
-                    factoryView.getChildren().add(new Tile(' ', i * Tile.TILE_WIDTH, j * Tile.TILE_WIDTH));
-                } else {
-                    Tile t = tiles.get(cnt);
-                    t.setLocation(i * Tile.TILE_WIDTH, j * Tile.TILE_WIDTH);
-                    factoryView.getChildren().add(t);
-                    cnt++;
-                }
-            }
-        }
-    }
-    public Group getFactoryView() {
-        updateFactoryView();
-        return this.factoryView;
-    }
-    public void setLocation(int x, int y) {
-        this.xIndex = x;
-        this.yIndex = y;
-        this.factoryView.setLayoutX(this.xIndex);
-        this.factoryView.setLayoutY(this.yIndex);
-    }
-
-    /**
-     *
      * @return the number of tiles in this factory
      */
     public int tileNum() {
         return this.tiles.size();
     }
 
-    public int tileNum(char color){
+    public int tileNum(char color) {
         int num = 0;
-        for (int i = 0; i<tiles.size(); i++){
-            if(tiles.get(i).getCode().equals(String.valueOf(color))){
+        for (Tile tile : tiles) {
+            if (tile.getCode().equals(String.valueOf(color))) {
                 num += 1;
             }
         }
@@ -126,13 +68,14 @@ public class Factory {
 
     /**
      * Updated by Ruizheng Shen
-     * @author Ruizheng Shen
+     *
      * @param color the color of tiles.
      * @return the number of this color of tiles.
+     * @author Ruizheng Shen
      */
     public int tileNum(TileType color) {
         int cnt = 0;
-        for (Tile t: this.tiles) {
+        for (Tile t : this.tiles) {
             if (t.getTileType() == color) {
                 cnt++;
             }
@@ -142,11 +85,11 @@ public class Factory {
 
     /**
      * Draft tiles from factory according to color.
+     *
      * @param color the color which player chooses.
      * @return the tiles of this color
      */
     public Tile[] draftTile(TileType color) {
-        // TODO test
         int num = tileNum(color); // find the number of tiles of this color.
         if (num == 0) return null;
         Tile[] tiles = new Tile[num];
@@ -157,19 +100,20 @@ public class Factory {
     }
 
 
-    public String deleteTile(char color){
+    public String deleteTile(char color) {
         String factory = encode();
-        String newFactory = "";
-        for(int i = 0; i< factory.length();i++){
-            if(factory.charAt(i) != color){
-                newFactory += String.valueOf(factory.charAt(i));
+        StringBuilder newFactory = new StringBuilder();
+        for (int i = 0; i < factory.length(); i++) {
+            if (factory.charAt(i) != color) {
+                newFactory.append(factory.charAt(i));
             }
         }
-        return newFactory;
+        return newFactory.toString();
     }
 
     /**
      * Return the code of the current state in Factory.
+     *
      * @return the String code of Factory.
      */
     public String getCode() {
@@ -179,24 +123,23 @@ public class Factory {
     /**
      * The Factories placement string begins with an 'F' and is followed by a number of individual factory placement string.
      * Each encoding of a singular Factory placement string is as follows:
-     *
+     * <p>
      * {Factory number}{tiles}
-     *
+     * <p>
      * The first character is a number 0-8 representing the Factory number. Factories are numbered sequentially, so in a 2-player
      * game, we will have factories 0 to 4.
      * The following 0 - 4 characters are letters a to e representing the tiles stored there in alphabetical order.
      * For example: "F0abbe2ccdd" reads "Factory 0 has one a tile, two b tiles, one c tile, one e tile, Factory 2
      * contains two c tiles and two d tiles, and Factories 1, 3, and 4 are empty.
      * If a factory is empty, it does not appear in the factories string.
-     *
+     * <p>
      * The number of factories depends on the number of players.
-     *
+     * <p>
      * 2 players: 5 factories
      * 3 players: 7 factories
      * 4 players: 9 factories
      */
     private String encode() {
-        //TODO
         StringBuilder code = new StringBuilder();
         this.tiles.forEach(t -> {
             code.append(t.getCode());
@@ -206,8 +149,9 @@ public class Factory {
 
     /**
      * add by Xiao Xu
-     * @param str
-     * @return
+     *
+     * @param str the stringto be sorted
+     * @return the string in order.
      */
     private static String sortChar(String str) {
 
@@ -226,34 +170,26 @@ public class Factory {
     private static void sort(char[] chs) {
         Arrays.sort(chs);
     }
+
     private static char[] stringToArray(String string) {
         return string.toCharArray();
     }
 
     /**
      * Determines if the factory currently has no tiles.
+     *
      * @return whether the factory currently has no tiles.
      */
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         return this.tiles.isEmpty();
     }
 
     public void decode(String thisFactory) {
-        // TODO: test
         // If this factory is null, this factory will be empty.
         if (thisFactory != null) {
             for (int i = 0; i < thisFactory.length(); i++) {
-                //TODO: check whether the code valid
                 Tile t = new Tile(thisFactory.charAt(i));
                 t.setBelong(TileBelonging.Factory);
-                t.setOnMouseClicked(e -> {
-                    // FIXME
-                    t.setOpacity(0.6);
-                    if (!Game.isClick) {
-                        Game.isClick = true;
-                        Game.from = t;
-                    }
-                });
                 this.tiles.add(t); // add tiles to this factory according to code
             }
         }
@@ -261,6 +197,7 @@ public class Factory {
 
     /**
      * Find the colors of tiles in this factory
+     *
      * @return List of colors(TileType)
      */
     public ArrayList<TileType> getColors() {
@@ -275,9 +212,10 @@ public class Factory {
 
     /**
      * find the amount of the tiles in a Factory
+     *
      * @return the amount of tiles in a Factory
      */
-    public int tileAmount(){
+    public int tileAmount() {
         return this.tiles.size();
     }
 
@@ -287,7 +225,6 @@ public class Factory {
     public void clear() {
         this.tiles.clear();
     }
-
 
 
     @Override
@@ -301,17 +238,6 @@ public class Factory {
             }
         }
         return s.toString();
-    }
-
-    public static void main(String[] args) {
-        // test toString()
-        Factory f1 = new Factory();
-        f1.decode("abbe");
-        Factory f2 = new Factory();
-        f2.decode("ccdd");
-        System.out.println("Factory 1: " + f1 + "\nFactory 2: " + f2);
-
-        System.out.println(f1.tileNum('b'));
     }
 
 }

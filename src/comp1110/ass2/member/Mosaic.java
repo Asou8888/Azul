@@ -1,6 +1,12 @@
 package comp1110.ass2.member;
 
-import javafx.scene.Group;
+/**
+ *
+ *                               !!!!!! Do not use this mosaic !!!!!!!!
+ *                               Use NewMosaic instead.
+ *
+ *
+ */
 
 /**
  * The Mosaic class implements the mosaic of a player, which has a tile array(5*5)
