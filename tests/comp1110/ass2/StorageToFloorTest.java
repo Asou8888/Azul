@@ -10,8 +10,8 @@ public class StorageToFloorTest {
 
     @Test
     public void testStorageToFloor(){
-        String[] newGameState =  {"AFCB1616181617D0000000000","A1Me04S2c13a34a1FbbbeB0MS0c11b12e13d4Ff"};
-        assertEquals(newGameState[1],Azul.applyMove(gameState,"A1F")[1]);
+        String[] newGameState =  {"AFCB1616181617D0000000000","A1Me04S1b22c13a34a1FbeB0MS1b12e13d4Fcf"};
+        assertEquals(newGameState[1],Azul.applyMove(gameState,"B0F")[1]);
     }
 
 }
