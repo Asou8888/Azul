@@ -66,10 +66,8 @@ public class Game extends Application {
     private final Group[] storages = new Group[PLAYER_NUM]; // view for storages(A & B)
     private final Group[] mosaics = new Group[PLAYER_NUM]; // view for mosaics
     private final Group[] floor = new Group[PLAYER_NUM]; // view for floor
-
     private final Group[] factories = new Group[FACTORY_NUM]; // view for factories(0 to 4)
     private final Group center = new Group(); // view for center
-    private final Group discard = new Group(); // view for discard
     private final Group bag = new Group(); // view for bag
 
     private final Pane[] playerBoard = new Pane[PLAYER_NUM]; // view for player board
@@ -137,7 +135,6 @@ public class Game extends Application {
 
     /*  [Reference: https://gitlab.cecs.anu.edu.au/comp1110/dinosaurs/-/blob/master/src/comp1110/ass1/gui/Game.java#L87]
      *  Define a drop shadow effect that we will apply to the tile
-     *  TODO: improve and test the effects.
      */
     private static DropShadow dropshadow;
     /*  static initializer to initialize dropShadow  */ {
@@ -1021,7 +1018,6 @@ public class Game extends Application {
             updateFactoryView(fac[i], i); // update i-th factory view.
         }
     }
-
     /**
      * update the factory view, according to the Characters input
      * @param factory index-th factory's state code.
@@ -1222,8 +1218,8 @@ public class Game extends Application {
         makeControls();
         newGame();
         File file = new File("assets/icon.png");
-        String iconstring = file.toURI().toString();
-        Image icon = new Image(iconstring);
+        String iconString = file.toURI().toString();
+        Image icon = new Image(iconString);
         stage.getIcons().add(icon);
         stage.setScene(scene);
         stage.show();
