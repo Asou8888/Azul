@@ -834,7 +834,6 @@ public class Game extends Application {
      * Create controls that allow the game restarted.
      */
     private void makeControls() {
-        // TODO
     }
 
     /**
@@ -1174,6 +1173,9 @@ public class Game extends Application {
         // updateStorageView(); // update the storage view.
         updateScoresView(); // update the score view.
         toggleSoundLoop(); // toggle sound loop
+        updateFloorView();
+        updateMosaicView();
+        updateStorageView();
     }
 
     @Override
@@ -1203,9 +1205,20 @@ public class Game extends Application {
                 toggleSoundLoop();
         });
         });
+        Button restartButton= new Button();
+        restartButton.setText("Restart");
+        restartButton.setFont(Font.font(null,FontWeight.BOLD,20)); // set the size and form of the text
+        restartButton.setLayoutX(BOARD_WIDTH-120); // set location
+        restartButton.setLayoutY(120);
+        restartButton.setBackground(background);
+        restartButton.setOnAction((ActionEvent e)-> { // mute the audio when clicked
+            newGame();
+            toggleSoundLoop();;
+        });
         Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
         root.getChildren().add(gTiles);
         root.getChildren().add(muteButton);
+        root.getChildren().add(restartButton);
         root.getChildren().add(controls);
         setUpSoundLoop();
         setUpClickSound();
