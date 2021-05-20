@@ -6,7 +6,9 @@ of our project implements the following features:
  - A simple placement viewer (Task 4)
  - A basic playable game
  - A basic playable game that snaps pieces to the board and checks for validity (Task 12)
- - Playable against a computer opponent (Task 14)
- - Implements interesting game variant/s (Task 16)
 
 additional features...
+ - the effects sound when clicking tiles and placing tiles.
+ - Background music composed by myself.(could be muted by pressing mute button).
+ - Restart Game in anytime,(by pressing restart button).
+ - Change Icon.
