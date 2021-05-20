@@ -74,7 +74,6 @@ public class Azul {
         }
         if (state[1].indexOf('D') >= 0) {
             player[playerCnt] = "D";
-            playerCnt++;
         }
         HashMap<String, String[]> splitPlayerState = new HashMap<>();
         int i = 0;
@@ -2135,30 +2134,6 @@ public class Azul {
         return (newMosaicA.isRowFull() || newMosaicB.isRowFull()); //return true if there is no row that is full.
     }
     public static void main(String[] args) {
-        /*
-        // Test case for task 9
-        String[] test = new String[] {
-                "BFCB1412141614D0000000000",
-                "A0MS0a11c22a33c44b5FB0MS0e11a22b33d44e5Ff"
-        };
-        System.out.println(isStateValid(test));
-        // Test case 1 for task 13
-        String[] test1 = new String[] {
-                "BFCbbbccdddddeeB1913161418D0000000000",
-                "A0MS0b11b23d1FbfB0MS0c11a13c1F"
-        };
-        System.out.println(generateAction(test1));
-        System.out.println(isMoveValid(test1, "BCb4"));
-
-        // Test case 2 for Task 13
-        String[] test2 = new String[] {
-                "AFCbbbB1913161418D0000000000",
-                "A0MS0b11b23d14c2FbfB0MS0c11a12d33c14e2Fdd"
-        };
-        System.out.println(isMoveValid(test2, "ACb0"));
-
-
-         */
         // test case 3 for Task 13
         String[] test3 = new String[] {
                 "BF4aeeeCaacB1109101008D0005000200",
@@ -2166,67 +2141,6 @@ public class Azul {
         };
         System.out.println(isMoveValid(test3, "B4a1"));
     }
-        /*
-        String[] testSplit = new String[]{
-                "AFCB1915161614D0000000000",
-                "A0MS0d11c22b33e44e1FefB0MS0a11b22d33c2FC0MS0d11c22b33e44e1FefD0MS0a11b22d33c2F"
-        };
-        // split player state
-        HashMap<String, String[]> splitPlayerStates = splitPlayerState(testSplit);
-        // visit A's floor state
-        String floor = splitPlayerStates.get("A")[3]; // {Score}{Mosaic}{Storage}{Floor}
-        System.out.println(floor);
-        String[] gameState = {"BFCB1412141614D0000000000", "A0MS0a11c22a33c44b5FB0MS0e11a22b33d44e5Ff"};
-        System.out.println(isStateValid(gameState));
 
-         */
-    /*
-    public static void main(String[] args) {
-        String[] testSplit = new String[]{
-                "AFCB1915161614D0000000000",
-                "A0MS0d11c22b33e44e1FefB0MS0a11b22d33c2FC0MS0d11c22b33e44e1FefD0MS0a11b22d33c2F"
-        };
-        System.out.println("Test: ");
-        for (String s: testSplit) {
-            System.out.println(s);
-        }
-        System.out.println("After split: ");
-        // split shared state
-        String[] sharedStates = splitSharedState(testSplit);
-        System.out.print("Shared state: [");
-        for (String sharedState : sharedStates) {
-            System.out.print(sharedState + ", ");
-        }
-        System.out.println("]");
-        // split player state
-        HashMap<String, String[]> playerStates = splitPlayerState(testSplit);
-        System.out.println("Player state: ");
-        playerStates.forEach((player, states) -> {
-            System.out.print("Player " + player + ": ");
-            for (String s: states) {
-                System.out.print(s + " ");
-            }
-            System.out.println();
-        });
-    }
-
-/*
-    public static void main(String[] args) {
-        String[] testTask6 = new String[]{
-                "AFCB1915161614D0000000000",
-                "A0MS0d11c22b33e44e1FefB0MS0a11b22d33c2F"
-        };
-        System.out.println("Test: ");
-        for (String s: testTask6) {
-            System.out.println(s);
-        }
-        System.out.println("After refilling: ");
-        testTask6 = refillFactories(testTask6);
-        for (String s: testTask6) {
-            System.out.println(s);
-        }
-    }
-
- */
 
 }
