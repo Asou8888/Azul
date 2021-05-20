@@ -1,19 +1,11 @@
 package comp1110.ass2;
 
 import comp1110.ass2.member.*;
-import gittest.A;
-import gittest.B;
-import gittest.C;
-import javafx.geometry.Pos;
-
-import java.awt.*;
-import java.lang.reflect.Array;
 import java.util.*;
 import java.util.List;
 
 public class Azul {
     // Add some static variables.
-    static final int BAG_STATE_LENGTH = 11;
     static final int FACTORY_NUM = 5; // 2 - 5, 3 - 7, 4 - 9
     static final int TILES_NUM_IN_FACTORY = 4;
 
@@ -58,7 +50,7 @@ public class Azul {
      * split the player state into a map \<String, String\>,
      * The String is the player String("A"-"D")
      * The String[] is the player state. {Score}{Mosaic}{Storage}{Floor}.
-     * @param state
+     * @param state the String of gameState
      * @return the map from player String to player state.
      */
     public static HashMap<String, String[]> splitPlayerState(String[] state) {
@@ -87,7 +79,7 @@ public class Azul {
         HashMap<String, String[]> splitPlayerState = new HashMap<>();
         int i = 0;
         for (String playerState: playerStates) {
-            if (playerState == "") continue;
+            if (playerState.equals("")) continue;
             int pointer = 0; // the pointer record the current visiting location.
 
             // {Score} state
@@ -201,43 +193,6 @@ public class Azul {
         //test if factories if well-formed
         if (F > C) return false; // if C appears in the sharedstate before F, return false;
         String factories = sharedState.substring(F,C);
-        int zero = 0;
-        int zeroCnt = 0;
-        int one = 0;
-        int oneCnt = 0;
-        int two = 0;
-        int twoCnt = 0;
-        int three = 0;
-        int threeCnt = 0;
-        int four = 0;
-        int fourCnt = 0;
-        for(int n = 0 ; n < factories.length();n++){
-            if(factories.toCharArray()[n] == '0'){
-                if (zeroCnt == 0) zeroCnt++;
-                else return false; // if more than one '0' in the factory state, return false;
-                zero = n;
-            }
-            else if(factories.toCharArray()[n] == '1'){
-                if (oneCnt == 0) oneCnt++;
-                else return false;
-                one = n;
-            }
-            else if(factories.toCharArray()[n] == '2'){
-                if (twoCnt == 0) twoCnt++;
-                else return false;
-                two = n;
-            }
-            else if(factories.toCharArray()[n] == '3'){
-                if (threeCnt == 0) threeCnt++;
-                else return false;
-                three = n;
-            }
-            else if(factories.toCharArray()[n] == '4'){
-                if (fourCnt == 0) fourCnt++;
-                else return false;
-                four = n;
-            }
-        }
         if(F == 0){
             return false;
         }
@@ -266,12 +221,11 @@ public class Azul {
             if (numIndexOfFactory.get(i) >= 5) return false; // no number is bigger than 5.
         }
         for (int i = 0; i < factoryArray.length; i++) {
+            int start  = factories.indexOf(String.valueOf(numIndexOfFactory.get(i)));
             if (i != factoryArray.length - 1) {
-                int start  = factories.indexOf(String.valueOf(numIndexOfFactory.get(i)));
                 int end = factories.indexOf(String.valueOf(numIndexOfFactory.get(i + 1)));
                 factoryArray[i] = factories.substring(start,end);
             } else {
-                int start  = factories.indexOf(String.valueOf(numIndexOfFactory.get(i)));
                 factoryArray[i] = factories.substring(start);
             }
         }
@@ -299,7 +253,7 @@ public class Azul {
         //test if center is well-formed
         String center = sharedState.substring(C,B);
         for(int n = 1; n < center.length()-1;n++){
-            if(Integer.valueOf(center.toCharArray()[n]) > Integer.valueOf(center.toCharArray()[n+1])){
+            if((int) center.toCharArray()[n] > (int) center.toCharArray()[n + 1]){
                 return false;
             }
         }
@@ -308,7 +262,6 @@ public class Azul {
         //test if bag is well-formed
         String bag =sharedState.substring(B,B+11);
         try {
-            int numOfBag = Integer.valueOf(bag.substring(1,11));
             if(sharedState.substring(B,D).length() == bag.length()){
                 numberOfWellFormed += 1; //plus one if bag is well-formed
             }
@@ -321,8 +274,8 @@ public class Azul {
         //test if discard is well-formed
         String discard = sharedState.substring(D,D+11);
         try {
-            int numOfaInDiscard = Integer.valueOf(discard.substring(1,11));
-            if(sharedState.substring(D,sharedState.length()).length() == discard.length()){
+            Integer.parseInt(discard.substring(1,11));
+            if(sharedState.substring(D).length() == discard.length()){
                 numberOfWellFormed +=1; //plus one if discard is well-formed
             }
         } catch (Exception e) {
@@ -330,14 +283,7 @@ public class Azul {
         }
 
 
-
-
-        if(numberOfWellFormed == 3){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return numberOfWellFormed == 3;
     }
 
 
@@ -549,7 +495,7 @@ public class Azul {
         if (d.equals("B0000000000") && e.equals("D0000000000")) {
             return 'Z';
         }
-        if (d.equals("B0000000000") && !e.equals("D0000000000")) {
+        if (d.equals("B0000000000")) {
             d = "B" + e.substring(1);
         }
         if (!d.equals("B0000000000")) {
@@ -699,7 +645,7 @@ public class Azul {
         int row1 = 0;
         int col1 = 0;
         while (row1 < 5) {
-            String g = String.valueOf(row1) + String.valueOf(col1);
+            String g = row1 + String.valueOf(col1);
             if (e.contains(g)) {
                 if (col1 == 4) {
                     bonus = bonus + 2;
@@ -716,7 +662,7 @@ public class Azul {
         int row2 = 0;
         int col2 = 0;
         while (col2 < 5) {
-            String g = String.valueOf(row2) + String.valueOf(col2);
+            String g = row2 + String.valueOf(col2);
             if (e.contains(g)) {
                 if (row2 == 4) {
                     bonus = bonus + 7;
@@ -928,19 +874,19 @@ public class Azul {
         String etiles = String.valueOf(etile);
 
         if (atile < 10) {
-            atiles = String.valueOf("0" + atile);
+            atiles = "0" + atile;
         }
         if (btile < 10) {
-            btiles = String.valueOf("0" + btile);
+            btiles = "0" + btile;
         }
         if (ctile < 10) {
-            ctiles = String.valueOf("0" + ctile);
+            ctiles = "0" + ctile;
         }
         if (dtile < 10) {
-            dtiles = String.valueOf("0" + dtile);
+            dtiles = "0" + dtile;
         }
         if (etile < 10) {
-            etiles = String.valueOf("0" + etile);
+            etiles = "0" + etile;
         }
         discard = "D" + atiles + btiles + ctiles + dtiles + etiles;
 
@@ -956,10 +902,11 @@ public class Azul {
                     return newGameState;
                 }
                 else {
+                    String substring = sharedState.substring(1, sharedState.toCharArray().length);
                     if (APlayer.contains("f")) {
-                        sharedState = "A" + sharedState.substring(1, sharedState.toCharArray().length);
+                        sharedState = "A" + substring;
                     } else {
-                        sharedState = "B" + sharedState.substring(1, sharedState.toCharArray().length);
+                        sharedState = "B" + substring;
                     }
                     privateState = emptyFloorwithBonus(gameState,APlayer) + emptyFloorwithBonus(gameState,BPlayer);
                     newGameState[0] = sharedState.substring(0, C + 1) + "f" + sharedState.substring(C + 1, sharedState.toCharArray().length - 11) + discard;
@@ -1013,9 +960,9 @@ public class Azul {
 
         int score = Integer.parseInt(privateState.substring(1, M)) - minusScore;
         if (score < 0) {
-            return String.valueOf(privateState.toCharArray()[0]) + "0" + privateState.substring(M, F + 1);
+            return privateState.toCharArray()[0] + "0" + privateState.substring(M, F + 1);
         } else {
-            return String.valueOf(privateState.toCharArray()[0]) + String.valueOf(score) + privateState.substring(M, F + 1);
+            return privateState.toCharArray()[0] + String.valueOf(score) + privateState.substring(M, F + 1);
         }
     }
 
@@ -1058,31 +1005,16 @@ public class Azul {
 
 
     public static Boolean isFull(String privateState){
-        int M = 0;
-        int F = 0;
-        for(int i = 0;i < privateState.toCharArray().length;i++){
-            if(privateState.toCharArray()[i] == 'M'){
-                M = i;
-            }
-            if(privateState.toCharArray()[i] == 'F'){
-                F = i;
-            }
-        }
         privateState = privateState.trim();
-        String number = "";
-        if(privateState != null && !"".equals(privateState)) {
+        StringBuilder number = new StringBuilder();
+        if(!"".equals(privateState)) {
             for (int i = 0; i < privateState.length(); i++) {
                 if (privateState.charAt(i) >= 48 && privateState.charAt(i) <= 57) {
-                    number += privateState.charAt(i);
+                    number.append(privateState.charAt(i));
                 }
             }
         }
-        if(number.contains("0001020304")  || number.contains("1011121314") || number.contains("2021222324") || number.contains("3031323334") || number.contains("4041424344")||number.contains("5051525354")){
-            return true;
-        }
-        else {
-            return false;
-        }
+        return number.toString().contains("0001020304") || number.toString().contains("1011121314") || number.toString().contains("2021222324") || number.toString().contains("3031323334") || number.toString().contains("4041424344") || number.toString().contains("5051525354");
 
     }
 
@@ -1098,16 +1030,12 @@ public class Azul {
             }
         }
         String storage = privateState.substring(S, F);
-        List<String> number = new ArrayList<String>();
+        List<String> number = new ArrayList<>();
         for (int i = 0; i < storage.length()-2;) {
-            number.add(storage.substring(i + 1, i + 2) + storage.substring(i + 3, i + 4));
+            number.add(storage.charAt(i + 1) + storage.substring(i + 3, i + 4));
             i = i + 3;
         }
-        if (number.contains("01") || number.contains("12") || number.contains("23") || number.contains("34") || number.contains("45")) {
-            return true;
-        } else {
-            return false;
-        }
+        return number.contains("01") || number.contains("12") || number.contains("23") || number.contains("34") || number.contains("45");
     }
 
 
@@ -1287,12 +1215,7 @@ public class Azul {
         }
         return cnt <= (20 - num )/4 * 3;
     }
-    public  static  boolean tileInRowStorage (String storage){
-        Storage str = new Storage();
-        str.decode(storage);
 
-        return false;
-    }
     /** 2. The colour of tile stored in a row must not be the same as a colour
      already found in the corresponding row of the mosaic.*/
     public  static  boolean tileStorageAndMosaic (String storage, String mosaic){
@@ -1470,13 +1393,15 @@ public class Azul {
                 return false;
             }
 
+            HashMap<String, String[]> splitPlayerState = splitPlayerState(gameState); // split the player state
+            String[] playerState = splitPlayerState.get(String.valueOf(player)); // get the player state of this player
+            String storage = playerState[2]; // The storage state is stored at the 3rd place.
+            Storage s = new Storage();
+            s.decode(storage);// split the player state
+// get the player state of this player
+// The storage state is stored at the 3rd place.
             if (colChar != 'F') {
                 // 1. The specified row in the Storage area is full.
-                HashMap<String, String[]> splitPlayerState = splitPlayerState(gameState); // split the player state
-                String[] playerState = splitPlayerState.get(String.valueOf(player)); // get the player state of this player
-                String storage = playerState[2]; // The storage state is stored at the 3rd place.
-                Storage s = new Storage();
-                s.decode(storage);
                 if (!s.isRowFull(row)) {
                     return false; // If this row is not full, return false;
                 }
@@ -1492,17 +1417,10 @@ public class Azul {
                     }
                 }
                 // 3. The specified location in the mosaic is empty.
-                if (!m.isEmpty(row, col)) {
-                    return false;
-                }
+                return m.isEmpty(row, col);
             } else {
                 // 4. If the specified column is 'F', no valid move exists from the specified row into the mosaic.
                 // find whether there's a valid move from storage to mosaic
-                HashMap<String, String[]> splitPlayerState = splitPlayerState(gameState); // split the player state
-                String[] playerState = splitPlayerState.get(String.valueOf(player)); // get the player state of this player
-                String storage = playerState[2]; // The storage state is stored at the 3rd place.
-                Storage s = new Storage();
-                s.decode(storage);
                 String mosaic = playerState[1];
                 NewMosaic m = new NewMosaic(mosaic);
                 // check the row in storage
@@ -1558,8 +1476,6 @@ public class Azul {
      */
     public static String[] applyMove(String[] gameState, String move) {
         // FIXME Task 11
-        int A = gameState[1].indexOf("A");
-        int B = gameState[1].indexOf("B");
         if(move.length() == 3){ //the move is tile move (with 3 character)
             return Tilingmove(gameState,move);
         }
@@ -1573,7 +1489,7 @@ public class Azul {
         int B = gameState[1].indexOf("B");
         int row = Integer.parseInt(String.valueOf(move.charAt(1)));
 
-        String playerState = "";
+        String playerState;
         int D = gameState[0].indexOf("D");
         String discard = gameState[0].substring(D);
         if(move.charAt(0)=='A'){
@@ -1607,10 +1523,10 @@ public class Azul {
 
             s.emptyRow(row);  //clear storage (the tiles have been moved into mosaic
 
+            int score = Integer.parseInt(playerState.substring(1, M));
             if (move.charAt(0) == 'A') {
-                int score = Integer.parseInt(playerState.substring(1, M));
-                gameState[1] = "A" + String.valueOf(score + plusscore) + newmosaic.getCode() + s.getCode() + gameState[1].substring(F);
-                String Aplayer = "A" + String.valueOf(score + plusscore) + newmosaic.getCode() + s.getCode() + gameState[1].substring(F, B);
+                gameState[1] = "A" + (score + plusscore) + newmosaic.getCode() + s.getCode() + gameState[1].substring(F);
+                String Aplayer = "A" + (score + plusscore) + newmosaic.getCode() + s.getCode() + gameState[1].substring(F, B);
                 if (storageIsAvia(Aplayer)) {
                     //if storage is still have tiles which can be move, round doesnt change
                     gameState[0] = gameState[0].substring(0, D) + newdiscard;
@@ -1619,9 +1535,8 @@ public class Azul {
                     gameState[0] = "B" + gameState[0].substring(1, D) + newdiscard;
                 }
             } else {
-                int score = Integer.parseInt(playerState.substring(1, M));
-                gameState[1] = gameState[1].substring(0, B) + "B" + String.valueOf(score + plusscore) + newmosaic.getCode() + s.getCode() + playerState.substring(F);
-                String Bplayer = "B" + String.valueOf(score + plusscore) + newmosaic.getCode() + s.getCode() + playerState.substring(F);
+                gameState[1] = gameState[1].substring(0, B) + "B" + (score + plusscore) + newmosaic.getCode() + s.getCode() + playerState.substring(F);
+                String Bplayer = "B" + (score + plusscore) + newmosaic.getCode() + s.getCode() + playerState.substring(F);
                 if (storageIsAvia(Bplayer)) {
                     //if storage is still have tiles which can be move, round doesnt change
                     gameState[0] = gameState[0].substring(0, D) + newdiscard;
@@ -1631,9 +1546,8 @@ public class Azul {
                 }
             }
         }else{
-            /**
-             * Storage to floor
-             */
+            // Storage to floor
+
             Floor floor1 = new Floor();
             floor1.decode(floor);
             if(floor1.emptyNum() < row + 1){
@@ -1652,20 +1566,18 @@ public class Azul {
             if (move.charAt(0) == 'A') {
                 if(storageIsAvia(playerState .substring(0,S)+ s.getCode() + sortChar(floor1.getCode()))){
                     gameState[0] = gameState[0].substring(0,D) + discard;
-                    gameState[1] = playerState .substring(0,S)+ s.getCode() + sortChar(floor1.getCode()) + gameState[1].substring(B);
                 }else{
                     gameState[0] = "B" + gameState[0].substring(1,D) + discard;
-                    gameState[1] = playerState .substring(0,S)+ s.getCode() + sortChar(floor1.getCode()) + gameState[1].substring(B);
                 }
+                gameState[1] = playerState .substring(0,S)+ s.getCode() + sortChar(floor1.getCode()) + gameState[1].substring(B);
 
             } else {
                 if(storageIsAvia(playerState.substring(0,S) + s.getCode() + sortChar(floor1.getCode()))){
                     gameState[0] = gameState[0].substring(0,D) + discard;
-                    gameState[1] = gameState[1].substring(0,B) + playerState.substring(0,S) + s.getCode() + sortChar(floor1.getCode());
                 }else {
                     gameState[0] = "A" + gameState[0].substring(1,D) + discard;
-                    gameState[1] = gameState[1].substring(0,B) + playerState.substring(0,S) + s.getCode() + sortChar(floor1.getCode());
                 }
+                gameState[1] = gameState[1].substring(0,B) + playerState.substring(0,S) + s.getCode() + sortChar(floor1.getCode());
             }
         }
 
@@ -1676,7 +1588,7 @@ public class Azul {
         String sharedState = gameState[0];
         int A = gameState[1].indexOf("A");
         int B = gameState[1].indexOf("B");
-        String playerState = "";
+        String playerState;
         if (move.charAt(0) == 'A') {
             playerState = gameState[1].substring(A, B);
         } else {
@@ -1688,7 +1600,6 @@ public class Azul {
 
         int Fa = sharedState.indexOf("F");
         int Cen = sharedState.indexOf("C");
-        int D = sharedState.indexOf("D");
         int S = playerState.indexOf("S");
         int F = playerState.indexOf("F");
         String bag = a[3];       //the code of bag
@@ -1718,9 +1629,8 @@ public class Azul {
             center1.addTile(otherTiles);  //add the otherTiles into center
 
             if (Character.isDigit(move.charAt(3))) {
-                /**
-                 * factory to storage
-                 */
+                //factory to storage
+
                 int numOfStorageEmptySpace = storage1.emptySpace(move.charAt(3) - '0');
                 int numOfFloorEmptySpace = floor1.emptyNum();
                 storage1.move(move.charAt(2), (move.charAt(3) - '0'), numOfTiles);  //move tiles to storage
@@ -1744,9 +1654,9 @@ public class Azul {
 
 
             } else {
-                /**
-                 * factory to floor
-                 */
+
+                 //factory to floor
+
                 int numOfFloorEmptySpace = floor1.emptyNum();
                 floor1.placeTile(move.charAt(2), numOfTiles);
                 if (numOfTiles > numOfFloorEmptySpace) { //if floor is full, drop the tiles to discard
@@ -1771,9 +1681,9 @@ public class Azul {
             center1.decode(center);
             int numOfTiles = center1.tileNum(move.charAt(2));
             if (Character.isDigit(move.charAt(3))) {
-                /**
-                 * center to storage
-                 */
+
+                 //center to storage
+
                 int numOfEmptyStorage = storage1.emptySpace(move.charAt(3) - '0');
                 int numOfFloorEmptySpace = floor1.emptyNum();
                 storage1.move(move.charAt(2), (move.charAt(3) - '0'), numOfTiles);
@@ -1796,33 +1706,31 @@ public class Azul {
                     if(factories.getCode().length() == 1 && center2.length() ==1){
                         //if there is not tiles in factories or center, dont change round
                         newgameState[0] = "A" + factories.getCode() + sortChar(center2) + bag + discard1.getCode();
-                        newgameState[1] = playerState.substring(0, S)+ storage1.getCode() + sortChar(floor1.getCode()) + gameState[1].substring(B);
                     }
                     else { // if there is, change round
                         newgameState[0] = "B" + factories.getCode() + sortChar(center2) + bag + discard1.getCode();
-                        newgameState[1] = playerState.substring(0, S)+ storage1.getCode() + sortChar(floor1.getCode()) + gameState[1].substring(B);
                     }
+                    newgameState[1] = playerState.substring(0, S)+ storage1.getCode() + sortChar(floor1.getCode()) + gameState[1].substring(B);
 
 
                 } else {
                     if(factories.getCode().length() == 1 && center2.length() ==1){
                         //if there is not tiles in factories or center, dont change round
                         newgameState[0] = "B" + factories.getCode() + sortChar(center2) + bag + discard1.getCode();
-                        newgameState[1] = gameState[1].substring(0, B) + playerState.substring(0, S) + storage1.getCode() + sortChar(floor1.getCode());
                     }
                     else {
                         //if there is, change round
                         newgameState[0] = "A" + factories.getCode() + sortChar(center2) + bag + discard1.getCode();
-                        newgameState[1] = gameState[1].substring(0, B) + playerState.substring(0, S) + storage1.getCode() + sortChar(floor1.getCode());
                     }
+                    newgameState[1] = gameState[1].substring(0, B) + playerState.substring(0, S) + storage1.getCode() + sortChar(floor1.getCode());
 
                 }
 
 
             } else {
-                /**
-                 * center to floor
-                 */
+
+                 //center to floor
+
                 int numOfFloorEmptySpace = floor1.emptyNum();
                 floor1.placeTile(move.charAt(2), numOfTiles);
                 String center2 = center1.deleteTile(move.charAt(2)); //delete other tiles from center
@@ -1849,22 +1757,20 @@ public class Azul {
                 if (gameState[0].charAt(0) == 'A') {
                     if(factories.getCode().length() == 1 && center2.length() ==1 && storageIsAvia(playerState)){
                         newgameState[0] = "A" + factories.getCode() + sortChar(center2) + bag + discard1.getCode();
-                        newgameState[1] = playerState.substring(0, S) + storage1.getCode() + sortChar(floor1.getCode()) + gameState[1].substring(B);
                     }
                     else {
                         newgameState[0] = "B" + factories.getCode() + sortChar(center2) + bag + discard1.getCode();
-                        newgameState[1] = playerState.substring(0, S) + storage1.getCode() + sortChar(floor1.getCode()) + gameState[1].substring(B);
                     }
+                    newgameState[1] = playerState.substring(0, S) + storage1.getCode() + sortChar(floor1.getCode()) + gameState[1].substring(B);
 
                 } else {
                     if(factories.getCode().length() == 1 && center2.length() ==1 && storageIsAvia(playerState)){
                         newgameState[0] = "B" + factories.getCode() + center2 + bag + discard1.getCode();
-                        newgameState[1] = gameState[1].substring(0, B) + playerState.substring(0, S) + storage1.getCode() + sortChar(floor1.getCode());
                     }
                     else {
                         newgameState[0] = "A" + factories.getCode() + center2 + bag + discard1.getCode();
-                        newgameState[1] = gameState[1].substring(0, B) + playerState.substring(0, S) + storage1.getCode() + sortChar(floor1.getCode());
                     }
+                    newgameState[1] = gameState[1].substring(0, B) + playerState.substring(0, S) + storage1.getCode() + sortChar(floor1.getCode());
 
                 }
 
@@ -2214,7 +2120,7 @@ public class Azul {
 
     /**
      *
-     * @param gameState
+     * @param gameState String of gameState
      * @return return true if there is one row of mosaic in A or B.
      */
     public
