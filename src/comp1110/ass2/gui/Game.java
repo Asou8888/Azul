@@ -2,7 +2,6 @@ package comp1110.ass2.gui;
 
 import comp1110.ass2.Azul;
 import comp1110.ass2.member.*;
-import gittest.B;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
@@ -19,16 +18,13 @@ import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-
-import java.awt.*;
 import javafx.scene.image.Image;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -41,8 +37,7 @@ public class Game extends Application {
     /*  [Reference: https://gitlab.cecs.anu.edu.au/comp1110/dinosaurs/-/blob/master/src/comp1110/ass1/gui/Game.java#L388]
      *  Audio set up
      */
-
-    private static final String LOOP_URI = Game.class.getResource(URI_BASE + "Azul.wav").toString();
+    private static final String LOOP_URI = Game.class.getResource(URI_BASE + "Ending music_1.wav").toString();
     private AudioClip loop;
 
     /*  Game Variable  */
@@ -51,25 +46,18 @@ public class Game extends Application {
     /*  board layout */
     private static final int BOARD_WIDTH = 1200;
     private static final int BOARD_HEIGHT = 700;
-
     private static final int TILE_SIZE = 48; // Tile size
-
-    private static final long MOVE_THRESHOLD = 50; // Allow the next move after 50ms.
-    private static final char NOT_PLACED = 255; // marker for unplaced tile. TODO: modified needed.
+    private static final char NOT_PLACED = 255; // marker for unplaced tile.
 
     /*  game information  */
-    private static final int PLAYER_NUM = 2;
-    private static final int FACTORY_NUM = 5;
+    private static final int PLAYER_NUM = 2; // 2 players
+    private static final int FACTORY_NUM = 5; //5 factories
     private static final String[] PLAYER_CODE = new String[]{"A", "B", "C", "D"};
-    private static final String[] DEFAULT_PLAYER_NAME = new String[]{"Alice", "Bob", "John", "Cathy"};
     private static final int COLOR_TILES_NUM = 20; // the number of tiles of each color.
-    private static final int FIRST_PLAYER_TILE_NUM = 1; // the number of 'first player' tile.
-    private static final int CENTER_TILES_NUM = 16; // the maximum number of tiles in center.(View)
-    // FIXME
+
     public static boolean isClick = false;
-    public static Tile from;
-    public static Tile to;
-    public static int rowInStorage; // the information get from the storage.
+    public static Tile from; // the tile when clicked
+    public static Tile to; // the tile when released
 
     /*  nodes  */
     private final Group root = new Group();
@@ -121,7 +109,7 @@ public class Game extends Application {
     private static final int NUMBER_OF_TILETYPE = 5;
     private final Label[] bagLable = new Label[NUMBER_OF_TILETYPE]; // included in player board.
     private final TextField[] bagField = new TextField[NUMBER_OF_TILETYPE]; // included in player board.
-    private static final int BAG_TEXT_FIELD_X_LAYOUT = 120;
+    private static final int BAG_TEXT_FIELD_X_LAYOUT = 120; // set the position of bag
     private static final int BAG_TEXT_FIELD_Y_LAYOUT = 97;
     private static final int BAG_TEXT_FIELD_HEIGHT = 20;
     private static final int BAG_TEXT_FIELD_WEIGHT = 40;
@@ -213,9 +201,9 @@ public class Game extends Application {
      */
     private void toggleSoundLoop() {
         if (loopPlaying) {
-            loop.stop();
+            loop.stop(); // stop the audio when playing
         } else {
-            loop.play();
+            loop.play(); // playing the audio when stopped
         }
         loopPlaying = !loopPlaying;
     }
@@ -252,13 +240,13 @@ public class Game extends Application {
             }
             this.colorChar = tile;
             this.tileID = tile - 'a';
-            setHeight(TILE_SIZE);
+            setHeight(TILE_SIZE); //set the size of gTile
             setWidth(TILE_SIZE);
             setEffect(dropshadow);
-            setFill(Color.GREY.brighter());
+            setFill(Color.GREY.brighter()); //set color
             setScaleX(0.9);
             setScaleY(0.9);
-            setArcWidth(10);
+            setArcWidth(10); // set the arc frame
             setArcHeight(10);
 
         }
@@ -1234,6 +1222,10 @@ public class Game extends Application {
         makeBoard();
         makeControls();
         newGame();
+        File file = new File("assets/icon.png");
+        String iconstring = file.toURI().toString();
+        Image icon = new Image(iconstring);
+        stage.getIcons().add(icon);
         stage.setScene(scene);
         stage.show();
     }
