@@ -12,13 +12,14 @@ public class StorageToFloorTest {
     String[] nextGameState1 = {"BFCB0000000000D1508131210", "A38Md00c01b02e03a11e12b13b21a22c23e24a33c42d43S3d2FbbbddddB26Mc01b03e11b12d13b21a22c23e33a41c42S1c12e34b3Feef"};
     String[] gameState2 = {"AFCB0000000000D1215101107", "A25Me00d01c02e11a12d13b21e22a31c33d34d42S3e44c5FaadddefB51Md01a02e03b04c11e12b13a14b21c22a23e24a31b32d33c43S4e2F"};
     String[] nextGameState2 = {"AFCB0000000000D1215101111", "A25Me00d01c02e11a12d13b21e22a31c33d34d42S4c5FaadddefB51Md01a02e03b04c11e12b13a14b21c22a23e24a31b32d33c43S4e2F"};
-
+    String[] gameState3 = {"AFCB0000000000D1209091411", "A25Mb00d01a02c03c10e11b13a20d22c31b32a33e34S0e12b24c4FeeB11Md00a01e02b03a10d11b12c20e21d22e30a32S3b34c3Faaabef"};
     /**
      * @author Ruizheng Shen      * @date 2021.5.20
      */
     @Test
     public void testNormalMoveIsValid() {
         assertTrue(Azul.isMoveValid(gameState, "A1F"));
+        assertTrue(Azul.isMoveValid(gameState3,"A0F"));
     }
 
     @Test

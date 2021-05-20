@@ -145,8 +145,8 @@ public class Game extends Application {
 
     /*  game state  */
     private String[] gameState; // current game state
-    private static final String startSharedState = "AFCfB2020202020D0000000000"; // shared state at the start of the game
-    private static final String startPlayerState = "A0MSFB0MSF"; // player state at the start of the game
+    private static final String startSharedState = "BFCaaaabbbbbbB0709140406D0704031104"; // shared state at the start of the game
+    private static final String startPlayerState = "A0Mb00c10a20S3d3FcdddddfB0Me00a01b24S0c13e34c1Fee"; // player state at the start of the game
 
     /*  [Reference: https://gitlab.cecs.anu.edu.au/comp1110/dinosaurs/-/blob/master/src/comp1110/ass1/gui/Game.java#L87]
      *  Define a drop shadow effect that we will apply to the tile
@@ -576,7 +576,7 @@ public class Game extends Application {
                 //if the tile is to FloorA
                 if (turn.equals("A") && findPosition()[2] == 3) {
                     double rowInStorage = (homeY - ASTORAGE_Y_LAYOUT) / TILE_SIZE;
-                    move = move + "A" + rowInStorage + "F";
+                    move = move + "A" + (int)rowInStorage + "F";
                 }
             }
             //if the draggable tile is from StorageB
@@ -592,9 +592,10 @@ public class Game extends Application {
                 //if the tile is to FloorB
                 if (turn.equals("B") && findPosition()[2] == 6) {
                     double rowInStorage = (homeY - BSTORAGE_Y_LAYOUT) / TILE_SIZE;
-                    move = move + "B" + rowInStorage + "F";
+                    move = move + "B" + (int)rowInStorage + "F";
                 }
             }
+            System.out.println("move is " + move);
             return move;
         }
 
