@@ -156,6 +156,13 @@ public class Game extends Application {
         dropshadow.setColor(Color.color(0, 0, 0, 0.4));
     }
 
+    /*  [Reference: https://gitlab.cecs.anu.edu.au/comp1110/dinosaurs/-/blob/master/src/comp1110/ass1/gui/Game.java#L388]
+     *  Audio set up
+     */
+    private static final String SOUND_EFFECTS_URI = Game.class.getResource(URI_BASE + "Computer Mouse.wav").toString();
+
+    private AudioClip clickSound;
+
     /**
      * Set up the sound loop.
      */
@@ -163,8 +170,22 @@ public class Game extends Application {
         try {
             loop = new AudioClip(LOOP_URI);
             loop.setCycleCount(AudioClip.INDEFINITE);
+            loop.setVolume(1.0);
         } catch (Exception e) {
             System.err.println(":-( something bad happened (" + LOOP_URI + "): " + e);
+        }
+    }
+
+    /**
+     * Set up sound effect.
+     */
+    private void setUpClickSound() {
+        try {
+            clickSound = new AudioClip(SOUND_EFFECTS_URI);
+            clickSound.setCycleCount(0); // no cycle
+            clickSound.setVolume(0.5);
+        } catch (Exception e) {
+            System.err.println(":-( something bad happened (" + SOUND_EFFECTS_URI + "): " + e);
         }
     }
 
@@ -178,6 +199,13 @@ public class Game extends Application {
             loop.play();
         }
         loopPlaying = !loopPlaying;
+    }
+
+    /**
+     * Turn the click effect on or off.
+     */
+    private void toggleClickEffects() {
+        clickSound.play();
     }
 
 
@@ -267,6 +295,9 @@ public class Game extends Application {
             }
             setOnMousePressed(event -> {      // mouse press indicates begin of drag
                 setOpacity(0.6);
+                setScaleX(0.8);
+                setScaleY(0.8);
+                toggleClickEffects();
                 this.layOutX = getLayoutX();
                 this.layOutY = getLayoutY();
                 homeX = event.getSceneX();
@@ -290,6 +321,8 @@ public class Game extends Application {
                 mouseY = event.getSceneY(); // drag is complete
                 System.out.println("Release Position: " + mouseX + " " + mouseY);
                 setOpacity(1.0);
+                setScaleX(0.9);
+                setScaleY(0.9);
                 snapToGrid();
             });
         }
@@ -1122,6 +1155,7 @@ public class Game extends Application {
 
         root.getChildren().add(controls);
         setUpSoundLoop();
+        setUpClickSound();
 
         root.getChildren().add(board);
         // setUpHandlers(scene);
