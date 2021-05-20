@@ -1,0 +1,57 @@
+# IMPORTANT: It is very important that you correctly complete this originality
+# statement.
+#
+# This is your statement of your submitted work being your own.
+# Incorrectly filling out this statement could lead to charges
+# of academic misconduct.
+# 
+# For information on how to fill this out correctly, see
+# https://cs.anu.edu.au/courses/comp1110/help/faq/09-originality/
+#
+
+declaration: >-
+  I submit the work below for assessment as my best work. I declare that this
+  is entirely my own work, with the following documented exceptions:
+
+# Use this to list names of people who you collaborated with, and a
+# comment about what you collaborated on.
+#
+
+
+
+# Use this to list any code that you used that you did not write,
+# aside from code provided by the lecturer.  Provide a comment
+# explaining your use and the URL to that code and the licence for
+# that code
+#
+
+# I wish to submit the following classes as entirely my own (remove this if
+# you want to just submit methods):
+class:
+   - NewMosaic
+   - The NewMosaic class was implemented in my fastest speed, as it was already a little bit late, when my group member discovered
+   - the old version of Mosaic was difficult to use. So I reconstructed the implementation of mosaic, and designed as many test cases
+   - as I can, to ensure that all of the methods in NewMosaic worked properly. I also implemented a beginner mosaic pattern, so that
+   - we could use it when we got to task 16, but unfortunatly, we never reached that.
+   - I decided to use Array instead of ArrayList to implement the structure of mosaic, for the reason that, arrayList's length is changeable,
+   - and with the use of array, the limitation of length in mosaic is easy to be noticed.(It's easy to ignore the limitation of length if we used ArrayList).
+
+   - Factories, Factory
+   - The factories and factory classes is the hardest part when I tried to implement the classes in members. The reason is, in order to keep
+   - each factory independent, I have to implement a factory class, which is to implement those basic functions(like removing the tiles with same color) of factory,
+   - however, there are also some functions effect on all the factories. So, I need to implement a factories class to do things like refilling(to all factories), decoding
+   - the factory String from gameState.
+   - I also implment refilling and decoding methods in Factory, and in the refilling and decoding methods in Factories, those methods call the methods in each factory,
+   - which, for me, shows a great structure of codes and function implementation.
+
+# I wish to submit the following methods as entirely my own (remove this if
+# you want to just submit classes):
+method:
+   - Azul.splitSharedState, Azul.splitPlayersState
+   - These are two tools, which is not in task requirement, but very useful. It was in the mid-term, when we found that, most of the tasks in Azul and Members needed a splitted
+   - methods to split the gameState, so that we can call the decode method in each member distinctively. I implemented the method in one traverse to the String, which is proved to
+   - be very efficient, and after that, almost all the methods we implemented used these tools.
+
+# sign *your* name and uid here
+name: Ruizheng Shen
+uid: u6814863
