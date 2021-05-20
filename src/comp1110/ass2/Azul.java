@@ -1847,7 +1847,7 @@ public class Azul {
 
 
                 if (gameState[0].charAt(0) == 'A') {
-                    if(factories.getCode().length() == 1 && center2.length() ==1){
+                    if(factories.getCode().length() == 1 && center2.length() ==1 && storageIsAvia(playerState)){
                         newgameState[0] = "A" + factories.getCode() + sortChar(center2) + bag + discard1.getCode();
                         newgameState[1] = playerState.substring(0, S) + storage1.getCode() + sortChar(floor1.getCode()) + gameState[1].substring(B);
                     }
@@ -1857,7 +1857,7 @@ public class Azul {
                     }
 
                 } else {
-                    if(factories.getCode().length() == 1 && center2.length() ==1){
+                    if(factories.getCode().length() == 1 && center2.length() ==1 && storageIsAvia(playerState)){
                         newgameState[0] = "B" + factories.getCode() + center2 + bag + discard1.getCode();
                         newgameState[1] = gameState[1].substring(0, B) + playerState.substring(0, S) + storage1.getCode() + sortChar(floor1.getCode());
                     }

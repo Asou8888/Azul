@@ -142,8 +142,7 @@ public class Game extends Application {
     Text completionText = new Text("Well Done");
 
 
-    BackgroundFill backgroundFill= new BackgroundFill(Paint.valueOf("#F2F8A6"),CornerRadii.EMPTY,Insets.EMPTY); //set background color
-    Background background = new Background(backgroundFill);
+
     /*  game state  */
     private String[] gameState; // current game state
     private static final String startSharedState = "AFCfB2020202020D0000000000"; // shared state at the start of the game
@@ -249,14 +248,14 @@ public class Game extends Application {
          */
         GTile(char tile) {
             if (tile > 'f' || tile < 'a') {
-                this.colorChar = NOT_PLACED; // bad tile placed as NOT_PLACED
+                this.colorChar = NOT_PLACED;
             }
             this.colorChar = tile;
             this.tileID = tile - 'a';
-            setHeight(TILE_SIZE); // set tile size
+            setHeight(TILE_SIZE);
             setWidth(TILE_SIZE);
             setEffect(dropshadow);
-            setFill(Color.GREY.brighter()); // set the color
+            setFill(Color.GREY.brighter());
             setScaleX(0.9);
             setScaleY(0.9);
             setArcWidth(10);
@@ -264,11 +263,6 @@ public class Game extends Application {
 
         }
 
-        /** Construct gTile position
-         *
-         * @param positionX
-         * @param positionY
-         */
         GTile(int positionX, int positionY) {
             this.positionX = positionX;
             this.positionY = positionY;
@@ -365,6 +359,7 @@ public class Game extends Application {
          */
         private void snapToGrid() {
             if (isValidMove()) {
+                //TODO
                 updateGameState();
 
                 if(Azul.isCenterAndFactoriesEmpty(gameState) && NoTilingMove()){
@@ -390,11 +385,20 @@ public class Game extends Application {
         }
 
         /**
+         * @return true if the tile is on the board
+         */
+        private boolean onBoard() {
+            return mouseX > 0 && mouseX < BOARD_WIDTH  &&
+                    mouseY > 0 && mouseY < BOARD_HEIGHT;
+        }
+
+        /**
          * @return the x and y axis of the tile slots on board, and the member the tile in
          * (StorageA = 1, MosaicA = 2, FloorA = 3,StorageB = 4, MosaicB = 5, FloorB = 6.)
         */
         private double[] findPosition() {
-            double[] xAndY = new double[]{-1.0,-1.0,-1.0}; // initiate the position where the mouse clicked
+            double[] xAndY = new double[]{-1.0,-1.0,-1.0};
+
             double x =  mouseX; // find the central x position of the draggable tile.
             double y =  mouseY; // find the central y position of the draggable tile.
             //if draggable tile released in Mosaic A
@@ -403,12 +407,12 @@ public class Game extends Application {
                 xAndY[2] = 2;
                 for (int i = 0; i < 5; i++) {
                     if (x > AMOSAIC_X_LAYOUT + (i * TILE_SIZE) && x < AMOSAIC_X_LAYOUT + (i * TILE_SIZE) + TILE_SIZE) {
-                        xAndY[0] = AMOSAIC_X_LAYOUT + (i * TILE_SIZE); // put the x value
+                        xAndY[0] = AMOSAIC_X_LAYOUT + (i * TILE_SIZE);
                     }
                 }
                 for (int j = 0; j < 5; j++) {
                     if (y > AMOSAIC_Y_LAYOUT + (j * TILE_SIZE) && y < AMOSAIC_Y_LAYOUT + (j * TILE_SIZE) + TILE_SIZE) {
-                        xAndY[1] = AMOSAIC_Y_LAYOUT + (j * TILE_SIZE); // put the y value
+                        xAndY[1] = AMOSAIC_Y_LAYOUT + (j * TILE_SIZE);
                     }
                 }
             }
@@ -418,19 +422,19 @@ public class Game extends Application {
                 xAndY[2] = 5;
                 for (int i = 0; i < 5; i++) {
                     if (x > BMOSAIC_X_LAYOUT + (i * TILE_SIZE) && x < BMOSAIC_X_LAYOUT + (i * TILE_SIZE) + TILE_SIZE) {
-                        xAndY[0] = BMOSAIC_X_LAYOUT + (i * TILE_SIZE); // put the x value
+                        xAndY[0] = BMOSAIC_X_LAYOUT + (i * TILE_SIZE);
                     }
                 }
                 for (int j = 0; j < 5; j++) {
                     if (y > BMOSAIC_Y_LAYOUT + (j * TILE_SIZE) && y < BMOSAIC_Y_LAYOUT + (j * TILE_SIZE) + TILE_SIZE) {
-                        xAndY[1] = BMOSAIC_Y_LAYOUT + (j * TILE_SIZE); // put the y value
+                        xAndY[1] = BMOSAIC_Y_LAYOUT + (j * TILE_SIZE);
                     }
                 }
             }
             //if draggable tile released in Storage A
             if (x > ASTORAGE_X_LAYOUT - TILE_SIZE*4 && x < ASTORAGE_X_LAYOUT +TILE_SIZE &&
             y > ASTORAGE_Y_LAYOUT && y < ASTORAGE_Y_LAYOUT+(5*TILE_SIZE)) {
-                int xRight = ASTORAGE_X_LAYOUT + TILE_SIZE; // set the x initial point on right top.
+                int xRight = ASTORAGE_X_LAYOUT + TILE_SIZE;
                 int YRight = 0;
                 for (int i = 0; i < 5; i++) {
                     if (x < xRight - (i * TILE_SIZE) && x > xRight - (i * TILE_SIZE) - TILE_SIZE) {
@@ -572,7 +576,7 @@ public class Game extends Application {
                 //if the tile is to FloorA
                 if (turn.equals("A") && findPosition()[2] == 3) {
                     double rowInStorage = (homeY - ASTORAGE_Y_LAYOUT) / TILE_SIZE;
-                    move = move + "A" + rowInStorage + "F";
+                    move = move + "A" + (int)rowInStorage + "F";
                 }
             }
             //if the draggable tile is from StorageB
@@ -588,9 +592,10 @@ public class Game extends Application {
                 //if the tile is to FloorB
                 if (turn.equals("B") && findPosition()[2] == 6) {
                     double rowInStorage = (homeY - BSTORAGE_Y_LAYOUT) / TILE_SIZE;
-                    move = move + "B" + rowInStorage + "F";
+                    move = move + "B" + (int)rowInStorage + "F";
                 }
             }
+            System.out.println("move is " + move);
             return move;
         }
 
@@ -844,7 +849,6 @@ public class Game extends Application {
         System.out.println("Calling makeCompletion!");
         completionBox.setPrefWidth(BOX_WIDTH); // set width
         completionBox.setPrefHeight(BOX_HEIGHT); // set height
-        completionBox.setBackground(background);
         completionLabel.setFont(new Font(30)); // set the size of font.
         completionLabel.setLayoutX(100);
         completionLabel.setLayoutY(100);
@@ -1198,6 +1202,8 @@ public class Game extends Application {
         muteButton.setFont(Font.font(null,FontWeight.BOLD,20)); // set the size and form of the text
         muteButton.setLayoutX(BOARD_WIDTH-120); // set location
         muteButton.setLayoutY(50);
+        BackgroundFill backgroundFill= new BackgroundFill(Paint.valueOf("#F2F8A6"),CornerRadii.EMPTY,Insets.EMPTY); //set background color
+        Background background = new Background(backgroundFill);
         muteButton.setBackground(background);
         muteButton.setOnAction((ActionEvent e)->{ // mute the audio when clicked
             toggleSoundLoop();
