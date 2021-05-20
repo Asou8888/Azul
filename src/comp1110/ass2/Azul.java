@@ -1672,7 +1672,6 @@ public class Azul {
              */
             Floor floor1 = new Floor();
             floor1.decode(floor);
-            floor1.placeTile(s.charRowColor(row),row+1);
             if(floor1.emptyNum() < row + 1){
                 if (s.charRowColor(row) == 'a') {
                     int num = Integer.parseInt(discard.substring(1, 3));  //find the number of a tile
@@ -1715,53 +1714,12 @@ public class Azul {
                     discard = "D" + discard.substring(1, 9) + newscore + discard.substring(11);
                 }
             }
+            floor1.placeTile(s.charRowColor(row),row+1);
             s.emptyRow(row);
             if (move.charAt(0) == 'A') {
                 gameState[0] = gameState[0].substring(0,D) + discard;
                 gameState[1] = playerState .substring(0,S)+ s.getCode() + sortChar(floor1.getCode()) + gameState[1].substring(B);
             } else {
-                if(floor1.emptyNum() < row + 1) {
-                    if (s.charRowColor(row) == 'a') {
-                        int num = Integer.parseInt(discard.substring(1, 3));  //find the number of a tile
-                        String newscore = String.valueOf(num + row + 1 - floor1.emptyNum());  //plus with new additional tile
-                        if (num + row + 1 - floor1.emptyNum() < 10) {
-                            newscore = "0" + (num + row);
-                        }
-                        discard = "D" + newscore + discard.substring(3);  //restring discard
-                    }
-                    if (s.charRowColor(row) == 'b') {
-                        int num = Integer.parseInt(discard.substring(3, 5));
-                        String newscore = String.valueOf(num + row + 1 - floor1.emptyNum());
-                        if (num + row + 1 - floor1.emptyNum() < 10) {
-                            newscore = "0" + (num + row);
-                        }
-                        discard = "D" + discard.substring(1, 3) + newscore + discard.substring(5);
-                    }
-                    if (s.charRowColor(row) == 'c') {
-                        int num = Integer.parseInt(discard.substring(5, 7));
-                        String newscore = String.valueOf(num + row + 1 - floor1.emptyNum());
-                        if (num + row + 1 - floor1.emptyNum() < 10) {
-                            newscore = "0" + (num + row);
-                        }
-                        discard = "D" + discard.substring(1, 5) + newscore + discard.substring(7);
-                    }
-                    if (s.charRowColor(row) == 'd') {
-                        int num = Integer.parseInt(discard.substring(7, 9));
-                        String newscore = String.valueOf(num + row + 1 - floor1.emptyNum());
-                        if (num + row + 1 - floor1.emptyNum() < 10) {
-                            newscore = "0" + (num + row);
-                        }
-                        discard = "D" + discard.substring(1, 7) + newscore + discard.substring(9);
-                    }
-                    if (s.charRowColor(row) == 'e') {
-                        int num = Integer.parseInt(discard.substring(9, 11));
-                        String newscore = String.valueOf(num + row + 1 - floor1.emptyNum());
-                        if (num + row + 1 - floor1.emptyNum() < 10) {
-                            newscore = "0" + (num + row);
-                        }
-                        discard = "D" + discard.substring(1, 9) + newscore + discard.substring(11);
-                    }
-                }
                 gameState[0] = gameState[0].substring(0,D) + discard;
                 gameState[1] = gameState[1].substring(0,B) + playerState.substring(0,S) + s.getCode() + sortChar(floor1.getCode());
 
