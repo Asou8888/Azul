@@ -164,8 +164,10 @@ public class Game extends Application {
      *  Audio set up
      */
     private static final String SOUND_EFFECTS_URI = Game.class.getResource(URI_BASE + "Computer Mouse.wav").toString();
+    private static final String RELEASE_EFFECTS_URI = Game.class.getResource(URI_BASE + "Release Sound.wav").toString();
 
     private AudioClip clickSound;
+    private AudioClip releaseSound;
 
     /**
      * Set up the sound loop.
@@ -194,6 +196,19 @@ public class Game extends Application {
     }
 
     /**
+     * Set up release sound effect.
+     */
+    private void setUpReleaseSound() {
+        try {
+            releaseSound = new AudioClip(RELEASE_EFFECTS_URI);
+            releaseSound.setCycleCount(0); // no cycle
+            releaseSound.setVolume(0.5);
+        } catch (Exception e) {
+            System.err.println(":-( something bad happened (" + SOUND_EFFECTS_URI + "): " + e);
+        }
+    }
+
+    /**
      * Turn the sound loop on or off.
      */
     private void toggleSoundLoop() {
@@ -210,6 +225,13 @@ public class Game extends Application {
      */
     private void toggleClickEffects() {
         clickSound.play();
+    }
+
+    /**
+     * Turn the release effect on or off.
+     */
+    private void toggleReleaseEffects() {
+        releaseSound.play();
     }
 
 
@@ -328,6 +350,7 @@ public class Game extends Application {
                 setScaleX(0.9);
                 setScaleY(0.9);
                 snapToGrid();
+                toggleReleaseEffects();
             });
         }
 
@@ -1191,6 +1214,7 @@ public class Game extends Application {
         root.getChildren().add(controls);
         setUpSoundLoop();
         setUpClickSound();
+        setUpReleaseSound();
 
         root.getChildren().add(board);
         makeBoard();
