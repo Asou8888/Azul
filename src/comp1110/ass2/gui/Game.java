@@ -39,7 +39,6 @@ public class Game extends Application {
      */
     private static final String LOOP_URI = Game.class.getResource(URI_BASE + "Ending music_1.wav").toString();
     private AudioClip loop;
-
     /*  Game Variable  */
     private boolean loopPlaying = false;
 
