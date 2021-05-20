@@ -1594,6 +1594,7 @@ public class Azul {
         newmosaic.move(s.charRowColor(row),row,column);  // move the tile from storage to mosaic
         int plusscore = newmosaic.score(row,column);  // find the additional score
 
+
         //change the string of discard with additional tiles
         if(s.charRowColor(row) == 'a'){
             int num = Integer.parseInt(discard.substring(1,3));  //find the number of a tile
