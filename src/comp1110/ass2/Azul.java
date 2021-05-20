@@ -1572,7 +1572,7 @@ public class Azul {
         int A = gameState[1].indexOf("A");
         int B = gameState[1].indexOf("B");
         int row = Integer.parseInt(String.valueOf(move.charAt(1)));
-        int column = Integer.parseInt(String.valueOf(move.charAt(2)));
+
         String playerState = "";
         int D = gameState[0].indexOf("D");
         String discard = gameState[0].substring(D);
@@ -1587,79 +1587,98 @@ public class Azul {
         String mosaic = playerState.substring(M,S);
         String storage = playerState.substring(S,F);
         NewMosaic newmosaic = new NewMosaic(mosaic);
+        String floor = playerState.substring(F);
 
 
         Storage s = new Storage();
         s.decode(storage);
-        newmosaic.move(s.charRowColor(row),row,column);  // move the tile from storage to mosaic
-        int plusscore = newmosaic.score(row,column);  // find the additional score
+        if(move.charAt(2) != 'F') {
+            int column = Integer.parseInt(String.valueOf(move.charAt(2)));
+            newmosaic.move(s.charRowColor(row), row, column);  // move the tile from storage to mosaic
+            int plusscore = newmosaic.score(row, column);  // find the additional score
 
 
-        //change the string of discard with additional tiles
-        if(s.charRowColor(row) == 'a'){
-            int num = Integer.parseInt(discard.substring(1,3));  //find the number of a tile
-            String newscore = String.valueOf(num+row);  //plus with new additional tile
-            if(num + row < 10){
-                newscore = "0" + (num+row);
+            //change the string of discard with additional tiles
+            if (s.charRowColor(row) == 'a') {
+                int num = Integer.parseInt(discard.substring(1, 3));  //find the number of a tile
+                String newscore = String.valueOf(num + row);  //plus with new additional tile
+                if (num + row < 10) {
+                    newscore = "0" + (num + row);
+                }
+                discard = "D" + newscore + discard.substring(3);  //restring discard
             }
-            discard = "D" + newscore + discard.substring(3);  //restring discard
-        }
-        if(s.charRowColor(row) == 'b'){
-            int num = Integer.parseInt(discard.substring(3,5));
-            String newscore = String.valueOf(num+row);
-            if(num + row < 10){
-                newscore = "0" + (num+row);
+            if (s.charRowColor(row) == 'b') {
+                int num = Integer.parseInt(discard.substring(3, 5));
+                String newscore = String.valueOf(num + row);
+                if (num + row < 10) {
+                    newscore = "0" + (num + row);
+                }
+                discard = "D" + discard.substring(1, 3) + newscore + discard.substring(5);
             }
-            discard = "D" + discard.substring(1,3) + newscore+ discard.substring(5);
-        }
-        if(s.charRowColor(row) == 'c'){
-            int num = Integer.parseInt(discard.substring(5,7));
-            String newscore = String.valueOf(num+row);
-            if(num + row < 10){
-                newscore = "0" + (num+row);
+            if (s.charRowColor(row) == 'c') {
+                int num = Integer.parseInt(discard.substring(5, 7));
+                String newscore = String.valueOf(num + row);
+                if (num + row < 10) {
+                    newscore = "0" + (num + row);
+                }
+                discard = "D" + discard.substring(1, 5) + newscore + discard.substring(7);
             }
-            discard = "D" + discard.substring(1,5) + newscore+ discard.substring(7);
-        }
-        if(s.charRowColor(row) == 'd'){
-            int num = Integer.parseInt(discard.substring(7,9));
-            String newscore = String.valueOf(num+row);
-            if(num + row < 10){
-                newscore = "0" + (num+row);
+            if (s.charRowColor(row) == 'd') {
+                int num = Integer.parseInt(discard.substring(7, 9));
+                String newscore = String.valueOf(num + row);
+                if (num + row < 10) {
+                    newscore = "0" + (num + row);
+                }
+                discard = "D" + discard.substring(1, 7) + newscore + discard.substring(9);
             }
-            discard = "D" + discard.substring(1,7) + newscore+ discard.substring(9);
-        }
-        if(s.charRowColor(row) == 'e'){
-            int num = Integer.parseInt(discard.substring(9,11));
-            String newscore = String.valueOf(num+row);
-            if(num + row < 10){
-                newscore = "0" + (num+row);
+            if (s.charRowColor(row) == 'e') {
+                int num = Integer.parseInt(discard.substring(9, 11));
+                String newscore = String.valueOf(num + row);
+                if (num + row < 10) {
+                    newscore = "0" + (num + row);
+                }
+                discard = "D" + discard.substring(1, 9) + newscore + discard.substring(11);
             }
-            discard = "D" + discard.substring(1,9) + newscore+ discard.substring(11);
-        }
 
-        s.emptyRow(row);  //clear storage (the tiles have been moved into mosaic
 
-        if(move.charAt(0)=='A'){
-            int score = Integer.parseInt(playerState.substring(1,M));
-            gameState[1] = "A"+String.valueOf(score+plusscore) + newmosaic.getCode() + s.getCode() + gameState[1].substring(F);
-            String Aplayer = "A"+String.valueOf(score+plusscore) + newmosaic.getCode() + s.getCode() + gameState[1].substring(F,B);
-            if(storageIsAvia(Aplayer)){
-                //if storage is still have tiles which can be move, round doesnt change
-                gameState[0] = gameState[0].substring(0,D) +discard;
-            }else {
-                //change round if this is no tiles could move
-                gameState[0] = "B" + gameState[0].substring(1,D) +discard;
+            s.emptyRow(row);  //clear storage (the tiles have been moved into mosaic
+
+            if (move.charAt(0) == 'A') {
+                int score = Integer.parseInt(playerState.substring(1, M));
+                gameState[1] = "A" + String.valueOf(score + plusscore) + newmosaic.getCode() + s.getCode() + gameState[1].substring(F);
+                String Aplayer = "A" + String.valueOf(score + plusscore) + newmosaic.getCode() + s.getCode() + gameState[1].substring(F, B);
+                if (storageIsAvia(Aplayer)) {
+                    //if storage is still have tiles which can be move, round doesnt change
+                    gameState[0] = gameState[0].substring(0, D) + discard;
+                } else {
+                    //change round if this is no tiles could move
+                    gameState[0] = "B" + gameState[0].substring(1, D) + discard;
+                }
+            } else {
+                int score = Integer.parseInt(playerState.substring(1, M));
+                gameState[1] = gameState[1].substring(0, B) + "B" + String.valueOf(score + plusscore) + newmosaic.getCode() + s.getCode() + playerState.substring(F);
+                String Bplayer = "B" + String.valueOf(score + plusscore) + newmosaic.getCode() + s.getCode() + playerState.substring(F);
+                if (storageIsAvia(Bplayer)) {
+                    //if storage is still have tiles which can be move, round doesnt change
+                    gameState[0] = gameState[0].substring(0, D) + discard;
+                } else {
+                    ////change round if this is no tiles could move
+                    gameState[0] = "A" + gameState[0].substring(1, D) + discard;
+                }
             }
-        }else {
-            int score = Integer.parseInt(playerState.substring(1,M));
-            gameState[1] = gameState[1].substring(0,B) + "B" + String.valueOf(score+plusscore) + newmosaic.getCode() + s.getCode() + playerState.substring(F);
-            String Bplayer = "B" + String.valueOf(score+plusscore) + newmosaic.getCode() + s.getCode() + playerState.substring(F);
-            if(storageIsAvia(Bplayer)){
-                //if storage is still have tiles which can be move, round doesnt change
-                gameState[0] = gameState[0].substring(0,D) +discard;
-            }else {
-                ////change round if this is no tiles could move
-                gameState[0] = "A" + gameState[0].substring(1,D) +discard;
+        }else{
+            /**
+             * Storage to floor
+             */
+            Floor floor1 = new Floor();
+            floor1.decode(floor);
+            floor1.placeTile(s.charRowColor(row),row+1);
+            s.emptyRow(row);
+            if (move.charAt(0) == 'A') {
+                gameState[1] = playerState .substring(0,S)+ s.getCode() + sortChar(floor1.getCode()) + gameState[1].substring(B);
+            } else {
+                gameState[1] = playerState.substring(S) + s.getCode() + sortChar(floor1.getCode());
+
             }
         }
 
