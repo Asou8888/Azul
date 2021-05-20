@@ -2,11 +2,14 @@ package comp1110.ass2.gui;
 
 import comp1110.ass2.Azul;
 import comp1110.ass2.member.*;
+import gittest.B;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
@@ -25,6 +28,7 @@ import javafx.stage.Stage;
 
 import java.awt.*;
 import javafx.scene.image.Image;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -536,24 +540,36 @@ public class Game extends Application {
                     move = move + "B" + fac + this.colorChar + "F";
                 }
             }
-            //if the draggable tile is from StorageA to MosaicA
+            //if the draggable tile is from StorageA
             if (homeX > ASTORAGE_X_LAYOUT- 4*TILE_SIZE && homeX < ASTORAGE_X_LAYOUT + TILE_SIZE &&
                     homeY > ASTORAGE_Y_LAYOUT && homeY < ASTORAGE_Y_LAYOUT + 5* TILE_SIZE &&
                     Azul.isCenterAndFactoriesEmpty(gameState)){
+                //if the tile is to MosaicA
                 if (turn.equals("A") && findPosition()[2] == 2){
                     double rowInStorage = (homeY - ASTORAGE_Y_LAYOUT) / TILE_SIZE;
                     double colInMosaic = ((findPosition()[0]) - AMOSAIC_X_LAYOUT)/TILE_SIZE;
                     move = move + "A" + ((int)rowInStorage) + ((int)colInMosaic);
                 }
+                //if the tile is to FloorA
+                if (turn.equals("A") && findPosition()[2] == 3) {
+                    double rowInStorage = (homeY - ASTORAGE_Y_LAYOUT) / TILE_SIZE;
+                    move = move + "A" + rowInStorage + "F";
+                }
             }
-            //if the draggable tile is from StorageB to MosaicB
+            //if the draggable tile is from StorageB
             if (homeX > BSTORAGE_X_LAYOUT- 4*TILE_SIZE && homeX < BSTORAGE_X_LAYOUT + TILE_SIZE &&
                     homeY > BSTORAGE_Y_LAYOUT && homeY < BSTORAGE_Y_LAYOUT + 5*TILE_SIZE &&
                     Azul.isCenterAndFactoriesEmpty(gameState)) {
+                //if the tile is to MosaicB
                 if (turn.equals("B") && findPosition()[2] == 5) {
-                    double rowInStorage = (yAxis - BSTORAGE_Y_LAYOUT) / TILE_SIZE;
+                    double rowInStorage = (homeY - BSTORAGE_Y_LAYOUT) / TILE_SIZE;
                     double colInMosaic = ((findPosition()[0]) - BMOSAIC_X_LAYOUT)/TILE_SIZE;
                     move = move + "B" +(int)(rowInStorage) + ((int)colInMosaic);
+                }
+                //if the tile is to FloorB
+                if (turn.equals("B") && findPosition()[2] == 6) {
+                    double rowInStorage = (homeY - BSTORAGE_Y_LAYOUT) / TILE_SIZE;
+                    move = move + "B" + rowInStorage + "F";
                 }
             }
             return move;
@@ -788,7 +804,11 @@ public class Game extends Application {
      * Put all of the tiles back in their home position.
      */
     private void resetPieces() {
-        // TODO
+        gTiles.toFront();
+        for (Node n : gTiles.getChildren()) {
+            ((DraggableTile) n).snapToHome();
+        }
+
     }
 
     /**
@@ -1150,16 +1170,29 @@ public class Game extends Application {
         addCenterToRoot();
         addFactoriesToRoot();
         addBagToRoot();
+        // create a button to mute or play the audio on board
+        Button muteButton= new Button();
+        muteButton.setText("Mute");
+        muteButton.setFont(Font.font(null,FontWeight.BOLD,20)); // set the size and form of the text
+        muteButton.setLayoutX(BOARD_WIDTH-120); // set location
+        muteButton.setLayoutY(50);
+        BackgroundFill backgroundFill= new BackgroundFill(Paint.valueOf("#F2F8A6"),CornerRadii.EMPTY,Insets.EMPTY); //set background color
+        Background background = new Background(backgroundFill);
+        muteButton.setBackground(background);
+        muteButton.setOnAction((ActionEvent e)->{ // mute the audio when clicked
+            toggleSoundLoop();
+            muteButton.setOnAction((ActionEvent e1)->{ // replay the audio when clicked again
+                toggleSoundLoop();
+        });
+        });
         Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
         root.getChildren().add(gTiles);
-
+        root.getChildren().add(muteButton);
         root.getChildren().add(controls);
         setUpSoundLoop();
         setUpClickSound();
 
         root.getChildren().add(board);
-        // setUpHandlers(scene);
-        // setUpSoundLoop();
         makeBoard();
         makeControls();
         newGame();
