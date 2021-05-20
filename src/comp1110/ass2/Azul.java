@@ -1599,46 +1599,10 @@ public class Azul {
 
 
             //change the string of discard with additional tiles
-            if (s.charRowColor(row) == 'a') {
-                int num = Integer.parseInt(discard.substring(1, 3));  //find the number of a tile
-                String newscore = String.valueOf(num + row);  //plus with new additional tile
-                if (num + row < 10) {
-                    newscore = "0" + (num + row);
-                }
-                discard = "D" + newscore + discard.substring(3);  //restring discard
-            }
-            if (s.charRowColor(row) == 'b') {
-                int num = Integer.parseInt(discard.substring(3, 5));
-                String newscore = String.valueOf(num + row);
-                if (num + row < 10) {
-                    newscore = "0" + (num + row);
-                }
-                discard = "D" + discard.substring(1, 3) + newscore + discard.substring(5);
-            }
-            if (s.charRowColor(row) == 'c') {
-                int num = Integer.parseInt(discard.substring(5, 7));
-                String newscore = String.valueOf(num + row);
-                if (num + row < 10) {
-                    newscore = "0" + (num + row);
-                }
-                discard = "D" + discard.substring(1, 5) + newscore + discard.substring(7);
-            }
-            if (s.charRowColor(row) == 'd') {
-                int num = Integer.parseInt(discard.substring(7, 9));
-                String newscore = String.valueOf(num + row);
-                if (num + row < 10) {
-                    newscore = "0" + (num + row);
-                }
-                discard = "D" + discard.substring(1, 7) + newscore + discard.substring(9);
-            }
-            if (s.charRowColor(row) == 'e') {
-                int num = Integer.parseInt(discard.substring(9, 11));
-                String newscore = String.valueOf(num + row);
-                if (num + row < 10) {
-                    newscore = "0" + (num + row);
-                }
-                discard = "D" + discard.substring(1, 9) + newscore + discard.substring(11);
-            }
+            Discard discard1 = new Discard();
+            discard1.decode(discard);
+            discard1.placeTiles(s.charRowColor(row),row);
+            String newdiscard = discard1.getCode();
 
 
             s.emptyRow(row);  //clear storage (the tiles have been moved into mosaic
@@ -1649,10 +1613,10 @@ public class Azul {
                 String Aplayer = "A" + String.valueOf(score + plusscore) + newmosaic.getCode() + s.getCode() + gameState[1].substring(F, B);
                 if (storageIsAvia(Aplayer)) {
                     //if storage is still have tiles which can be move, round doesnt change
-                    gameState[0] = gameState[0].substring(0, D) + discard;
+                    gameState[0] = gameState[0].substring(0, D) + newdiscard;
                 } else {
                     //change round if this is no tiles could move
-                    gameState[0] = "B" + gameState[0].substring(1, D) + discard;
+                    gameState[0] = "B" + gameState[0].substring(1, D) + newdiscard;
                 }
             } else {
                 int score = Integer.parseInt(playerState.substring(1, M));
@@ -1660,10 +1624,10 @@ public class Azul {
                 String Bplayer = "B" + String.valueOf(score + plusscore) + newmosaic.getCode() + s.getCode() + playerState.substring(F);
                 if (storageIsAvia(Bplayer)) {
                     //if storage is still have tiles which can be move, round doesnt change
-                    gameState[0] = gameState[0].substring(0, D) + discard;
+                    gameState[0] = gameState[0].substring(0, D) + newdiscard;
                 } else {
                     ////change round if this is no tiles could move
-                    gameState[0] = "A" + gameState[0].substring(1, D) + discard;
+                    gameState[0] = "A" + gameState[0].substring(1, D) + newdiscard;
                 }
             }
         }else{
@@ -1673,56 +1637,35 @@ public class Azul {
             Floor floor1 = new Floor();
             floor1.decode(floor);
             if(floor1.emptyNum() < row + 1){
-                if (s.charRowColor(row) == 'a') {
-                    int num = Integer.parseInt(discard.substring(1, 3));  //find the number of a tile
-                    String newscore = String.valueOf(num + row+1-floor1.emptyNum());  //plus with new additional tile
-                    if (num + row+1-floor1.emptyNum() < 10) {
-                        newscore = "0" + (num + row);
-                    }
-                    discard = "D" + newscore + discard.substring(3);  //restring discard
-                }
-                if (s.charRowColor(row) == 'b') {
-                    int num = Integer.parseInt(discard.substring(3, 5));
-                    String newscore = String.valueOf(num + row+1-floor1.emptyNum());
-                    if (num + row+1-floor1.emptyNum() < 10) {
-                        newscore = "0" + (num + row);
-                    }
-                    discard = "D" + discard.substring(1, 3) + newscore + discard.substring(5);
-                }
-                if (s.charRowColor(row) == 'c') {
-                    int num = Integer.parseInt(discard.substring(5, 7));
-                    String newscore = String.valueOf(num + row+1-floor1.emptyNum());
-                    if (num + row+1-floor1.emptyNum() < 10) {
-                        newscore = "0" + (num + row);
-                    }
-                    discard = "D" + discard.substring(1, 5) + newscore + discard.substring(7);
-                }
-                if (s.charRowColor(row) == 'd') {
-                    int num = Integer.parseInt(discard.substring(7, 9));
-                    String newscore = String.valueOf(num + row+1-floor1.emptyNum());
-                    if (num + row+1-floor1.emptyNum() < 10) {
-                        newscore = "0" + (num + row);
-                    }
-                    discard = "D" + discard.substring(1, 7) + newscore + discard.substring(9);
-                }
-                if (s.charRowColor(row) == 'e') {
-                    int num = Integer.parseInt(discard.substring(9, 11));
-                    String newscore = String.valueOf(num + row+1-floor1.emptyNum());
-                    if (num + row+1-floor1.emptyNum() < 10) {
-                        newscore = "0" + (num + row);
-                    }
-                    discard = "D" + discard.substring(1, 9) + newscore + discard.substring(11);
-                }
+                Discard discard1 = new Discard();
+                discard1.decode(discard);
+                discard1.placeTiles(s.charRowColor(row),row+1);
+                discard = discard1.getCode();
             }
-            floor1.placeTile(s.charRowColor(row),row+1);
+            if(floor1.getCode().contains("f")) { //if there is a first player in center
+                floor1.placeTile(s.charRowColor(row), row + 1);
+                floor1.replaceTile('f');
+            }else{
+                floor1.placeTile(s.charRowColor(row), row + 1);
+            }
             s.emptyRow(row);
             if (move.charAt(0) == 'A') {
-                gameState[0] = gameState[0].substring(0,D) + discard;
-                gameState[1] = playerState .substring(0,S)+ s.getCode() + sortChar(floor1.getCode()) + gameState[1].substring(B);
-            } else {
-                gameState[0] = gameState[0].substring(0,D) + discard;
-                gameState[1] = gameState[1].substring(0,B) + playerState.substring(0,S) + s.getCode() + sortChar(floor1.getCode());
+                if(storageIsAvia(playerState .substring(0,S)+ s.getCode() + sortChar(floor1.getCode()))){
+                    gameState[0] = gameState[0].substring(0,D) + discard;
+                    gameState[1] = playerState .substring(0,S)+ s.getCode() + sortChar(floor1.getCode()) + gameState[1].substring(B);
+                }else{
+                    gameState[0] = "B" + gameState[0].substring(1,D) + discard;
+                    gameState[1] = playerState .substring(0,S)+ s.getCode() + sortChar(floor1.getCode()) + gameState[1].substring(B);
+                }
 
+            } else {
+                if(storageIsAvia(playerState.substring(0,S) + s.getCode() + sortChar(floor1.getCode()))){
+                    gameState[0] = gameState[0].substring(0,D) + discard;
+                    gameState[1] = gameState[1].substring(0,B) + playerState.substring(0,S) + s.getCode() + sortChar(floor1.getCode());
+                }else {
+                    gameState[0] = "A" + gameState[0].substring(1,D) + discard;
+                    gameState[1] = gameState[1].substring(0,B) + playerState.substring(0,S) + s.getCode() + sortChar(floor1.getCode());
+                }
             }
         }
 

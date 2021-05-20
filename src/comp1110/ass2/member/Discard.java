@@ -116,16 +116,17 @@ public class Discard {
 
     public void placeTiles(char color,int num){
         int numOfTiles = 0;
-        for(int i = 0; i < tiles.length;i++){
-            if(tiles[i] == null){
-                tiles[i] = new Tile(color);
-                numOfTiles += 1;
-                if(numOfTiles == num){
-                    break;
+        if(num != 0) {
+            for (int i = 0; i < tiles.length; i++) {
+                if (tiles[i] == null) {
+                    tiles[i] = new Tile(color);
+                    numOfTiles += 1;
+                    if (numOfTiles == num) {
+                        break;
+                    }
                 }
             }
         }
-
     }
 
     /**
@@ -210,7 +211,7 @@ public class Discard {
                 System.out.print(d.tiles[i].getCode());
             }
         }
-        d.replaceTile('a');
+        d.placeTiles('a',0);
         System.out.println(d.getCode());
 
     }
