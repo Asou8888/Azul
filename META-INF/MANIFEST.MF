@@ -1,3 +1,5 @@
 Manifest-Version: 1.0
 Main-Class: comp1110.ass2.gui.Game
+JavaFX-Version: 11.0
+Created-By: JavaFX Packager
 
