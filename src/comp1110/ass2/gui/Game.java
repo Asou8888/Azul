@@ -32,7 +32,7 @@ public class Game extends Application {
 
     private final Group board = new Group();
     /* where to find media assets */
-    private static final String URI_BASE = "../assets/"; //art material
+    private static final String URI_BASE = "assets/"; //art material
     private static final String BASEBOARD_URI = Game.class.getResource(URI_BASE + "pic.png").toString();
     /*  [Reference: https://gitlab.cecs.anu.edu.au/comp1110/dinosaurs/-/blob/master/src/comp1110/ass1/gui/Game.java#L388]
      *  Audio set up
