@@ -22,7 +22,8 @@ declaration: >-
 
 # I wish to submit the following methods as entirely my own (remove this if
 # you want to just submit classes):
-method: private void addStorageToRoot()
+method:
+   - private void addStorageToRoot()
    - This method is used to add Storages interfaces in root.
    - 1. create new tiles with grey color
    - 2. place the tiles and set their positions so that they arrange as expected
