@@ -29,7 +29,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Game extends Application {
-
+    //set background colour
+    BackgroundFill backgroundFill = new BackgroundFill(Paint.valueOf("#F2F8A6"), CornerRadii.EMPTY, Insets.EMPTY); //set background color
+    Background background = new Background(backgroundFill);
     private final Group board = new Group();
     /* where to find media assets */
     private static final String URI_BASE = "assets/"; //art material
@@ -844,6 +846,8 @@ public class Game extends Application {
      */
     private void makeCompletion() {
         System.out.println("Calling makeCompletion!");
+
+        completionBox.setBackground(background);
         completionBox.setPrefWidth(BOX_WIDTH); // set width
         completionBox.setPrefHeight(BOX_HEIGHT); // set height
         completionLabel.setFont(new Font(30)); // set the size of font.
@@ -1219,8 +1223,6 @@ public class Game extends Application {
         muteButton.setFont(Font.font(null, FontWeight.BOLD, 20)); // set the size and form of the text
         muteButton.setLayoutX(BOARD_WIDTH - 120); // set location
         muteButton.setLayoutY(50);
-        BackgroundFill backgroundFill = new BackgroundFill(Paint.valueOf("#F2F8A6"), CornerRadii.EMPTY, Insets.EMPTY); //set background color
-        Background background = new Background(backgroundFill);
         muteButton.setBackground(background);
         muteButton.setOnAction((ActionEvent e) -> { // mute the audio when clicked
             toggleSoundLoop();
@@ -1235,6 +1237,7 @@ public class Game extends Application {
         restartButton.setLayoutY(120);
         restartButton.setBackground(background);
         restartButton.setOnAction((ActionEvent e) -> { // mute the audio when clicked
+            root.getChildren().remove(completionBox);
             newGame();
             toggleSoundLoop();
         });
