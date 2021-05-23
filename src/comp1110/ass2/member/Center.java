@@ -243,4 +243,12 @@ public class Center {
         return string.toCharArray();
     }
 
+    public static void main(String[] args) {
+        String center = "Caaabbb";
+        Center c = new Center();
+        c.decode(center);
+
+        System.out.println(c.tileNum('a'));
+        System.out.println(c.deleteTile('a'));
+    }
 }

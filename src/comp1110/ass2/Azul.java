@@ -1734,7 +1734,7 @@ public class Azul {
                 floor1.placeTile(move.charAt(2), numOfTiles);
                 String center2 = center1.deleteTile(move.charAt(2)); //delete other tiles from center
                 if(center2.contains("f")){ //if there is a first player in center
-                    center2 = center1.getCode().substring(0,center2.length()-1); //remove 'f' from center
+                    center2 = center2.substring(0,center2.length()-1); //remove 'f' from center
                     floor1.placeTile('f', 1); // add 'f' to floor
                     if (numOfTiles >= numOfFloorEmptySpace) { //if floor is full
                         int moreTile = numOfTiles - numOfFloorEmptySpace;
@@ -2135,11 +2135,8 @@ public class Azul {
     }
     public static void main(String[] args) {
         // test case 3 for Task 13
-        String[] test3 = new String[] {
-                "BF4aeeeCaacB1109101008D0005000200",
-                "A7Mc03b04b12e13b21a24S0d11a12e13d44c4FdfB0Md01c02d20S0b11a22e23c34e5Faabb"
-        };
-        System.out.println(isMoveValid(test3, "B4a1"));
+        String[] a = {"BFCaaaaabbdddeeefB1518161516D0000000000", "A0MS0d1FcceB0MS0d1Fcc"};
+        System.out.println(Arrays.toString(applyMove(a, "BCaF")));
     }
 
 
